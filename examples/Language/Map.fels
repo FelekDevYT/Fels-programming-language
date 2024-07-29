@@ -1,0 +1,39 @@
+using "sfm";//Standart fels module
+
+//simple map
+cars = {
+	"one":"Kia",
+	"two":"Volga",
+	"three":"Cherry",
+	"four":"Nissan"
+};
+//geting item from map
+println(cars.one);//Kia
+println(cars["two"]);//Volga
+
+//Functional map
+actions = {
+	"add":func(a,b) = a + b,
+	"sub":func(a,b) = a - b,
+	"mul":func(a,b) = a * b,
+	"div":func(a,b) = a / b
+};
+println(actions.add(1,1));//2.0
+
+//Array map
+arrMap = {
+	"one":[1,2,3,[1,2,[100,200]]],
+	"two":[4,5,6]
+};
+println(arrMap.one[0]);//1.0
+println(arrMap.one[3][0]);//1.0
+println(arrMap.one[3][2][0]);//100
+
+//Refactoring map value
+arr = {
+	"one":"1"
+}	
+arr["one"] = "2";
+//or
+arr.one = "2";
+println(arr.one);

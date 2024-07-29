@@ -1,0 +1,6 @@
+using ["sfm","forms"]
+
+import "fels/utils/Converter.fels"
+
+c = new Converter()
+echo(c.toNumber("12")+3)

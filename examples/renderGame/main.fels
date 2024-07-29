@@ -1,0 +1,16 @@
+using "sfm";
+
+import "examples\\renderGame\\engine\\start.fels";
+import "examples\\renderGame\\engine\\loop.fels";
+import "examples\\renderGame\\engine\\close.fels";
+
+start();
+
+while(closeRequest()){
+
+	loop();
+	
+	cync(60);
+}
+
+close();

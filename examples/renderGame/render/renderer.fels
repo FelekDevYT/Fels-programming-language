@@ -1,0 +1,8 @@
+using "sfm";
+using "fgl";
+
+import "examples\\renderGame\\render\\colorer.fels";
+
+func render_line(relativeX,relativeY,x,y){
+	return line(relativeX,relativeY,x,y);
+}

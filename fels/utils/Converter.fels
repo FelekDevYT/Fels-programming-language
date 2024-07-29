@@ -1,0 +1,17 @@
+using ["sfm","ftypes"]
+
+import "fels/utils/Exceptions.fels"
+
+class Converter{
+	func Converter(){
+	
+	}
+	
+	func toNumber(num){
+		if(typeOf(num) == STRING){
+			NN = toInt(num)
+			return NN
+		}
+	}
+	
+}

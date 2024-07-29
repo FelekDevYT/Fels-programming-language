@@ -1,0 +1,8 @@
+using "sfm";
+using "fgl";
+
+import "examples\\renderGame\\render\\renderer.fels";
+
+func start(){
+	createWindow("renderTest",500,500);
+}

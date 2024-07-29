@@ -1,0 +1,29 @@
+
+class List{
+	list = getEmpty()
+	
+	func List(size){
+		list = array(size)
+	}
+	
+	func getAt(pos){
+		return list[pos]
+	}
+	
+	func setAt(pos, text){
+		list[pos] = text
+	}
+	
+	func getList(){
+		return list
+	}
+	
+	func setByList(ByList){
+		if(typeOf(ByList) != ARRAY){
+			ex = Exceptions()
+			ex.TypeException("UNKNOWN TYPE FOR LIST")
+		}else{
+			list = ByList
+		}
+	}
+}

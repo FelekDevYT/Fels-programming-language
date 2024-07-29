@@ -1,0 +1,42 @@
+using "sfm"
+using "ftypes"
+
+operations = {
+    "+":func(a,b)=a+b,
+    "-":func(a,b)=a-b,
+    "*":func(a,b)=a*b,
+    "/":func(a,b)=a/b,
+    ">":func(a,b)=a>b,
+	"<":func(a,b)=a<b
+}
+
+func calc(expr){
+    pos = 0
+    len = length(expr)
+
+    func isDigit(c)=48<=c&&c <= 57
+
+    func parseNumber(){
+        buffer = ""
+        while (pos < len && isDigit(charAt(expr, pos))) {
+            buffer+=toChar(charAt(expr,pos))
+            pos++
+        }
+        return toNumber(buffer)
+    }
+
+    func parseOperation(){
+        while (pos < len && !arrayKeyExists(toChar(charAt(expr, pos)), operations)) {
+            pos++
+        }
+        return operations[toChar(charAt(expr,pos++))]
+    }
+
+    num1 = parseNumber()
+    op = parseOperation()
+	println(op)
+    num2 = parseNumber()
+    return op(num1,num2)
+}
+
+println(calc("2+2"))

@@ -1,0 +1,11 @@
+using "sfm";
+using "fgl";
+
+import "Game\\render.fels";
+
+func world_generate(){
+	
+}
+func start(){
+	create();
+}

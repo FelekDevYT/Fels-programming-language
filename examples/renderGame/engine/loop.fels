@@ -1,0 +1,16 @@
+using "sfm";
+using "fgl";
+using "time";
+
+import "examples\\renderGame\\render\\colorer.fels";
+import "examples\\renderGame\\engine\\close.fels";
+
+func loop(x,y,w,h){
+
+	redraw();
+	
+}
+
+func cync(st){
+	sleep(st);
+}

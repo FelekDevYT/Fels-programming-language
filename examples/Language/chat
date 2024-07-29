@@ -1,0 +1,33 @@
+using "sfm"
+using "forms"
+
+chatHistory = newLabel("<html>Чат с самоботом<br>")
+messageField = newTextField()
+sendButton = newButton("Отправить")
+
+messageField.onAction(::onSend)
+sendButton.onClick(::onSend)
+func onSend() {
+  text = messageField.getText()
+  if (length(text) == 0) return 0
+  messageField.setText("")
+  chatHistory.setText(chatHistory.getText() + "<br><b>вы</b> > " + text)
+}
+
+messagePanel = newPanel()
+messagePanel.setLayout(boxLayout(messagePanel, BoxLayout.LINE_AXIS))
+messagePanel.add(messageField)
+messagePanel.add(sendButton)
+
+mainPanel = newPanel(borderLayout(10, 10))
+mainPanel.setPreferredSize(400, 250)
+mainPanel.add(chatHistory, BorderLayout.CENTER)
+mainPanel.add(messagePanel, BorderLayout.SOUTH)
+
+
+window = newWindow("Чат с самоботом")
+window.setMinimumSize(200, 220)
+window.setLocationByPlatform()
+window.add(mainPanel)
+window.pack()
+window.setVisible()

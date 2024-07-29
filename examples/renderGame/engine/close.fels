@@ -1,0 +1,7 @@
+using "sfm";
+using "fgl";
+
+func close(){
+	println("Close");
+	quit(0);
+}
