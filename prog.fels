@@ -1,6 +1,6 @@
 using ["sfm","forms"]
 
-import "fels/utils/Converter.fels"
+import "fels/utils/mathUtils.fels"
 
-c = new Converter()
-echo(c.toNumber("12")+3)
+m = new FMath()
+println(m.getPI())

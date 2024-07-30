@@ -14,4 +14,23 @@ class Converter{
 		}
 	}
 	
+	func toBoolean(is){
+		if(typeOf(is) == NUMBER){
+			if(is == 0){
+				return false
+			}else{
+				return true
+			}
+		}else if(typeOf(is) == STRING){
+			if(is == "true") return true
+			else if(is == "false") return false
+			else if(is == "0") return false
+			else return true
+		}
+	}
+	
+	func getTypeOf(is){
+		return typeOf(is)
+	}
+	
 }
