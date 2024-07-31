@@ -1,7 +1,3 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public class PanicException extends RuntimeException{
-    public PanicException(String message){
-        super("Panic: "+message);
-    }
-}
+class PanicException(message: String) : RuntimeException("Panic: $message")

@@ -54,7 +54,7 @@ public final class StringValue implements Value {
                 final Value[] chars = new Value[length()];
                 int i = 0;
                 for (char ch : value.toCharArray()) {
-                    chars[i++] = NumberValue.of((int) ch);
+                    chars[i++] = NumberValue.of(ch);
                 }
                 return new ArrayValue(chars);
             }

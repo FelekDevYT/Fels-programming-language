@@ -13,7 +13,7 @@ public final class ContainerAccessExpression implements Expression, Accessible {
 
     public final Expression root;
     public final List<Expression> indices;
-    private boolean rootIsVariable;
+    private final boolean rootIsVariable;
 
     public ContainerAccessExpression(String variable, List<Expression> indices) {
         this(new VariableExpression(variable), indices);

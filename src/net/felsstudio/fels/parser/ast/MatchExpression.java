@@ -95,10 +95,7 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         final int arraySize = array.size();
         switch (partsSize) {
             case 0: // match [] { case []: ... }
-                if ((arraySize == 0) && optMatches(p)) {
-                    return true;
-                }
-                return false;
+                return (arraySize == 0) && optMatches(p);
 
             case 1: // match arr { case [x]: x = arr ... }
                 final String variable = parts.get(0);

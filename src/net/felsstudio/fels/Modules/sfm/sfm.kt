@@ -1,101 +1,94 @@
-package net.felsstudio.fels.Modules.sfm;
+package net.felsstudio.fels.Modules.sfm
 
-import net.felsstudio.fels.Start.Starter;
-import net.felsstudio.fels.exceptions.ArgumentsMismatchException;
-import net.felsstudio.fels.exceptions.TypeException;
-import net.felsstudio.fels.lib.*;
-import net.felsstudio.fels.Modules.Module;
+import net.felsstudio.fels.Modules.Module
+import net.felsstudio.fels.exceptions.ArgumentsMismatchException
+import net.felsstudio.fels.exceptions.TypeException
+import net.felsstudio.fels.lib.*
+import net.felsstudio.fels.lib.Arguments.check
+import net.felsstudio.fels.lib.Arguments.checkAtLeast
+import net.felsstudio.fels.lib.Arguments.checkOrOr
+import net.felsstudio.fels.lib.Arguments.checkRange
+import net.felsstudio.fels.lib.Function
+import java.util.*
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.LinkedBlockingQueue
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
-public final class sfm implements Module {//Standard fels module
-
-    @Override
-    public void init() {
-        Functions.set("echo", args -> {
-            for (Value arg : args) {
-                System.out.println(arg.asString());
+class sfm : Module {
+    //Standard fels module
+    override fun init() {
+        Functions.set("echo") { args: Array<Value> ->
+            for (arg in args) {
+                println(arg.asString())
             }
-            System.out.println();
-            return NumberValue.ZERO;
-        });
-        Functions.set("array", new Function() {
-
-            @Override
-            public Value execute(Value... args) {
-                return createArray(args, 0);
+            println()
+            NumberValue.ZERO
+        }
+        Functions.set("array", object : Function {
+            override fun execute(vararg args: Value): Value {
+                return createArray(args, 0)
             }
 
-            private ArrayValue createArray(Value[] args, int index) {
-                final int size = (int) args[index].asInt();
-                final int last = args.length - 1;
-                ArrayValue array = new ArrayValue(size);
+            private fun createArray(args: Array<out Value>, index: Int): ArrayValue {
+                val size = args[index].asInt()
+                val last = args.size - 1
+                val array = ArrayValue(size)
                 if (index == last) {
-                    for (int i = 0; i < size; i++) {
-                        array.set(i, NumberValue.ZERO);
+                    for (i in 0 until size) {
+                        array[i] = NumberValue.ZERO
                     }
                 } else if (index < last) {
-                    for (int i = 0; i < size; i++) {
-                        array.set(i, createArray(args, index + 1));
+                    for (i in 0 until size) {
+                        array[i] = createArray(args, index + 1)
                     }
                 }
-                return array;
+                return array
             }
-        });
-        Functions.set("default", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                Arguments.check(2, args.length);
+        })
+        Functions.set("default", object : Function {
+            override fun execute(vararg args: Value): Value {
+                check(2, args.size)
                 if (isEmpty(args[0])) {
-                    return args[1];
+                    return args[1]
                 }
-                return args[0];
+                return args[0]
             }
 
-            private boolean isEmpty(Value value) {
-                if (value == null || value.raw() == null) {
-                    return true;
+            private fun isEmpty(value: Value?): Boolean {
+                if (value?.raw() == null) {
+                    return true
                 }
-                switch (value.type()) {
-                    case Types.NUMBER:
-                        return (value.asInt() == 0);
-                    case Types.STRING:
-                        return (value.asString().isEmpty());
-                    case Types.ARRAY:
-                        return ((ArrayValue) value).size() == 0;
-                    case Types.MAP:
-                        return ((MapValue) value).size() == 0;
-                    default:
-                        return false;
+                return when (value.type()) {
+                    Types.NUMBER -> value.asInt() == 0
+                    Types.STRING -> value.asString().isEmpty()
+                    Types.ARRAY -> (value as ArrayValue).size() == 0
+                    Types.MAP -> (value as MapValue).size() == 0
+                    else -> false
                 }
             }
-        });
-        Functions.set("thread", args ->{
+        })
+        Functions.set("thread") { args: Array<Value> ->
             // Создаём новый поток и передаём параметры, если есть.
             // Функция может передаваться как напрямую, так и по имени
-            if (args.length == 0) throw new ArgumentsMismatchException("At least one arg expected");
-
-            Function body;
-            if (args[0].type() == Types.FUNCTION) {
-                body = ((FunctionValue) args[0]).getValue();
+            if (args.size == 0) throw ArgumentsMismatchException("At least one arg expected")
+            val body = if (args[0].type() == Types.FUNCTION) {
+                (args[0] as FunctionValue).value
             } else {
-                body = Functions.get(args[0].asString());
+                Functions.get(args[0].asString())
             }
 
             // Сдвигаем аргументы
-            final Value[] params = new Value[args.length - 1];
-            if (params.length > 0) {
-                System.arraycopy(args, 1, params, 0, params.length);
+            val params = arrayOfNulls<Value>(args.size - 1)
+            if (params.size > 0) {
+                System.arraycopy(args, 1, params, 0, params.size)
             }
 
-            final Thread thread = new Thread(() -> body.execute(params));
-            thread.setUncaughtExceptionHandler(Starter::handleException);
-            thread.start();
-            return NumberValue.ZERO;
-        });
+            val thread = Thread { body.execute(*params) }
+            thread.start()
+            NumberValue.ZERO
+        }
         /*Functions.set("toString", f ->{
             return new StringValue(f[0].asString());
         });
@@ -103,474 +96,471 @@ public final class sfm implements Module {//Standard fels module
             return NumberValue.of(f[0].asInt());
         });*/
         //DEPRECATED FUNCTIONS WITH CREATED FTYPES MODULE
-        Functions.set("readln", f ->{
-            Scanner scan = new Scanner(System.in);
-            return new StringValue(scan.nextLine());
-        });
-        Functions.set("readNum",f ->{
-            Scanner scan = new Scanner(System.in);
-            return NumberValue.of(scan.nextInt());
-        });
+        Functions.set("readln") { f: Array<Value?>? ->
+            val scan = Scanner(System.`in`)
+            StringValue(scan.nextLine())
+        }
+        Functions.set("readNum") { f: Array<Value?>? ->
+            val scan = Scanner(System.`in`)
+            NumberValue.of(scan.nextInt())
+        }
         ///DERECATED WITH CREATED TOKEN IN FELS LANGUAGE
-        Functions.set("oldeach", new Function() {
-            private static final int UNKNOWN = -1;
+        Functions.set("oldeach", object : Function {
+            private val UNKNOWN = -1
 
-            @Override
-            public Value execute(Value... args) {
-                Arguments.check(2, args.length);
-                final Value container = args[0];
-                final Function consumer = ValueUtils.consumeFunction(args[1], 1);
-                final int argsCount;
-                if (consumer instanceof UserDefinedFunction) {
-                    argsCount = ((UserDefinedFunction) consumer).getArgsCount();
+            override fun execute(vararg args: Value): Value {
+                check(2, args.size)
+                val container = args[0]
+                val consumer = ValueUtils.consumeFunction(args[1], 1)
+                val argsCount = if (consumer is UserDefinedFunction) {
+                    consumer.argsCount
                 } else {
-                    argsCount = UNKNOWN;
+                    UNKNOWN
                 }
 
-                switch (container.type()) {
-                    case Types.STRING:
-                        final StringValue string = (StringValue) container;
+                when (container.type()) {
+                    Types.STRING -> {
+                        val string = container as StringValue
                         if (argsCount == 2) {
-                            for (char ch : string.asString().toCharArray()) {
-                                consumer.execute(new StringValue(String.valueOf(ch)), NumberValue.of(ch));
+                            for (ch in string.asString().toCharArray()) {
+                                consumer.execute(StringValue(ch.toString()), NumberValue.of(ch.code))
                             }
                         } else {
-                            for (char ch : string.asString().toCharArray()) {
-                                consumer.execute(new StringValue(String.valueOf(ch)));
+                            for (ch in string.asString().toCharArray()) {
+                                consumer.execute(StringValue(ch.toString()))
                             }
                         }
-                        return string;
+                        return string
+                    }
 
-                    case Types.ARRAY:
-                        final ArrayValue array = (ArrayValue) container;
+                    Types.ARRAY -> {
+                        val array = container as ArrayValue
                         if (argsCount == 2) {
-                            int index = 0;
-                            for (Value element : array) {
-                                consumer.execute(element, NumberValue.of(index++));
+                            var index = 0
+                            for (element in array) {
+                                consumer.execute(element, NumberValue.of(index++))
                             }
                         } else {
-                            for (Value element : array) {
-                                consumer.execute(element);
+                            for (element in array) {
+                                consumer.execute(element)
                             }
                         }
-                        return array;
+                        return array
+                    }
 
-                    case Types.MAP:
-                        final MapValue map = (MapValue) container;
-                        for (Map.Entry<Value, Value> element : map) {
-                            consumer.execute(element.getKey(), element.getValue());
+                    Types.MAP -> {
+                        val map = container as MapValue
+                        for ((key, value) in map) {
+                            consumer.execute(key, value)
                         }
-                        return map;
+                        return map
+                    }
 
-                    default:
-                        throw new TypeException("Cannot iterate " + Types.typeToString(container.type()));
+                    else -> throw TypeException("Cannot iterate " + Types.typeToString(container.type()))
                 }
             }
-        });
-        Functions.set("splice",args ->{
-            Arguments.checkRange(2, 4, args.length);
+        })
+        Functions.set("splice") { args: Array<Value> ->
+            checkRange(2, 4, args.size)
             if (args[0].type() != Types.ARRAY) {
-                throw new TypeException("Array expected at first argument");
+                throw TypeException("Array expected at first argument")
             }
-            final Value[] input = ((ArrayValue) args[0]).getCopyElements();
-            final int size = input.length;
+            val input = (args[0] as ArrayValue).copyElements
+            val size = input.size
 
-            int start = args[1].asInt();
-            if (start < 0) start = size - Math.abs(start);
-            start = Math.max(0, Math.min(size, start));
+            var start = args[1].asInt()
+            if (start < 0) start = (size - abs(start.toDouble())).toInt()
+            start = max(0.0, min(size.toDouble(), start.toDouble())).toInt()
 
-            final int deleteCount = (args.length >= 3)
-                    ? Math.max(0, Math.min(size - start, args[2].asInt())) // [0..size - start)
-                    : (size - start);
-
-            final Value[] additions;
-            if (args.length != 4) {
-                additions = new Value[0];
+            val deleteCount = if ((args.size >= 3)
+            ) max(0.0, min((size - start).toDouble(), args[2].asInt().toDouble())).toInt() else (size - start)
+            val additions = if (args.size != 4) {
+                arrayOfNulls(0)
             } else if (args[3].type() == Types.ARRAY) {
-                additions = ((ArrayValue) args[3]).getCopyElements();
+                (args[3] as ArrayValue).copyElements
             } else {
-                throw new TypeException("Array expected at fourth argument");
+                throw TypeException("Array expected at fourth argument")
             }
 
-            Value[] result = new Value[start + (size - start - deleteCount) + additions.length];
-            System.arraycopy(input, 0, result, 0, start); // [0, start)
-            System.arraycopy(additions, 0, result, start, additions.length); // insert new
-            System.arraycopy(input, start + deleteCount, result, start + additions.length, size - start - deleteCount);
-            return new ArrayValue(result);
-        });
+            val result = arrayOfNulls<Value>(start + (size - start - deleteCount) + additions.size)
+            System.arraycopy(input, 0, result, 0, start) // [0, start)
+            System.arraycopy(additions, 0, result, start, additions.size) // insert new
+            System.arraycopy(input, start + deleteCount, result, start + additions.size, size - start - deleteCount)
+            ArrayValue(result)
+        }
 
-        Functions.set("indexOf",f ->{//string val
-            String value = f[0].asString();
-            return NumberValue.of(value.indexOf(f[1].asString()));
-        });
+        Functions.set("indexOf") { f: Array<Value> ->  //string val
+            val value = f[0].asString()
+            NumberValue.of(value.indexOf(f[1].asString()))
+        }
 
-        Functions.set("lastIndexOf", args->{
-            final String input = args[0].asString();
-            final String what = args[1].asString();
-            if (args.length == 2) {
-                return NumberValue.of(input.lastIndexOf(what));
+        Functions.set("lastIndexOf") { args: Array<Value> ->
+            val input = args[0].asString()
+            val what = args[1].asString()
+            if (args.size == 2) {
+                return@set NumberValue.of(input.lastIndexOf(what))
             }
-            final int index = args[2].asInt();
-            return NumberValue.of(input.lastIndexOf(what, index));
-        });
+            val index = args[2].asInt()
+            NumberValue.of(input.lastIndexOf(what, index))
+        }
 
-        Functions.set("replace", f->{
-           String value = f[0].asString();
-           return new StringValue(value.replace(f[1].asString(), f[2].asString()));
-        });
+        Functions.set("replace") { f: Array<Value> ->
+            val value = f[0].asString()
+            StringValue(value.replace(f[1].asString(), f[2].asString()))
+        }
 
-        Functions.set("trim", f ->{
-           return new StringValue(f[0].asString().trim());
-        });
+        Functions.set("trim") { f: Array<Value> ->
+            StringValue(
+                f[0].asString().trim { it <= ' ' })
+        }
 
-        Functions.set("getBytes", f ->{
-           String value = f[0].asString();
-           byte[] array = value.getBytes();
-           ArrayValue arrayValue = new ArrayValue(array.length);
-           for (int i = 0; i < array.length; i++) {
-               arrayValue.set(i,NumberValue.of(array[i]));
-           }
-           return arrayValue;
-        });
+        Functions.set("getBytes") { f: Array<Value> ->
+            val value = f[0].asString()
+            val array = value.toByteArray()
+            val arrayValue = ArrayValue(array.size)
+            for (i in array.indices) {
+                arrayValue[i] = NumberValue.of(array[i].toInt())
+            }
+            arrayValue
+        }
 
-        Functions.set("split", args ->{
-            Arguments.checkOrOr(2, 3, args.length);
+        Functions.set("split") { args: Array<Value> ->
+            checkOrOr(2, 3, args.size)
+            val input = args[0].asString()
+            val regex = args[1].asString()
+            val limit = if ((args.size == 3)) args[2].asInt() else 0
 
-            final String input = args[0].asString();
-            final String regex = args[1].asString();
-            final int limit = (args.length == 3) ? args[2].asInt() : 0;
+            val parts = input.split(regex.toRegex(), limit.coerceAtLeast(0)).toTypedArray()
+            ArrayValue.of(parts)
+        }
 
-            final String[] parts = input.split(regex, limit);
-            return ArrayValue.of(parts);
-        });
-
-        Functions.set("filter", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                Arguments.check(2, args.length);
+        Functions.set("filter", object : Function {
+            override fun execute(vararg args: Value): Value {
+                check(2, args.size)
                 if (args[1].type() != Types.FUNCTION) {
-                    throw new TypeException("Function expected in second argument");
+                    throw TypeException("Function expected in second argument")
                 }
 
-                final Value container = args[0];
-                final Function consumer = ((FunctionValue) args[1]).getValue();
+                val container = args[0]
+                val consumer = (args[1] as FunctionValue).value
                 if (container.type() == Types.ARRAY) {
-                    return filterArray((ArrayValue) container, consumer);
+                    return filterArray(container as ArrayValue, consumer)
                 }
 
                 if (container.type() == Types.MAP) {
-                    return filterMap((MapValue) container, consumer);
+                    return filterMap(container as MapValue, consumer)
                 }
 
-                throw new TypeException("Invalid first argument. Array or map expected");
+                throw TypeException("Invalid first argument. Array or map expected")
             }
 
-            private Value filterArray(ArrayValue array, Function predicate) {
-                final int size = array.size();
-                final List<Value> values = new ArrayList<Value>(size);
-                for (Value value : array) {
-                    if (predicate.execute(value) != NumberValue.ZERO) {
-                        values.add(value);
+            private fun filterArray(array: ArrayValue, predicate: Function): Value {
+                val size = array.size()
+                val values: MutableList<Value> = ArrayList(size)
+                for (value in array) {
+                    if (predicate.execute(value) !== NumberValue.ZERO) {
+                        values.add(value)
                     }
                 }
-                final int newSize = values.size();
-                return new ArrayValue(values.toArray(new Value[newSize]));
+                val newSize = values.size
+                return ArrayValue(values.toTypedArray<Value>())
             }
 
-            private Value filterMap(MapValue map, Function predicate) {
-                final MapValue result = new MapValue(map.size());
-                for (Map.Entry<Value, Value> element : map) {
-                    if (predicate.execute(element.getKey(), element.getValue()) != NumberValue.ZERO) {
-                        result.set(element.getKey(), element.getValue());
+            private fun filterMap(map: MapValue, predicate: Function): Value {
+                val result = MapValue(map.size())
+                for ((key, value) in map) {
+                    if (predicate.execute(key, value) !== NumberValue.ZERO) {
+                        result[key] = value
                     }
                 }
-                return result;
+                return result
             }
-        });
-        Functions.set("parseLong",args ->{
-            Arguments.checkOrOr(1, 2, args.length);
-            final int radix = (args.length == 2) ? args[1].asInt() : 10;
-            return NumberValue.of(Long.parseLong(args[0].asString(), radix));
-        });
-        Functions.set("parseInt",args ->{
-            Arguments.checkOrOr(1, 2, args.length);
-            final int radix = (args.length == 2) ? args[1].asInt() : 10;
-            return NumberValue.of(Integer.parseInt(args[0].asString(), radix));
-        });
-        Functions.set("toHexString",args -> {
-            Arguments.check(1, args.length);
-            long value;
-            if (args[0].type() == Types.NUMBER) {
-                value = ((NumberValue) args[0]).asLong();
+        })
+        Functions.set("parseLong") { args: Array<Value> ->
+            checkOrOr(1, 2, args.size)
+            val radix = if ((args.size == 2)) args[1].asInt() else 10
+            NumberValue.of(args[0].asString().toLong(radix))
+        }
+        Functions.set("parseInt") { args: Array<Value> ->
+            checkOrOr(1, 2, args.size)
+            val radix = if ((args.size == 2)) args[1].asInt() else 10
+            NumberValue.of(args[0].asString().toInt(radix))
+        }
+        Functions.set("toHexString") { args: Array<Value> ->
+            check(1, args.size)
+            val value = if (args[0].type() == Types.NUMBER) {
+                (args[0] as NumberValue).asLong()
             } else {
-                value = (long) args[0].asNumber();
+                args[0].asNumber().toLong()
             }
-            return new StringValue(Long.toHexString(value));
-        });
+            StringValue(java.lang.Long.toHexString(value))
+        }
 
-        Functions.set("equals",f ->{
-            if(Objects.equals(f[0],f[1])){
-                return NumberValue.ONE;
-            }else{
-                return NumberValue.ZERO;
+        Functions.set("equals") { f: Array<Value> ->
+            if (f[0] == f[1]) {
+                return@set NumberValue.ONE
+            } else {
+                return@set NumberValue.ZERO
             }
-        });
+        }
 
-        Functions.set("concat", f -> {
-            StringBuilder sb = new StringBuilder();
-            for(Value v : f){
-                sb.append(v.asString());
+        Functions.set("concat") { f: Array<Value> ->
+            val sb = StringBuilder()
+            for (v in f) {
+                sb.append(v.asString())
             }
-            return new StringValue(sb.toString());
-        });
+            StringValue(sb.toString())
+        }
 
-        Functions.set("equalsIgnoreCase", f ->{
-            if(f[0].asString().equalsIgnoreCase(f[1].asString())){
-                return NumberValue.ONE;
-            }else return NumberValue.ZERO;
-        });
+        Functions.set("equalsIgnoreCase") { f: Array<Value> ->
+            if (f[0].asString().equals(
+                    f[1].asString(), ignoreCase = true
+                )
+            ) {
+                return@set NumberValue.ONE
+            } else return@set NumberValue.ZERO
+        }
 
-        Functions.set("compareTo", f ->{
-            return NumberValue.of(f[0].asString().compareTo(f[1].asString()));
-        });
+        Functions.set("compareTo") { f: Array<Value> ->
+            NumberValue.of(
+                f[0].asString().compareTo(f[1].asString())
+            )
+        }
 
-        Functions.set("compareToIgnoreCase", f ->{
-            return NumberValue.of(f[0].asString().compareToIgnoreCase(f[1].asString()));
-        });
+        Functions.set("compareToIgnoreCase") { f: Array<Value> ->
+            NumberValue.of(
+                f[0].asString().compareTo(f[1].asString(), ignoreCase = true)
+            )
+        }
 
-        Functions.set("isEmpty", f ->{
-            if(f[0].asString().isEmpty()){
-                return NumberValue.ONE;
-            }else{
-                return NumberValue.ZERO;
+        Functions.set("isEmpty") { f: Array<Value> ->
+            if (f[0].asString().isEmpty()) {
+                return@set NumberValue.ONE
+            } else {
+                return@set NumberValue.ZERO
             }
-        });
+        }
 
-        Functions.set("toUpperCase", f ->{
-            return new StringValue(f[0].asString().toUpperCase());
-        });
+        Functions.set("toUpperCase") { f: Array<Value> ->
+            StringValue(
+                f[0].asString().uppercase(Locale.getDefault())
+            )
+        }
 
-        Functions.set("toLowerCase", f ->{
-            return new StringValue(f[0].asString().toLowerCase());
-        });
+        Functions.set("toLowerCase") { f: Array<Value> ->
+            StringValue(
+                f[0].asString().lowercase(Locale.getDefault())
+            )
+        }
 
         //DEPRECATED WITH CREATED FUNCTION LENGTH
-        Functions.set("StringLength",f ->{
-            return NumberValue.of(f[0].asString().length());
-        });
+        Functions.set("StringLength") { f: Array<Value> ->
+            NumberValue.of(
+                f[0].asString().length
+            )
+        }
 
-        Functions.set("substring",f ->{
-            return new StringValue(f[0].asString().substring((int)f[1].asInt(),(int)f[2].asInt()));
-        });
+        Functions.set("substring") { f: Array<Value> ->
+            StringValue(
+                f[0].asString().substring(f[1].asInt(), f[2].asInt())
+            )
+        }
 
-        Functions.set("length", args ->{
-            if (args.length == 0) throw new RuntimeException("At least one arg expected");
-
-            final Value val = args[0];
-            int length;
-            switch (val.type()) {
-                case Types.ARRAY:
-                    length = ((ArrayValue) val).size();
-                    break;
-                case Types.MAP:
-                    length = ((MapValue) val).size();
-                    break;
-                case Types.STRING:
-                    length = ((StringValue) val).length();
-                    break;
-                case Types.FUNCTION:
-                    final Function func = ((FunctionValue) val).getValue();
-                    if (func instanceof UserDefinedFunction) {
-                        length = ((UserDefinedFunction) func).getArgsCount();
+        Functions.set("length") { args: Array<Value> ->
+            if (args.size == 0) throw RuntimeException("At least one arg expected")
+            val `val` = args[0]
+            val length: Int
+            when (`val`.type()) {
+                Types.ARRAY -> length = (`val` as ArrayValue).size()
+                Types.MAP -> length = (`val` as MapValue).size()
+                Types.STRING -> length = (`val` as StringValue).length()
+                Types.FUNCTION -> {
+                    val func = (`val` as FunctionValue).value
+                    length = if (func is UserDefinedFunction) {
+                        func.argsCount
                     } else {
-                        length = 0;
+                        0
                     }
-                    break;
-                default:
-                    length = 0;
+                }
+
+                else -> length = 0
 
             }
-            return NumberValue.of(length);
-        });
+            NumberValue.of(length)
+        }
 
-        Functions.set("getEmpty", f ->{
-           return new StringValue("");
-        });
+        Functions.set("getEmpty") { f: Array<Value?>? -> StringValue("") }
 
-        Functions.set("quit", f ->{
-            System.exit((int)f[0].asInt());
-            return null;
-        });
+        Functions.set("quit") { f: Array<Value> ->
+            System.exit(f[0].asInt())
+            null
+        }
 
-        Functions.set("replaceAll", f ->{
-            if (f.length != 3) throw new ArgumentsMismatchException("Three arguments expected");
-
-            final String input = f[0].asString();
-            final String regex = f[1].asString();
-            final String replacement = f[2].asString();
-
-            return new StringValue(input.replaceAll(regex, replacement));
-        });
-        Functions.set("replaceFirst", f ->{
-            if (f.length != 3) throw new ArgumentsMismatchException("Three arguments expected");
-
-            final String input = f[0].asString();
-            final String regex = f[1].asString();
-            final String replacement = f[2].asString();
-
-            return new StringValue(input.replaceFirst(regex, replacement));
-        });
-        Functions.set("sprintf",args ->{
-            if (args.length < 1) throw new ArgumentsMismatchException("At least one argument expected");
-
-            final String format = args[0].asString();
-            final Object[] values = new Object[args.length - 1];
-            for (int i = 1; i < args.length; i++) {
-                values[i - 1] = (args[i].type() == Types.NUMBER) ? args[i].asInt() : args[i].asString();
+        Functions.set("replaceAll") { f: Array<Value> ->
+            if (f.size != 3) throw ArgumentsMismatchException("Three arguments expected")
+            val input = f[0].asString()
+            val regex = f[1].asString()
+            val replacement = f[2].asString()
+            StringValue(input.replace(regex.toRegex(), replacement))
+        }
+        Functions.set("replaceFirst") { f: Array<Value> ->
+            if (f.size != 3) throw ArgumentsMismatchException("Three arguments expected")
+            val input = f[0].asString()
+            val regex = f[1].asString()
+            val replacement = f[2].asString()
+            StringValue(input.replaceFirst(regex.toRegex(), replacement))
+        }
+        Functions.set("sprintf") { args: Array<Value> ->
+            if (args.size < 1) throw ArgumentsMismatchException("At least one argument expected")
+            val format = args[0].asString()
+            val values = arrayOfNulls<Any>(args.size - 1)
+            for (i in 1 until args.size) {
+                values[i - 1] = if ((args[i].type() == Types.NUMBER)) args[i].asInt() else args[i].asString()
             }
-            return new StringValue(String.format(format, values));
-        });
-        Functions.set("arrayCombine", args -> {
-            if (args.length != 2) throw new ArgumentsMismatchException("Two arguments expected");
+            StringValue(String.format(format, *values))
+        }
+        Functions.set("arrayCombine") { args: Array<Value> ->
+            if (args.size != 2) throw ArgumentsMismatchException("Two arguments expected")
             if (args[0].type() != Types.ARRAY) {
-                throw new TypeException("Array expected in first argument");
+                throw TypeException("Array expected in first argument")
             }
             if (args[1].type() != Types.ARRAY) {
-                throw new TypeException("Array expected in second argument");
+                throw TypeException("Array expected in second argument")
             }
 
-            final ArrayValue keys = ((ArrayValue) args[0]);
-            final ArrayValue values = ((ArrayValue) args[1]);
-            final int length = Math.min(keys.size(), values.size());
+            val keys = (args[0] as ArrayValue)
+            val values = (args[1] as ArrayValue)
+            val length = min(keys.size().toDouble(), values.size().toDouble()).toInt()
 
-            final MapValue result = new MapValue(length);
-            for (int i = 0; i < length; i++) {
-                result.set(keys.get(i), values.get(i));
+            val result = MapValue(length)
+            for (i in 0 until length) {
+                result[keys[i]] = values[i]
             }
-            return result;
-        });
-        Functions.set("arrayKeyExists",args -> {
-            if (args.length != 2) throw new ArgumentsMismatchException("Two arguments expected");
+            result
+        }
+        Functions.set("arrayKeyExists") { args: Array<Value> ->
+            if (args.size != 2) throw ArgumentsMismatchException("Two arguments expected")
             if (args[1].type() != Types.MAP) {
-                throw new TypeException("Map expected in second argument");
+                throw TypeException("Map expected in second argument")
             }
-            final MapValue map = ((MapValue) args[1]);
-            return NumberValue.fromBoolean(map.containsKey(args[0]));
-        });
-        Functions.set("arrayKeys",args ->{
-            if (args.length != 1) throw new ArgumentsMismatchException("One argument expected");
+            val map = (args[1] as MapValue)
+            NumberValue.fromBoolean(map.containsKey(args[0]))
+        }
+        Functions.set("arrayKeys") { args: Array<Value> ->
+            if (args.size != 1) throw ArgumentsMismatchException("One argument expected")
             if (args[0].type() != Types.MAP) {
-                throw new TypeException("Map expected in first argument");
+                throw TypeException("Map expected in first argument")
             }
-            final MapValue map = ((MapValue) args[0]);
-            final List<Value> keys = new ArrayList<>(map.size());
-            for (Map.Entry<Value, Value> entry : map) {
-                keys.add(entry.getKey());
+            val map = (args[0] as MapValue)
+            val keys: MutableList<Value> = ArrayList(map.size())
+            for ((key) in map) {
+                keys.add(key)
             }
-            return new ArrayValue(keys);
-        });
-        Functions.set("arrayValues",args ->{
-            if (args.length != 1) throw new ArgumentsMismatchException("One argument expected");
+            ArrayValue(keys)
+        }
+        Functions.set("arrayValues") { args: Array<Value> ->
+            if (args.size != 1) throw ArgumentsMismatchException("One argument expected")
             if (args[0].type() != Types.MAP) {
-                throw new TypeException("Map expected in first argument");
+                throw TypeException("Map expected in first argument")
             }
-            final MapValue map = ((MapValue) args[0]);
-            final List<Value> values = new ArrayList<>(map.size());
-            for (Map.Entry<Value, Value> entry : map) {
-                values.add(entry.getValue());
+            val map = (args[0] as MapValue)
+            val values: MutableList<Value> = ArrayList(map.size())
+            for ((_, value) in map) {
+                values.add(value)
             }
-            return new ArrayValue(values);
-        });
-        Functions.set("chain",args ->{
-            Arguments.checkAtLeast(2, args.length);
-
-            Value result = args[0];
-            for (int i = 1; i < args.length; i += 2) {
-                final Value arg = args[i];
+            ArrayValue(values)
+        }
+        Functions.set("chain") { args: Array<Value> ->
+            checkAtLeast(2, args.size)
+            var result = args[0]
+            var i = 1
+            while (i < args.size) {
+                val arg = args[i]
                 if (arg.type() != Types.FUNCTION) {
-                    throw new TypeException(arg.toString() + " is not a function");
+                    throw TypeException("$arg is not a function")
                 }
-                final Function function = ((FunctionValue) arg).getValue();
-                result = function.execute(result, args[i+1]);
+                val function = (arg as FunctionValue).value
+                result = function.execute(result, args[i + 1])
+                i += 2
             }
-            return result;
-        });
-        Functions.set("toChar",args ->{
-            Arguments.check(1, args.length);
-            return new StringValue(String.valueOf((char) args[0].asInt()));
-        });
-        Functions.set("charAt",args ->{
-            Arguments.check(2, args.length);
-            final String input = args[0].asString();
-            final int index = args[1].asInt();
-
-            return NumberValue.of((short)input.charAt(index));
-        });
-        Functions.set("arrayKeyExists",args ->{
-            Arguments.check(2, args.length);
+            result
+        }
+        Functions.set("toChar") { args: Array<Value> ->
+            check(1, args.size)
+            StringValue(args[0].asInt().toChar().toString())
+        }
+        Functions.set("charAt") { args: Array<Value> ->
+            check(2, args.size)
+            val input = args[0].asString()
+            val index = args[1].asInt()
+            NumberValue.of(input[index].code.toShort().toInt())
+        }
+        Functions.set("arrayKeyExists") { args: Array<Value> ->
+            check(2, args.size)
             if (args[1].type() != Types.MAP) {
-                throw new TypeException("Map expected in second argument");
+                throw TypeException("Map expected in second argument")
             }
-            final MapValue map = ((MapValue) args[1]);
-            return NumberValue.fromBoolean(map.containsKey(args[0]));
-        });
-        Functions.set("num",args -> {
-           return NumberValue.of(args[0].asNumber());
-        });
-        Functions.set("sync",args ->{
-            Arguments.check(1, args.length);
+            val map = (args[1] as MapValue)
+            NumberValue.fromBoolean(map.containsKey(args[0]))
+        }
+        Functions.set("num") { args: Array<Value> ->
+            NumberValue.of(
+                args[0].asNumber()
+            )
+        }
+        Functions.set("sync") { args: Array<Value> ->
+            check(1, args.size)
             if (args[0].type() != Types.FUNCTION) {
-                throw new TypeException(args[0].toString() + " is not a function");
+                throw TypeException(args[0].toString() + " is not a function")
             }
 
-            final BlockingQueue<Value> queue = new LinkedBlockingQueue<>(2);
-            final Function synchronizer = (sArgs) -> {
+            val queue: BlockingQueue<Value> = LinkedBlockingQueue(2)
+            val synchronizer = Function { sArgs: Array<Value> ->
                 try {
-                    queue.put(sArgs[0]);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
+                    queue.put(sArgs[0])
+                } catch (ex: InterruptedException) {
+                    Thread.currentThread().interrupt()
                 }
-                return NumberValue.ZERO;
-            };
-            final Function callback = ((FunctionValue) args[0]).getValue();
-            callback.execute(new FunctionValue(synchronizer));
-
-            try {
-                return queue.take();
-            } catch (InterruptedException ex) {
-                throw new RuntimeException(ex);
+                NumberValue.ZERO
             }
-        });
-        Functions.set("try",args ->{
-            Arguments.checkOrOr(1, 2, args.length);
+            val callback = (args[0] as FunctionValue).value
+            callback.execute(FunctionValue(synchronizer))
+            try {
+                return@set queue.take()
+            } catch (ex: InterruptedException) {
+                throw RuntimeException(ex)
+            }
+        }
+        Functions.set("try") { args: Array<Value> ->
+            checkOrOr(1, 2, args.size)
             if (args[0].type() != Types.FUNCTION) {
-                throw new TypeException(args[0].toString() + " is not a function");
+                throw TypeException(args[0].toString() + " is not a function")
             }
             try {
-                return ((FunctionValue) args[0]).getValue().execute();
-            } catch (Exception ex) {
-                if (args.length == 2) {
-                    switch (args[1].type()) {
-                        case Types.FUNCTION:
-                            final String message = ex.getMessage();
-                            final Function catchFunction = ((FunctionValue) args[1]).getValue();
-                            return catchFunction.execute(
-                                    new StringValue(ex.getClass().getName()),
-                                    new StringValue(message == null ? "" : message));
-                        default:
-                            return args[1];
+                return@set (args[0] as FunctionValue).value.execute()
+            } catch (ex: Exception) {
+                if (args.size == 2) {
+                    when (args[1].type()) {
+                        Types.FUNCTION -> {
+                            val message = ex.message
+                            val catchFunction = (args[1] as FunctionValue).value
+                            return@set catchFunction.execute(
+                                StringValue(ex.javaClass.name),
+                                StringValue(message ?: "")
+                            )
+                        }
+
+                        else -> return@set args[1]
                     }
                 }
-                return NumberValue.MINUS_ONE;
+                return@set NumberValue.MINUS_ONE
             }
-        });
+        }
 
 
-        MapValue map = new MapValue(3);
-        map.set("__VERSION__",new StringValue(Information.FELS_VERSION));
-        map.set("__AUTOR__",new StringValue(Information.FELS_AUTHOR));
-        map.set("__DATE__",new StringValue(Information.DATE));
-
+        val map = MapValue(3)
+        map["__VERSION__"] = StringValue(Information.FELS_VERSION)
+        map["__AUTOR__"] = StringValue(Information.FELS_AUTHOR)
+        map["__DATE__"] = StringValue(Information.DATE)
     }
-
 }

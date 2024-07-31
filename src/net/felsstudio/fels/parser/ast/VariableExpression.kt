@@ -1,49 +1,37 @@
-package net.felsstudio.fels.parser.ast;
+package net.felsstudio.fels.parser.ast
 
-import net.felsstudio.fels.exceptions.VariableDoesNotExistsException;
-import net.felsstudio.fels.lib.*;
+import net.felsstudio.fels.exceptions.VariableDoesNotExistsException
+import net.felsstudio.fels.lib.Value
+import net.felsstudio.fels.lib.Variables
 
 /**
  *
  * @author felek
  */
-public final class VariableExpression implements Expression, Accessible {
-    
-    public final String name;
-    
-    public VariableExpression(String name) {
-        this.name = name;
+class VariableExpression(@JvmField val name: String) : Expression, Accessible {
+    override fun eval(): Value {
+        return get()
     }
 
-    @Override
-    public Value eval() {
-        return get();
-    }
-    
-    @Override
-    public Value get() {
-        if (!Variables.isExists(name)) throw new VariableDoesNotExistsException(name);
-        return Variables.get(name);
+    override fun get(): Value {
+        if (!Variables.isExists(name)) throw VariableDoesNotExistsException(name)
+        return Variables.get(name)
     }
 
-    @Override
-    public Value set(Value value) {
-        Variables.set(name, value);
-        return value;
-    }
-    
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    override fun set(value: Value): Value {
+        Variables.set(name, value)
+        return value
     }
 
-    @Override
-    public <R, T> R accept(ResultVisitor<R, T> visitor, T t) {
-        return visitor.visit(this, t);
+    override fun accept(visitor: Visitor) {
+        visitor.visit(this)
     }
 
-    @Override
-    public String toString() {
-        return name;
+    override fun <R, T> accept(visitor: ResultVisitor<R, T>, t: T): R? {
+        return visitor.visit(this, t)
+    }
+
+    override fun toString(): String {
+        return name
     }
 }

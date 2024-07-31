@@ -1,40 +1,32 @@
-package net.felsstudio.fels.lib;
+package net.felsstudio.fels.lib
 
-import java.util.Deque;
-import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.*
+import java.util.concurrent.ConcurrentLinkedDeque
 
-public final class CallStack {
-    
-    private static final Deque<CallInfo> calls = new ConcurrentLinkedDeque<CallInfo>();;
-    
-    public static synchronized void clear() {
-        calls.clear();
-    }
-    
-    public static synchronized void enter(String name, Function function) {
-        calls.push(new CallInfo(name, function));
-    }
-    
-    public static synchronized void exit() {
-        calls.pop();
+object CallStack {
+    @get:Synchronized
+    val calls: Deque<CallInfo> = ConcurrentLinkedDeque()
+
+    @Synchronized
+    fun clear() {
+        calls.clear()
     }
 
-    public static synchronized Deque<CallInfo> getCalls() {
-        return calls;
+    @JvmStatic
+    @Synchronized
+    fun enter(name: String?, function: Function) {
+        calls.push(CallInfo(name, function))
     }
-    
-    public static class CallInfo {
-        String name;
-        Function function;
 
-        public CallInfo(String name, Function function) {
-            this.name = name;
-            this.function = function;
-        }
+    @JvmStatic
+    @Synchronized
+    fun exit() {
+        calls.pop()
+    }
 
-        @Override
-        public String toString() {
-            return String.format("%s: %s", name, function.toString().trim());
+    class CallInfo(var name: String?, var function: Function) {
+        override fun toString(): String {
+            return String.format("%s: %s", name, function.toString().trim { it <= ' ' })
         }
     }
 }

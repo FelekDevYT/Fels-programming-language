@@ -1,11 +1,7 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public final class ArgumentsMismatchException extends RuntimeException {
+class ArgumentsMismatchException : RuntimeException {
+    constructor()
 
-    public ArgumentsMismatchException() {
-    }
-
-    public ArgumentsMismatchException(String message) {
-        super(message);
-    }
+    constructor(message: String?) : super(message)
 }

@@ -1,11 +1,7 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public final class PatternMatchingException extends RuntimeException {
+class PatternMatchingException : RuntimeException {
+    constructor()
 
-    public PatternMatchingException() {
-    }
-
-    public PatternMatchingException(String message) {
-        super(message);
-    }
+    constructor(message: String?) : super(message)
 }

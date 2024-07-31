@@ -1,6 +1,3 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public class StoppedException extends RuntimeException {
-
-
-}
+class StoppedException : RuntimeException()

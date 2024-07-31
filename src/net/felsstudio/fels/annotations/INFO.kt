@@ -1,7 +1,7 @@
-package net.felsstudio.fels.annotations;
+package net.felsstudio.fels.annotations
 
-public @interface INFO {
-
-    int info = 1;
-
+annotation class INFO {
+    companion object {
+        const val info: Int = 1
+    }
 }

@@ -1,11 +1,6 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public final class OperationIsNotSupportedException extends RuntimeException {
-
-    public OperationIsNotSupportedException(Object operation) {
-        super("Operation " + operation + " is not supported");
-    }
-    public OperationIsNotSupportedException(Object operation, String message) {
-        super("Operation " + operation + " is not supported " + message);
-    }
+class OperationIsNotSupportedException : RuntimeException {
+    constructor(operation: Any) : super("Operation $operation is not supported")
+    constructor(operation: Any, message: String) : super("Operation $operation is not supported $message")
 }

@@ -1,40 +1,29 @@
-package net.felsstudio.fels.parser;
+package net.felsstudio.fels.parser
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+class ParseErrors : Iterable<ParseError?> {
+    private val errors: MutableList<ParseError> = ArrayList()
 
-public final class ParseErrors implements Iterable<ParseError> {
-
-    private final List<ParseError> errors;
-
-    public ParseErrors() {
-        errors = new ArrayList<>();
+    fun clear() {
+        errors.clear()
     }
 
-    public void clear() {
-        errors.clear();
+    fun add(ex: Exception?, line: Int) {
+        errors.add(ParseError(line, ex!!))
     }
 
-    public void add(Exception ex, int line) {
-        errors.add(new ParseError(line, ex));
+    fun hasErrors(): Boolean {
+        return !errors.isEmpty()
     }
 
-    public boolean hasErrors() {
-        return !errors.isEmpty();
+    override fun iterator(): MutableIterator<ParseError> {
+        return errors.iterator()
     }
 
-    @Override
-    public Iterator<ParseError> iterator() {
-        return errors.iterator();
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder result = new StringBuilder();
-        for (ParseError error : errors) {
-            result.append(error).append(System.lineSeparator());
+    override fun toString(): String {
+        val result = StringBuilder()
+        for (error in errors) {
+            result.append(error).append(System.lineSeparator())
         }
-        return result.toString();
+        return result.toString()
     }
 }

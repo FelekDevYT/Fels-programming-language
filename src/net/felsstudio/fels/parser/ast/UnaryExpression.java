@@ -9,7 +9,7 @@ import net.felsstudio.fels.lib.*;
  */
 public final class UnaryExpression implements Expression, Statement {
 
-    public static enum Operator {
+    public enum Operator {
         INCREMENT_PREFIX("++"),
         DECREMENT_PREFIX("--"),
         INCREMENT_POSTFIX("++"),
@@ -22,7 +22,7 @@ public final class UnaryExpression implements Expression, Statement {
         
         private final String name;
 
-        private Operator(String name) {
+        Operator(String name) {
             this.name = name;
         }
 

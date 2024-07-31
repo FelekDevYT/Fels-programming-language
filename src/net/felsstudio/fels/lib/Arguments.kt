@@ -1,32 +1,45 @@
-package net.felsstudio.fels.lib;
+package net.felsstudio.fels.lib
 
-import net.felsstudio.fels.exceptions.ArgumentsMismatchException;
+import net.felsstudio.fels.exceptions.ArgumentsMismatchException
 
-public final class Arguments {
-
-    public static void check(int expected, int got) {
-        if (got != expected) throw new ArgumentsMismatchException(String.format(
-                "%d %s expected, got %d", expected, pluralize(expected), got));
+object Arguments {
+    @JvmStatic
+    fun check(expected: Int, got: Int) {
+        if (got != expected) throw ArgumentsMismatchException(
+            String.format(
+                "%d %s expected, got %d", expected, pluralize(expected), got
+            )
+        )
     }
 
-    public static void checkAtLeast(int expected, int got) {
-        if (got < expected) throw new ArgumentsMismatchException(String.format(
-                "At least %d %s expected, got %d", expected, pluralize(expected), got));
+    @JvmStatic
+    fun checkAtLeast(expected: Int, got: Int) {
+        if (got < expected) throw ArgumentsMismatchException(
+            String.format(
+                "At least %d %s expected, got %d", expected, pluralize(expected), got
+            )
+        )
     }
 
-    public static void checkOrOr(int expectedOne, int expectedTwo, int got) {
-        if (expectedOne != got && expectedTwo != got)
-            throw new ArgumentsMismatchException(String.format(
-                    "%d or %d arguments expected, got %d", expectedOne, expectedTwo, got));
+    @JvmStatic
+    fun checkOrOr(expectedOne: Int, expectedTwo: Int, got: Int) {
+        if (expectedOne != got && expectedTwo != got) throw ArgumentsMismatchException(
+            String.format(
+                "%d or %d arguments expected, got %d", expectedOne, expectedTwo, got
+            )
+        )
     }
 
-    public static void checkRange(int from, int to, int got) {
-        if (from > got || got > to)
-            throw new ArgumentsMismatchException(String.format(
-                    "From %d to %d arguments expected, got %d", from, to, got));
+    @JvmStatic
+    fun checkRange(from: Int, to: Int, got: Int) {
+        if (from > got || got > to) throw ArgumentsMismatchException(
+            String.format(
+                "From %d to %d arguments expected, got %d", from, to, got
+            )
+        )
     }
 
-    private static String pluralize(int count) {
-        return (count == 1) ? "argument" : "arguments";
+    private fun pluralize(count: Int): String {
+        return if ((count == 1)) "argument" else "arguments"
     }
 }

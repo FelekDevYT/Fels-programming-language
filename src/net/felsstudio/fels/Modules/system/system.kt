@@ -1,50 +1,61 @@
-package net.felsstudio.fels.Modules.system;
+package net.felsstudio.fels.Modules.system
 
-import net.felsstudio.fels.lib.Functions;
-import net.felsstudio.fels.lib.Information;
-import net.felsstudio.fels.lib.NumberValue;
-import net.felsstudio.fels.lib.StringValue;
-import net.felsstudio.fels.Modules.Module;
+import net.felsstudio.fels.Modules.Module
+import net.felsstudio.fels.lib.*
 
-public class system implements Module {
-    @Override
-    public void init() {
-        Functions.set("currentTimeMillis", f ->{
-           return NumberValue.of(System.currentTimeMillis());
-        });
+class system : Module {
 
-        Functions.set("nanoTime", f ->{
-            return NumberValue.of(System.nanoTime());
-        });
+    override fun init() {
+        Functions.set("currentTimeMillis") { f: Array<Value?>? ->
+            NumberValue.of(
+                System.currentTimeMillis()
+            )
+        }
 
-        Functions.set("getUsedMemory",f -> {
-            return NumberValue.of(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory());
-        });
+        Functions.set("nanoTime") { f: Array<Value?>? ->
+            NumberValue.of(
+                System.nanoTime()
+            )
+        }
 
-        Functions.set("getTotalMemory",f ->{
-            return NumberValue.of(Runtime.getRuntime().totalMemory());
-        });
+        Functions.set("getUsedMemory") { f: Array<Value?>? ->
+            NumberValue.of(
+                Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()
+            )
+        }
 
-        Functions.set("getMaxMemory",f ->{
-            return NumberValue.of(Runtime.getRuntime().maxMemory());
-        });
+        Functions.set("getTotalMemory") { f: Array<Value?>? ->
+            NumberValue.of(
+                Runtime.getRuntime().totalMemory()
+            )
+        }
 
-        Functions.set("getFreeMemory",f ->{
-            return NumberValue.of(Runtime.getRuntime().freeMemory());
-        });
+        Functions.set("getMaxMemory") { f: Array<Value?>? ->
+            NumberValue.of(
+                Runtime.getRuntime().maxMemory()
+            )
+        }
 
-        Functions.set("availableProcessors",f ->{
-            return NumberValue.of(Runtime.getRuntime().availableProcessors());
-        });
+        Functions.set("getFreeMemory") { f: Array<Value?>? ->
+            NumberValue.of(
+                Runtime.getRuntime().freeMemory()
+            )
+        }
 
-        Functions.set("getProperty",f ->{
-           switch (f[0].asString()){
-               case "fels.version":return new StringValue(Information.FELS_VERSION);
-               case "fels.creator":return new StringValue(Information.FELS_AUTHOR);
-               case "date":return new StringValue(Information.DATE);
-           }
-           return NumberValue.of(-1);
-        });
+        Functions.set("availableProcessors") { f: Array<Value?>? ->
+            NumberValue.of(
+                Runtime.getRuntime().availableProcessors()
+            )
+        }
 
+        Functions.set("getProperty") { f: Array<Value> ->
+            when (f[0].asString()) {
+                "fels.version" -> return@set StringValue(Information.FELS_VERSION)
+                "fels.creator" -> return@set StringValue(Information.FELS_AUTHOR)
+                "date" -> return@set StringValue(Information.DATE)
+            }
+            NumberValue.of(-1)
+        }
     }
+
 }

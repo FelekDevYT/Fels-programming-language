@@ -1,16 +1,11 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
 /**
  *
  * @author felek
  */
-public final class ParseException extends RuntimeException {
-    
-    public ParseException() {
-        super();
-    }
-    
-    public ParseException(String string) {
-        super(string);
-    }
+class ParseException : RuntimeException {
+    constructor() : super()
+
+    constructor(string: String?) : super(string)
 }

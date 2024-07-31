@@ -1,15 +1,3 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public final class VariableDoesNotExistsException extends RuntimeException {
-    
-    private final String variable;
-
-    public VariableDoesNotExistsException(String variable) {
-        super("Variable " + variable + " does not exists");
-        this.variable = variable;
-    }
-
-    public String getVariable() {
-        return variable;
-    }
-}
+class VariableDoesNotExistsException(@JvmField val variable: String) : RuntimeException("Variable $variable does not exists")

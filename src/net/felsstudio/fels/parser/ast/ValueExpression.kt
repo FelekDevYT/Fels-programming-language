@@ -1,50 +1,48 @@
-package net.felsstudio.fels.parser.ast;
+package net.felsstudio.fels.parser.ast
 
-import net.felsstudio.fels.lib.*;
+import net.felsstudio.fels.lib.*
+import net.felsstudio.fels.lib.Function
+
 /**
  *
  * @author felek
  */
-public final class ValueExpression implements Expression {
-    
-    public final Value value;
-    
-    public ValueExpression(Number value) {
-        this.value = NumberValue.of(value);
-    }
-    
-    public ValueExpression(String value) {
-        this.value = new StringValue(value);
-    }
-    
-    public ValueExpression(Function value) {
-        this.value = new FunctionValue(value);
-    }
-    
-    public ValueExpression(Value value) {
-        this.value = value;
+class ValueExpression : Expression {
+    @JvmField
+    val value: Value
+
+    constructor(value: Number?) {
+        this.value = NumberValue.of(value)
     }
 
-    @Override
-    public Value eval() {
-        return value;
-    }
-    
-    @Override
-    public void accept(Visitor visitor) {
-        visitor.visit(this);
+    constructor(value: String?) {
+        this.value = StringValue(value)
     }
 
-    @Override
-    public <R, T> R accept(ResultVisitor<R, T> visitor, T t) {
-        return visitor.visit(this, t);
+    constructor(value: Function?) {
+        this.value = FunctionValue(value)
     }
 
-    @Override
-    public String toString() {
+    constructor(value: Value) {
+        this.value = value
+    }
+
+    override fun eval(): Value {
+        return value
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visit(this)
+    }
+
+    override fun <R, T> accept(visitor: ResultVisitor<R, T>, t: T): R? {
+        return visitor.visit(this, t)
+    }
+
+    override fun toString(): String {
         if (value.type() == Types.STRING) {
-            return "\"" + value.asString() + "\"";
+            return "\"" + value.asString() + "\""
         }
-        return value.toString();
+        return value.toString()
     }
 }

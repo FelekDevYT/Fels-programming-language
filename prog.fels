@@ -1,3 +1,5 @@
 using ["sfm","random"]
 
-println(rand(100))
+arr = array(10)
+arr[0] = "6"
+println(arr[0])

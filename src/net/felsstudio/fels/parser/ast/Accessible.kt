@@ -1,10 +1,9 @@
-package net.felsstudio.fels.parser.ast;
+package net.felsstudio.fels.parser.ast
 
-import net.felsstudio.fels.lib.Value;
+import net.felsstudio.fels.lib.Value
 
-public interface Accessible {
+interface Accessible {
+    fun get(): Value
 
-    Value get();
-    
-    Value set(Value value);
+    fun set(value: Value): Value
 }

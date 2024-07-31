@@ -5,7 +5,7 @@ import net.felsstudio.fels.lib.Functions
 import net.felsstudio.fels.lib.NumberValue
 import net.felsstudio.fels.lib.Value
 
-public class random : Module{
+class random : Module{
 
     private fun random(min: Int, max: Int): Int {
         var max = max

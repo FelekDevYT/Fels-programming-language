@@ -1,44 +1,15 @@
-package net.felsstudio.fels.parser;
+package net.felsstudio.fels.parser
 
 /**
  *
  * @author felek
  */
-public final class Token {
-
-    private final TokenType type;
-    private final String text;
-    private final int row, col;
-    
-    public Token(TokenType type, String text, int row, int col) {
-        this.type = type;
-        this.text = text;
-        this.row = row;
-        this.col = col;
+class Token(@JvmField val type: TokenType, @JvmField val text: String, @JvmField val row: Int, val col: Int) {
+    fun position(): String {
+        return "[$row $col]"
     }
 
-    public TokenType getType() {
-        return type;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }
-    
-    public String position() {
-        return "[" + row + " " + col + "]";
-    }
-
-    @Override
-    public String toString() {
-        return type.name() + " " + position() + " " + text;
+    override fun toString(): String {
+        return type.name + " " + position() + " " + text
     }
 }

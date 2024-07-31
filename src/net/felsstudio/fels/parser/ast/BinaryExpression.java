@@ -9,7 +9,7 @@ import net.felsstudio.fels.lib.*;
  */
 public final class BinaryExpression implements Expression{
 
-    public static enum Operator {
+    public enum Operator {
         ADD("+"),
         SUBTRACT("-"),
         MULTIPLY("*"),
@@ -33,7 +33,7 @@ public final class BinaryExpression implements Expression{
 
         private final String name;
 
-        private Operator(String name) {
+        Operator(String name) {
             this.name = name;
         }
 

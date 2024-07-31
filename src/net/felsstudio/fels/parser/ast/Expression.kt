@@ -1,12 +1,11 @@
-package net.felsstudio.fels.parser.ast;
+package net.felsstudio.fels.parser.ast
 
-import net.felsstudio.fels.lib.Value;
+import net.felsstudio.fels.lib.Value
 
 /**
  *
  * @author felek
  */
-public interface Expression extends Node {
-    
-    Value eval();
+interface Expression : Node {
+    fun eval(): Value
 }

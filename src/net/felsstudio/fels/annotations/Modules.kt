@@ -1,13 +1,7 @@
-package net.felsstudio.fels.annotations;
+package net.felsstudio.fels.annotations
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import kotlin.reflect.KClass
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.PACKAGE)
-public @interface Modules {
-
-    Class[] modules();
-}
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FILE)
+annotation class Modules(val modules: Array<KClass<*>>)

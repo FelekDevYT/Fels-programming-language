@@ -1,8 +1,3 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
-public final class TypeException extends RuntimeException {
-
-    public TypeException(String message) {
-        super(message);
-    }
-}
+class TypeException(message: String?) : RuntimeException(message)

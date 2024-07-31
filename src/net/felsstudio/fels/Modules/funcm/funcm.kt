@@ -1,236 +1,214 @@
-package net.felsstudio.fels.Modules.funcm;
+package net.felsstudio.fels.Modules.funcm
 
-import net.felsstudio.fels.exceptions.ArgumentsMismatchException;
-import net.felsstudio.fels.exceptions.TypeException;
-import net.felsstudio.fels.lib.*;
-import net.felsstudio.fels.Modules.Module;
+import net.felsstudio.fels.Modules.Module
+import net.felsstudio.fels.exceptions.ArgumentsMismatchException
+import net.felsstudio.fels.exceptions.TypeException
+import net.felsstudio.fels.lib.*
+import net.felsstudio.fels.lib.Function
+import java.util.*
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+class funcm : Module {
+    override fun init() {
+        Functions.set("map", object : Function {
+            override fun execute(vararg args: Value): Value {
+                if (args.size < 2) throw ArgumentsMismatchException("At least two args expected")
 
-public class funcm implements Module {
-    @Override
-    public void init() {
-        Functions.set("map", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                if (args.length < 2) throw new ArgumentsMismatchException("At least two args expected");
-
-                final Value container = args[0];
+                val container = args[0]
                 if (container.type() == Types.ARRAY) {
                     if (args[1].type() != Types.FUNCTION) {
-                        throw new TypeException("Function expected in second arg");
+                        throw TypeException("Function expected in second arg")
                     }
-                    final Function mapper = ((FunctionValue) args[1]).getValue();
-                    return mapArray((ArrayValue) container, mapper);
+                    val mapper = (args[1] as FunctionValue).value
+                    return mapArray(container as ArrayValue, mapper)
                 }
 
                 if (container.type() == Types.MAP) {
                     if (args[1].type() != Types.FUNCTION) {
-                        throw new TypeException("Function expected in second arg");
+                        throw TypeException("Function expected in second arg")
                     }
                     if (args[2].type() != Types.FUNCTION) {
-                        throw new TypeException("Function expected in third arg");
+                        throw TypeException("Function expected in third arg")
                     }
-                    final Function keyMapper = ((FunctionValue) args[1]).getValue();
-                    final Function valueMapper = ((FunctionValue) args[2]).getValue();
-                    return mapMap((MapValue) container, keyMapper, valueMapper);
+                    val keyMapper = (args[1] as FunctionValue).value
+                    val valueMapper = (args[2] as FunctionValue).value
+                    return mapMap(container as MapValue, keyMapper, valueMapper)
                 }
 
-                throw new TypeException("Invalid first argument. Array or map exprected");
+                throw TypeException("Invalid first argument. Array or map exprected")
             }
 
-            private Value mapArray(ArrayValue array, Function mapper) {
-                final int size = array.size();
-                final ArrayValue result = new ArrayValue(size);
-                for (int i = 0; i < size; i++) {
-                    result.set(i, mapper.execute(array.get(i)));
+            private fun mapArray(array: ArrayValue, mapper: Function): Value {
+                val size = array.size()
+                val result = ArrayValue(size)
+                for (i in 0 until size) {
+                    result[i] = mapper.execute(array[i])
                 }
-                return result;
+                return result
             }
 
-            private Value mapMap(MapValue map, Function keyMapper, Function valueMapper) {
-                final MapValue result = new MapValue(map.size());
-                for (Map.Entry<Value, Value> element : map) {
-                    final Value newKey = keyMapper.execute(element.getKey());
-                    final Value newValue = valueMapper.execute(element.getValue());
-                    result.set(newKey, newValue);
+            private fun mapMap(map: MapValue, keyMapper: Function, valueMapper: Function): Value {
+                val result = MapValue(map.size())
+                for ((key, value) in map) {
+                    val newKey = keyMapper.execute(key)
+                    val newValue = valueMapper.execute(value)
+                    result[newKey] = newValue
                 }
-                return result;
+                return result
             }
-        });
+        })
 
-        Functions.set("filter", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                if (args.length < 2) throw new ArgumentsMismatchException("At least two args expected");
+        Functions.set("filter", object : Function {
+            override fun execute(vararg args: Value): Value {
+                if (args.size < 2) throw ArgumentsMismatchException("At least two args expected")
 
                 if (args[1].type() != Types.FUNCTION) {
-                    throw new TypeException("Function expected in second arg");
+                    throw TypeException("Function expected in second arg")
                 }
-                final Value container = args[0];
-                final Function consumer = ((FunctionValue) args[1]).getValue();
+                val container = args[0]
+                val consumer = (args[1] as FunctionValue).value
                 if (container.type() == Types.ARRAY) {
-                    return filterArray((ArrayValue) container, consumer);
+                    return filterArray(container as ArrayValue, consumer)
                 }
 
                 if (container.type() == Types.MAP) {
-                    return filterMap((MapValue) container, consumer);
+                    return filterMap(container as MapValue, consumer)
                 }
 
-                throw new TypeException("Invalid first argument. Array or map expected");
+                throw TypeException("Invalid first argument. Array or map expected")
             }
 
-            private Value filterArray(ArrayValue array, Function predicate) {
-                final int size = array.size();
-                final List<Value> values = new ArrayList<Value>(size);
-                for (Value value : array) {
-                    if (predicate.execute(value) != NumberValue.ZERO) {
-                        values.add(value);
+            private fun filterArray(array: ArrayValue, predicate: Function): Value {
+                val size = array.size()
+                val values: MutableList<Value> = ArrayList(size)
+                for (value in array) {
+                    if (predicate.execute(value) !== NumberValue.ZERO) {
+                        values.add(value)
                     }
                 }
-                final int newSize = values.size();
-                return new ArrayValue(values.toArray(new Value[newSize]));
+                val newSize = values.size
+                return ArrayValue(values.toTypedArray<Value>())
             }
 
-            private Value filterMap(MapValue map, Function predicate) {
-                final MapValue result = new MapValue(map.size());
-                for (Map.Entry<Value, Value> element : map) {
-                    if (predicate.execute(element.getKey(), element.getValue()) != NumberValue.ZERO) {
-                        result.set(element.getKey(), element.getValue());
+            private fun filterMap(map: MapValue, predicate: Function): Value {
+                val result = MapValue(map.size())
+                for ((key, value) in map) {
+                    if (predicate.execute(key, value) !== NumberValue.ZERO) {
+                        result[key] = value
                     }
                 }
-                return result;
+                return result
             }
-        });
+        })
 
-        Functions.set("reduce", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                if (args.length != 3) throw new ArgumentsMismatchException("Three args expected");
-
-                if (args[2].type() != Types.FUNCTION) {
-                    throw new TypeException("Function expected in third arg");
-                }
-                final Value container = args[0];
-                final Value identity = args[1];
-                final Function accumulator = ((FunctionValue) args[2]).getValue();
-                if (container.type() == Types.ARRAY) {
-                    Value result = identity;
-                    final ArrayValue array = (ArrayValue) container;
-                    for (Value element : array) {
-                        result = accumulator.execute(result, element);
-                    }
-                    return result;
-                }
-                if (container.type() == Types.MAP) {
-                    Value result = identity;
-                    final MapValue map = (MapValue) container;
-                    for (Map.Entry<Value, Value> element : map) {
-                        result = accumulator.execute(result, element.getKey(), element.getValue());
-                    }
-                    return result;
-                }
-                throw new TypeException("Invalid first argument. Array or map exprected");
+        Functions.set("reduce", Function { args ->
+            if (args.size != 3) throw ArgumentsMismatchException("Three args expected")
+            if (args[2].type() != Types.FUNCTION) {
+                throw TypeException("Function expected in third arg")
             }
-        });
-
-        Functions.set("combine", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                if (args.length < 1) throw new ArgumentsMismatchException("At least one arg expected");
-
-                Function result = null;
-                for (Value arg : args) {
-                    if (arg.type() != Types.FUNCTION) {
-                        throw new TypeException(arg.toString() + " is not a function");
-                    }
-                    final Function current = result;
-                    final Function next = ((FunctionValue) arg).getValue();
-                    result = fArgs -> {
-                        if (current == null) return next.execute(fArgs);
-                        return next.execute(current.execute(fArgs));
-                    };
+            val container = args[0]
+            val identity = args[1]
+            val accumulator = (args[2] as FunctionValue).value
+            if (container.type() == Types.ARRAY) {
+                var result = identity
+                val array = container as ArrayValue
+                for (element in array) {
+                    result = accumulator.execute(result, element)
                 }
-
-                return new FunctionValue(result);
+                return@Function result
             }
-        });
+            if (container.type() == Types.MAP) {
+                var result = identity
+                val map = container as MapValue
+                for ((key, value) in map) {
+                    result = accumulator.execute(result, key, value)
+                }
+                return@Function result
+            }
+            throw TypeException("Invalid first argument. Array or map exprected")
+        })
 
-        Functions.set("flatmap", new Function() {
-            @Override
-            public Value execute(Value... args) {
-                if (args.length < 2) throw new ArgumentsMismatchException("At least two arguments expected");
+        Functions.set("combine", Function { args ->
+            if (args.size < 1) throw ArgumentsMismatchException("At least one arg expected")
+            var result: Function? = null
+            for (arg in args) {
+                if (arg.type() != Types.FUNCTION) {
+                    throw TypeException("$arg is not a function")
+                }
+                val current = result
+                val next = (arg as FunctionValue).value
+                result = Function { fArgs: Array<Value?> ->
+                    if (current == null) return@Function next.execute(*fArgs)
+                    next.execute(current.execute(*fArgs))
+                }
+            }
+            FunctionValue(result)
+        })
+
+        Functions.set("flatmap", object : Function {
+            override fun execute(vararg args: Value): Value {
+                if (args.size < 2) throw ArgumentsMismatchException("At least two arguments expected")
 
                 if (args[0].type() != Types.ARRAY) {
-                    throw new TypeException("Array expected in first argument");
+                    throw TypeException("Array expected in first argument")
                 }
                 if (args[1].type() != Types.FUNCTION) {
-                    throw new TypeException("Function expected in second argument");
+                    throw TypeException("Function expected in second argument")
                 }
 
-                final Function mapper = ValueUtils.consumeFunction(args[1], 1);
-                return flatMapArray((ArrayValue) args[0], mapper);
+                val mapper = ValueUtils.consumeFunction(args[1], 1)
+                return flatMapArray(args[0] as ArrayValue, mapper)
             }
 
-            private Value flatMapArray(ArrayValue array, Function mapper) {
-                final List<Value> values = new ArrayList<>();
-                final int size = array.size();
-                for (int i = 0; i < size; i++) {
-                    final Value inner = mapper.execute(array.get(i));
+            private fun flatMapArray(array: ArrayValue, mapper: Function): Value {
+                val values: MutableList<Value> = ArrayList()
+                val size = array.size()
+                for (i in 0 until size) {
+                    val inner = mapper.execute(array[i])
                     if (inner.type() != Types.ARRAY) {
-                        throw new TypeException("Array expected " + inner);
+                        throw TypeException("Array expected $inner")
                     }
-                    for (Value value : (ArrayValue) inner) {
-                        values.add(value);
+                    for (value in inner as ArrayValue) {
+                        values.add(value)
                     }
                 }
-                return new ArrayValue(values);
+                return ArrayValue(values)
             }
-        });
+        })
 
-        Functions.set("sortBy",f ->{
-            if (f.length != 2) throw new ArgumentsMismatchException("Two arguments expected");
-
+        Functions.set("sortBy") { f: Array<Value> ->
+            if (f.size != 2) throw ArgumentsMismatchException("Two arguments expected")
             if (f[0].type() != Types.ARRAY) {
-                throw new TypeException("Array expected in first argument");
+                throw TypeException("Array expected in first argument")
             }
             if (f[1].type() != Types.FUNCTION) {
-                throw new TypeException("Function expected in second argument");
+                throw TypeException("Function expected in second argument")
             }
 
-            final Value[] elements = ((ArrayValue) f[0]).getCopyElements();
-            final Function function = ((FunctionValue) f[1]).getValue();
-            Arrays.sort(elements, (o1, o2) -> function.execute(o1).compareTo(function.execute(o2)));
-            return new ArrayValue(elements);
-        });
-        Functions.set("sort",f ->{
-            if (f.length < 1) throw new ArgumentsMismatchException("At least one argument expected");
+            val elements = (f[0] as ArrayValue).copyElements
+            val function = (f[1] as FunctionValue).value
+            Arrays.sort(elements) { o1: Value?, o2: Value? -> function.execute(o1).compareTo(function.execute(o2)) }
+            ArrayValue(elements)
+        }
+        Functions.set("sort") { f: Array<Value> ->
+            if (f.size < 1) throw ArgumentsMismatchException("At least one argument expected")
             if (f[0].type() != Types.ARRAY) {
-                throw new TypeException("Array expected in first argument");
+                throw TypeException("Array expected in first argument")
             }
-            final Value[] elements = ((ArrayValue) f[0]).getCopyElements();
+            val elements = (f[0] as ArrayValue).copyElements
 
-            switch (f.length) {
-                case 1:
-                    Arrays.sort(elements);
-                    break;
-                case 2:
+            when (f.size) {
+                1 -> Arrays.sort(elements)
+                2 -> {
                     if (f[1].type() != Types.FUNCTION) {
-                        throw new TypeException("Function expected in second argument");
+                        throw TypeException("Function expected in second argument")
                     }
-                    final Function comparator = ((FunctionValue) f[1]).getValue();
-                    Arrays.sort(elements, (o1, o2) -> (int) comparator.execute(o1, o2).asNumber());
-                    break;
-                default:
-                    throw new ArgumentsMismatchException("Wrong number of arguments");
+                    val comparator = (f[1] as FunctionValue).value
+                    Arrays.sort(elements) { o1: Value?, o2: Value? -> comparator.execute(o1, o2).asNumber().toInt() }
+                }
+
+                else -> throw ArgumentsMismatchException("Wrong number of arguments")
             }
-
-            return new ArrayValue(elements);
-        });
-
+            ArrayValue(elements)
+        }
     }
 }

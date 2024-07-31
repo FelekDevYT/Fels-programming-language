@@ -1,16 +1,11 @@
-package net.felsstudio.fels.exceptions;
+package net.felsstudio.fels.exceptions
 
 /**
  *
  * @author felek
  */
-public final class LexerException extends RuntimeException {
+class LexerException : RuntimeException {
+    constructor(message: String?) : super(message)
 
-    public LexerException(String message) {
-        super(message);
-    }
-    
-    public LexerException(int row, int col, String message) {
-        super("["+row+":"+col+"] " + message);
-    }
+    constructor(row: Int, col: Int, message: String) : super("[$row:$col] $message")
 }

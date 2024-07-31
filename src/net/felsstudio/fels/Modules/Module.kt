@@ -1,7 +1,5 @@
-package net.felsstudio.fels.Modules;
+package net.felsstudio.fels.Modules
 
-public interface Module {
-
-    void init();
-
+interface Module {
+    fun init()
 }

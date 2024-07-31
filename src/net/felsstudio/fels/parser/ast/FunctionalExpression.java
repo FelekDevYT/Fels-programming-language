@@ -53,7 +53,7 @@ public final class FunctionalExpression implements Expression, Statement {
             }
             return getFunction(value.asString());
         } catch (VariableDoesNotExistsException ex) {
-            return getFunction(ex.getVariable());
+            return getFunction(ex.variable);
         }
     }
     
