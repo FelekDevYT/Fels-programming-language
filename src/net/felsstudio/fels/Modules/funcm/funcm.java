@@ -5,6 +5,7 @@ import net.felsstudio.fels.exceptions.TypeException;
 import net.felsstudio.fels.lib.*;
 import net.felsstudio.fels.Modules.Module;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

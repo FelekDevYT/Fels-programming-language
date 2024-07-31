@@ -10,5 +10,6 @@
     <orderEntry type="library" name="javafx.fxml" level="project" />
     <orderEntry type="library" name="bin" level="project" />
     <orderEntry type="library" name="json-20151123" level="project" />
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>
 </module>

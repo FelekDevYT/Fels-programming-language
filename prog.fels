@@ -1,6 +1,3 @@
-using ["sfm","forms"]
+using ["sfm","random"]
 
-import "fels/utils/mathUtils.fels"
-
-m = new FMath()
-println(m.getPI())
+println(rand(100))
