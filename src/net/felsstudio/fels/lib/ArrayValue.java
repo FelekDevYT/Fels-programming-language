@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Represents array type.
- * 
+ *
  * @author felek
  */
 public class ArrayValue implements Value, Iterable<Value> {
@@ -46,7 +46,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         }
         return result;
     }
-    
+
     public static ArrayValue add(ArrayValue array, Value value) {
         final int last = array.elements.length;
         final ArrayValue result = new ArrayValue(last + 1);
@@ -54,7 +54,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         result.elements[last] = value;
         return result;
     }
-    
+
     public static ArrayValue merge(ArrayValue array1, ArrayValue array2) {
         final int length1 = array1.elements.length;
         final int length2 = array2.elements.length;
@@ -64,7 +64,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         System.arraycopy(array2.elements, 0, result.elements, length1, length2);
         return result;
     }
-    
+
     private final Value[] elements;
 
     public ArrayValue(int size) {
@@ -75,12 +75,12 @@ public class ArrayValue implements Value, Iterable<Value> {
         this.elements = new Value[elements.length];
         System.arraycopy(elements, 0, this.elements, 0, elements.length);
     }
-    
+
     public ArrayValue(List<Value> values) {
         final int size = values.size();
         this.elements = values.toArray(new Value[size]);
     }
-    
+
     public ArrayValue(ArrayValue array) {
         this(array.elements);
     }
@@ -90,34 +90,34 @@ public class ArrayValue implements Value, Iterable<Value> {
         System.arraycopy(elements, 0, result, 0, elements.length);
         return result;
     }
-    
+
     @Override
     public int type() {
         return Types.ARRAY;
     }
-    
+
     public int size() {
         return elements.length;
     }
-    
+
     public Value get(int index) {
         return elements[index];
     }
-    
+
     public void set(int index, Value value) {
         elements[index] = value;
     }
-    
+
     @Override
     public Object raw() {
         return elements;
     }
-    
+
     @Override
     public int asInt() {
         throw new TypeException("Cannot cast array to integer");
     }
-    
+
     @Override
     public double asNumber() {
         throw new TypeException("Cannot cast array to number");
@@ -149,7 +149,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         final ArrayValue other = (ArrayValue) obj;
         return Arrays.deepEquals(this.elements, other.elements);
     }
-    
+
     @Override
     public int compareTo(Value o) {
         if (o.type() == Types.ARRAY) {

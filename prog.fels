@@ -1,5 +1,8 @@
-using ["sfm","random"]
+using ["sfm","forms"]
 
-arr = array(10)
-arr[0] = "6"
-println(arr[0])
+import "fels/utils/Map.fels"
+
+map = new Map(10)
+map.set("123","3124")
+println(map.get("123"))
+println(map.isEmpty("123"))

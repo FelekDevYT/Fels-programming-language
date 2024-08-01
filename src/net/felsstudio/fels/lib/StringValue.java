@@ -8,19 +8,19 @@ import net.felsstudio.fels.exceptions.*;
  * @author felek
  */
 public final class StringValue implements Value {
-    
+
     public static final StringValue EMPTY = new StringValue("");
-    
+
     private final String value;
 
     public StringValue(String value) {
         this.value = value;
     }
-    
+
     public int length() {
         return value.length();
     }
-    
+
     @Override
     public int type() {
         return Types.STRING;
@@ -30,7 +30,7 @@ public final class StringValue implements Value {
     public Object raw() {
         return value;
     }
-    
+
     @Override
     public int asInt() {
         try {
@@ -93,7 +93,7 @@ public final class StringValue implements Value {
         }
         throw new UnknownPropertyException(prop);
     }
-    
+
     @Override
     public double asNumber() {
         try {
@@ -124,7 +124,7 @@ public final class StringValue implements Value {
         final StringValue other = (StringValue) obj;
         return Objects.equals(this.value, other.value);
     }
-    
+
     @Override
     public int compareTo(Value o) {
         if (o.type() == Types.STRING) {
@@ -132,7 +132,7 @@ public final class StringValue implements Value {
         }
         return asString().compareTo(o.asString());
     }
-    
+
     @Override
     public String toString() {
         return asString();

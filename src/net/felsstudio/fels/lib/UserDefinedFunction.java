@@ -8,19 +8,19 @@ import net.felsstudio.fels.parser.ast.*;
  * @author felek
  */
 public class UserDefinedFunction implements Function {
-    
+
     private final net.felsstudio.fels.parser.ast.Arguments arguments;
     private final Statement body;
-    
+
     public UserDefinedFunction(net.felsstudio.fels.parser.ast.Arguments arguments, Statement body) {
         this.arguments = arguments;
         this.body = body;
     }
-    
+
     public int getArgsCount() {
         return arguments.size();
     }
-    
+
     public String getArgsName(int index) {
         if (index < 0 || index >= getArgsCount()) return "";
         return arguments.get(index).getName();

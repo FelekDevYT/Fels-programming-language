@@ -1,33 +1,36 @@
-using "sfm"
-using "ftypes"
-
-import "fels/utils/Exceptions.fels"
+using ["sfm"]
 
 class List{
-	list = getEmpty()
-	
+	arr = array(10)
+	lp = 0
+
 	func List(size){
-		list = array(size)
+		arr = array(size)
 	}
-	
-	func getAt(pos){
-		return list[pos]
+
+	func size(){
+		return length(arr)
 	}
-	
-	func setAt(pos, text){
-		list[pos] = text
+
+	func set(pos,str){
+		arr[pos] = str
+		lp++
 	}
-	
-	func getList(){
-		return list
+
+	func get(pos){
+		return arr[pos]
 	}
-	
-	func setByList(ByList){
-		if(typeOf(ByList) != ARRAY){
-			ex = Exceptions()
-			ex.TypeException("UNKNOWN TYPE FOR LIST")
-		}else{
-			list = ByList
+
+	func isPosEmpty(pos){
+		if(arr[pos] == getEmpty()){
+			return true
 		}
+		return false
 	}
+
+	func add(str){
+		arr[lp] = str
+		lp++
+	}
+
 }

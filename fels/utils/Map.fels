@@ -1,0 +1,53 @@
+using ["sfm"]
+
+class Map{
+	MapNames = array(1000)
+	MapValues = array(1000)
+	pos = 0
+
+	func Map(size){
+		MapNames = array(size)
+		MapValues = array(size)
+	}
+
+	func set(name,value){
+		MapNames[pos] = name
+		MapValues[pos] = value
+		pos++
+	}
+
+	func get(name){
+		for(i=0,i<MapNames.length(),i++){
+			if(name == MapNames[i]){
+				return MapValues[i]
+			}
+		}
+		return 0
+	}
+
+	func size(){
+		return length(MapNames)
+	}
+
+	func get(name){
+		for(i=0,i<length(MapNames),i++){
+			if(MapNames[i] == name){
+				return MapValues[i]
+			}
+		}
+		return 0
+	}
+
+	func isEmpty(name){
+		for(i=0,i<length(MapNames),i++){
+			if(MapNames[i] == name){
+				if(MapValues[i] == getEmpty()){
+					return true
+				}else{
+					return false
+				}
+			}
+		}
+		return false
+	}
+}

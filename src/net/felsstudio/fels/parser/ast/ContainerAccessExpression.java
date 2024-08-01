@@ -111,7 +111,7 @@ public final class ContainerAccessExpression implements Expression, Accessible {
 
     public MapValue consumeMap(Value value) {
         if (value.type() != Types.MAP) {
-            throw new TypeException("Map expected");
+            throw new TypeException("Map.fels expected");
         }
         return (MapValue) value;
     }

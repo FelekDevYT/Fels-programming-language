@@ -6,9 +6,9 @@ import net.felsstudio.fels.exceptions.*;
  * @author felek
  */
 public final class NumberValue implements Value {
-    
+
     public static final NumberValue MINUS_ONE, ZERO, ONE;
-    
+
     private static final int CACHE_MIN = -128, CACHE_MAX = 127;
     private static final NumberValue[] NUMBER_CACHE;
     static {
@@ -24,7 +24,7 @@ public final class NumberValue implements Value {
         ZERO = NUMBER_CACHE[zeroIndex];
         ONE = NUMBER_CACHE[zeroIndex + 1];
     }
-    
+
     public static NumberValue fromBoolean(boolean b) {
         return b ? ONE : ZERO;
     }
@@ -39,31 +39,31 @@ public final class NumberValue implements Value {
     public static NumberValue of(Number value) {
         return new NumberValue(value);
     }
-    
+
     private final Number value;
-    
+
     public NumberValue(Number value) {
         this.value = value;
     }
-    
+
     @Override
     public int type() {
         return Types.NUMBER;
     }
-    
+
     @Override
     public Number raw() {
         return value;
     }
-    
+
     public boolean asBoolean() {
         return value.intValue() != 0;
     }
-    
+
     public byte asByte() {
         return value.byteValue();
     }
-    
+
     public short asShort() {
         return value.shortValue();
     }
@@ -84,7 +84,7 @@ public final class NumberValue implements Value {
     public double asDouble() {
         return value.doubleValue();
     }
-    
+
     @Override
     public double asNumber() {
         return value.doubleValue();
@@ -120,7 +120,7 @@ public final class NumberValue implements Value {
         }
         return value.intValue() == other.intValue();
     }
-    
+
     @Override
     public int compareTo(Value o) {
         if (o.type() == Types.NUMBER) {

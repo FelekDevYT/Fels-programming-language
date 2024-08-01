@@ -441,7 +441,7 @@ class sfm : Module {
         Functions.set("arrayKeyExists") { args: Array<Value> ->
             if (args.size != 2) throw ArgumentsMismatchException("Two arguments expected")
             if (args[1].type() != Types.MAP) {
-                throw TypeException("Map expected in second argument")
+                throw TypeException("Map.fels expected in second argument")
             }
             val map = (args[1] as MapValue)
             NumberValue.fromBoolean(map.containsKey(args[0]))
@@ -449,7 +449,7 @@ class sfm : Module {
         Functions.set("arrayKeys") { args: Array<Value> ->
             if (args.size != 1) throw ArgumentsMismatchException("One argument expected")
             if (args[0].type() != Types.MAP) {
-                throw TypeException("Map expected in first argument")
+                throw TypeException("Map.fels expected in first argument")
             }
             val map = (args[0] as MapValue)
             val keys: MutableList<Value> = ArrayList(map.size())
@@ -461,7 +461,7 @@ class sfm : Module {
         Functions.set("arrayValues") { args: Array<Value> ->
             if (args.size != 1) throw ArgumentsMismatchException("One argument expected")
             if (args[0].type() != Types.MAP) {
-                throw TypeException("Map expected in first argument")
+                throw TypeException("Map.fels expected in first argument")
             }
             val map = (args[0] as MapValue)
             val values: MutableList<Value> = ArrayList(map.size())
@@ -498,7 +498,7 @@ class sfm : Module {
         Functions.set("arrayKeyExists") { args: Array<Value> ->
             check(2, args.size)
             if (args[1].type() != Types.MAP) {
-                throw TypeException("Map expected in second argument")
+                throw TypeException("Map.fels expected in second argument")
             }
             val map = (args[1] as MapValue)
             NumberValue.fromBoolean(map.containsKey(args[0]))

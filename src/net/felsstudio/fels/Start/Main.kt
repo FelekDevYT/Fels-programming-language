@@ -1,28 +1,29 @@
-package net.felsstudio.fels.Start;
+package net.felsstudio.fels.Start
 
-import java.io.IOException;
+import net.felsstudio.fels.Start.Starter.start
+import java.io.IOException
 
 /**
  * @author felek
- *
  */
-public final class Main {
-
-    public static void main(String[] args) throws IOException {
-        if(args.length == 0) {
-            Starter.start(false,true,true,false,"prog.fels");
-        }else if (args.length == 1) {
-            Starter.start(false,false,true,false,args[0]);
-        }else if(args.length == 2) {
-            Starter.start(Boolean.parseBoolean(args[0]),false,true,false,args[1]);
-        }else if (args.length == 3) {
-            Starter.start(Boolean.parseBoolean(args[0]),Boolean.parseBoolean(args[1]),true,false,args[2]);
-        }else if (args.length == 4) {
-            Starter.start(Boolean.parseBoolean(args[0]),Boolean.parseBoolean(args[1]),Boolean.parseBoolean(args[2]),false,args[3]);
-        }else if (args.length == 5) {
-            Starter.start(Boolean.parseBoolean(args[0]),Boolean.parseBoolean(args[1]),Boolean.parseBoolean(args[2]),false,args[4]);
-        }else if (args.length == 6) {
-            Starter.start(Boolean.parseBoolean(args[0]),Boolean.parseBoolean(args[1]),Boolean.parseBoolean(args[2]),Boolean.parseBoolean(args[4]),args[5]);
+object Main {
+    @Throws(IOException::class)
+    @JvmStatic
+    fun main(args: Array<String>) {
+        if (args.isEmpty()) {
+            start(false, true, true, false, "prog.fels")
+        } else if (args.size == 1) {
+            start(false, false, true, false, args[0])
+        } else if (args.size == 2) {
+            start(args[0].toBoolean(), false, true, false, args[1])
+        } else if (args.size == 3) {
+            start(args[0].toBoolean(), args[1].toBoolean(), true, false, args[2])
+        } else if (args.size == 4) {
+            start(args[0].toBoolean(), args[1].toBoolean(), args[2].toBoolean(), false, args[3])
+        } else if (args.size == 5) {
+            start(args[0].toBoolean(), args[1].toBoolean(), args[2].toBoolean(), false, args[4])
+        } else if (args.size == 6) {
+            start(args[0].toBoolean(), args[1].toBoolean(), args[2].toBoolean(), args[4].toBoolean(), args[5])
         }
     }
 }
