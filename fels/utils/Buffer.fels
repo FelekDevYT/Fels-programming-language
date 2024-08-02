@@ -1,0 +1,21 @@
+using ["sfm"]
+
+class Buffer{
+	buffer = ""
+	
+	func Buffer(b){
+		buffer = b
+	}
+	
+	func set(b){
+		buffer = b
+	}
+	
+	func get(){
+		return buffer
+	}
+	
+	func append(b){
+		buffer +=b
+	}
+}

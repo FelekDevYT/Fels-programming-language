@@ -1,8 +1,3 @@
 using ["sfm","forms"]
 
-import "fels/utils/Map.fels"
 
-map = new Map(10)
-map.set("123","3124")
-println(map.get("123"))
-println(map.isEmpty("123"))

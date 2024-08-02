@@ -1,0 +1,16 @@
+using ["sfm"]
+
+class StringBuilder{
+    val = getEmpty()
+	
+	func StringBuilder(){
+    }
+	
+	func apply(value){
+		val = val + value
+	}
+	
+	func get(){
+		return val
+	}
+}
