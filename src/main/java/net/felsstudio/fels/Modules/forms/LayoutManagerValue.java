@@ -1,6 +1,6 @@
 package main.java.net.felsstudio.fels.Modules.forms;
 
-import main.java.net.felsstudio.fels.lib.*;
+import main.java.net.felsstudio.fels.lib.MapValue;
 
 import java.awt.LayoutManager;
 

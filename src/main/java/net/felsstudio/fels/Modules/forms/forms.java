@@ -1,13 +1,18 @@
 package main.java.net.felsstudio.fels.Modules.forms;
 
-import main.java.net.felsstudio.fels.lib.MapValue;
-import main.java.net.felsstudio.fels.lib.NumberValue;
 import main.java.net.felsstudio.fels.lib.*;
 import net.felsstudio.fels.Modules.Module;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
+/**
+ *
+ * @author aNNiMON
+ */
 public final class forms implements Module {
 
     public static void initConstants() {
@@ -56,6 +61,31 @@ public final class forms implements Module {
         border.set("SOUTH", new StringValue(BorderLayout.SOUTH));
         border.set("WEST", new StringValue(BorderLayout.WEST));
         Variables.define("BorderLayout", border);
+        
+        // ScrollPane constants
+        final MapValue scrollpane = new MapValue(13);
+        scrollpane.set("COLUMN_HEADER", new StringValue(ScrollPaneConstants.COLUMN_HEADER));
+        scrollpane.set("HORIZONTAL_SCROLLBAR", new StringValue(ScrollPaneConstants.HORIZONTAL_SCROLLBAR));
+        scrollpane.set("HORIZONTAL_SCROLLBAR_POLICY", new StringValue(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_POLICY));
+        scrollpane.set("LOWER_LEADING_CORNER", new StringValue(ScrollPaneConstants.LOWER_LEADING_CORNER));
+        scrollpane.set("LOWER_LEFT_CORNER", new StringValue(ScrollPaneConstants.LOWER_LEFT_CORNER));
+        scrollpane.set("LOWER_RIGHT_CORNER", new StringValue(ScrollPaneConstants.LOWER_RIGHT_CORNER));
+        scrollpane.set("LOWER_TRAILING_CORNER", new StringValue(ScrollPaneConstants.LOWER_TRAILING_CORNER));
+        scrollpane.set("ROW_HEADER", new StringValue(ScrollPaneConstants.ROW_HEADER));
+        scrollpane.set("UPPER_LEADING_CORNER", new StringValue(ScrollPaneConstants.UPPER_LEADING_CORNER));
+        scrollpane.set("UPPER_LEFT_CORNER", new StringValue(ScrollPaneConstants.UPPER_LEFT_CORNER));
+        scrollpane.set("UPPER_RIGHT_CORNER", new StringValue(ScrollPaneConstants.UPPER_RIGHT_CORNER));
+        scrollpane.set("UPPER_TRAILING_CORNER", new StringValue(ScrollPaneConstants.UPPER_TRAILING_CORNER));
+        scrollpane.set("VERTICAL_SCROLLBAR", new StringValue(ScrollPaneConstants.VERTICAL_SCROLLBAR));
+        scrollpane.set("VERTICAL_SCROLLBAR_POLICY", new StringValue(ScrollPaneConstants.VERTICAL_SCROLLBAR_POLICY));
+        scrollpane.set("VIEWPORT", new StringValue(ScrollPaneConstants.VIEWPORT));
+        scrollpane.set("HORIZONTAL_SCROLLBAR_ALWAYS", NumberValue.of(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
+        scrollpane.set("HORIZONTAL_SCROLLBAR_AS_NEEDED", NumberValue.of(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+        scrollpane.set("HORIZONTAL_SCROLLBAR_NEVER", NumberValue.of(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER));
+        scrollpane.set("VERTICAL_SCROLLBAR_ALWAYS", NumberValue.of(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS));
+        scrollpane.set("VERTICAL_SCROLLBAR_AS_NEEDED", NumberValue.of(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED));
+        scrollpane.set("VERTICAL_SCROLLBAR_NEVER", NumberValue.of(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER));
+        Variables.define("ScrollPaneConstants", scrollpane);
 
         final MapValue box = new MapValue(4);
         box.set("LINE_AXIS", NumberValue.of(BoxLayout.LINE_AXIS));
@@ -65,12 +95,16 @@ public final class forms implements Module {
         Variables.define("BoxLayout", box);
     }
 
+    @Override
     public void init() {
         initConstants();
         // Components
         Functions.set("newButton", Components::newButton);
         Functions.set("newLabel", Components::newLabel);
         Functions.set("newPanel", Components::newPanel);
+        Functions.set("newProgressBar", Components::newProgressBar);
+        Functions.set("newScrollPane", Components::newScrollPane);
+        Functions.set("newTextArea", Components::newTextArea);
         Functions.set("newTextField", Components::newTextField);
         Functions.set("newWindow", Components::newWindow);
 

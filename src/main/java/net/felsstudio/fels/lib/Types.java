@@ -9,7 +9,8 @@ public final class Types {
             ARRAY = 3,
             MAP = 4,
             FUNCTION = 5,
-            CLASS = 6;
+            CLASS = 6,
+            BOOLEAN = 7;
 
     private static final int FIRST = OBJECT;
     private static final int LAST = CLASS;

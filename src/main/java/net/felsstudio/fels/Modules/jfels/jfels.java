@@ -141,6 +141,7 @@ public final class jfels implements Module {
 
             set("asSubclass", new FunctionValue(this::asSubclass));
             set("isAssignableFrom", new FunctionValue(this::isAssignableFrom));
+            set("new", new FunctionValue(this::newInstance));
             set("cast", new FunctionValue(this::cast));
         }
 
@@ -152,6 +153,10 @@ public final class jfels implements Module {
         private Value isAssignableFrom(Value[] args) {
             Arguments.check(1, args.length);
             return NumberValue.fromBoolean(clazz.isAssignableFrom( ((ClassValue)args[0]).clazz ));
+        }
+
+        public Value newInstance(Value[] args) {
+            return findConstructorAndInstantiate(args, clazz.getConstructors());
         }
 
         private Value cast(Value[] args) {

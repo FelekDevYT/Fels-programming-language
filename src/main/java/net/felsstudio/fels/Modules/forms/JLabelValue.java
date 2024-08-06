@@ -1,8 +1,7 @@
 package main.java.net.felsstudio.fels.Modules.forms;
 
-import static main.java.net.felsstudio.fels.lib.Converters.*;
-import main.java.net.felsstudio.fels.lib.*;
 import javax.swing.JLabel;
+import static main.java.net.felsstudio.fels.lib.Converters.*;
 
 public class JLabelValue extends JComponentValue {
 

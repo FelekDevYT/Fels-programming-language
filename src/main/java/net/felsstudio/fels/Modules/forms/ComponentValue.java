@@ -1,11 +1,6 @@
 package main.java.net.felsstudio.fels.Modules.forms;
 
-import main.java.net.felsstudio.fels.lib.MapValue;
 import main.java.net.felsstudio.fels.lib.*;
-import static main.java.net.felsstudio.fels.lib.Converters.*;
-
-import static main.java.net.felsstudio.fels.lib.Converters.voidToBoolean;
-import static main.java.net.felsstudio.fels.lib.Converters.voidToInt;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -14,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import static main.java.net.felsstudio.fels.lib.Converters.*;
 
 public abstract class ComponentValue extends MapValue {
 
@@ -69,7 +66,7 @@ public abstract class ComponentValue extends MapValue {
         set("validate", voidToVoid(component::validate));
     }
 
-    private Value addKeyListener(Value... args) {
+    private Value addKeyListener(Value[] args) {
         Arguments.check(1, args.length);
         final Function action = ValueUtils.consumeFunction(args[0], 0);
         component.addKeyListener(new KeyListener() {
@@ -110,7 +107,7 @@ public abstract class ComponentValue extends MapValue {
         return NumberValue.ZERO;
     }
 
-    private Value getLocation(Value... args) {
+    private Value getLocation(Value[] args) {
         final Point location = component.getLocation();
         final ArrayValue result = new ArrayValue(2);
         result.set(0, NumberValue.of(location.x));
@@ -118,7 +115,7 @@ public abstract class ComponentValue extends MapValue {
         return result;
     }
 
-    private Value getLocationOnScreen(Value... args) {
+    private Value getLocationOnScreen(Value[] args) {
         final Point location = component.getLocationOnScreen();
         final ArrayValue result = new ArrayValue(2);
         result.set(0, NumberValue.of(location.x));
@@ -126,7 +123,7 @@ public abstract class ComponentValue extends MapValue {
         return result;
     }
 
-    private Value setLocation(Value... args) {
+    private Value setLocation(Value[] args) {
         Arguments.check(2, args.length);
         component.setLocation(args[0].asInt(), args[1].asInt());
         return NumberValue.ZERO;
