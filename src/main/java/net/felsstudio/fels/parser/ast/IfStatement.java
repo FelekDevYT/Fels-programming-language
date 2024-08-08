@@ -7,7 +7,7 @@ import main.java.net.felsstudio.fels.lib.*;
  * @author felek
  */
 public final class IfStatement implements Statement {
-    
+
     public final Expression expression;
     public final Statement ifStatement, elseStatement;
 
@@ -16,7 +16,7 @@ public final class IfStatement implements Statement {
         this.ifStatement = ifStatement;
         this.elseStatement = elseStatement;
     }
-    
+
     @Override
     public void execute() {
         final int result = expression.eval().asInt();
@@ -26,7 +26,7 @@ public final class IfStatement implements Statement {
             elseStatement.execute();
         }
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

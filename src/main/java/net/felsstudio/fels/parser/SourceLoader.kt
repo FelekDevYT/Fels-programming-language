@@ -1,28 +1,31 @@
-package main.java.net.felsstudio.fels.parser;
+package main.java.net.felsstudio.fels.parser
 
-import java.io.*;
+import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
+import java.io.IOException
+import java.io.InputStream
 
-public final class SourceLoader {
+object SourceLoader {
+    @JvmStatic
+    @Throws(IOException::class)
+    fun readSource(name: String): String {
+        var `is` = SourceLoader::class.java.getResourceAsStream("/$name")
+        if (`is` != null) return readAndCloseStream(`is`)
 
-    private SourceLoader() { }
-
-    public static String readSource(String name) throws IOException {
-        InputStream is = SourceLoader.class.getResourceAsStream("/" + name);
-        if (is != null) return readAndCloseStream(is);
-
-        is = new FileInputStream(name);
-        return readAndCloseStream(is);
+        `is` = FileInputStream(name)
+        return readAndCloseStream(`is`)
     }
 
-    public static String readAndCloseStream(InputStream is) throws IOException {
-        final ByteArrayOutputStream result = new ByteArrayOutputStream();
-        final int bufferSize = 1024;
-        final byte[] buffer = new byte[bufferSize];
-        int read;
-        while ((read = is.read(buffer)) != -1) {
-            result.write(buffer, 0, read);
+    @Throws(IOException::class)
+    fun readAndCloseStream(`is`: InputStream): String {
+        val result = ByteArrayOutputStream()
+        val bufferSize = 1024
+        val buffer = ByteArray(bufferSize)
+        var read: Int
+        while ((`is`.read(buffer).also { read = it }) != -1) {
+            result.write(buffer, 0, read)
         }
-        is.close();
-        return result.toString("UTF-8");
+        `is`.close()
+        return result.toString("UTF-8")
     }
 }

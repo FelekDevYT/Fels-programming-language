@@ -4,7 +4,7 @@ import main.java.net.felsstudio.fels.exceptions.*;
 
 import java.util.Objects;
 
-public class ClassInstanceValue implements Value {
+public class  ClassInstanceValue implements Value {
 
     private final String className;
     private final MapValue thisMap;
@@ -15,6 +15,14 @@ public class ClassInstanceValue implements Value {
         thisMap = new MapValue(10);
     }
 
+    public void set(Value key, Value value) {
+        final Value v = thisMap.get(key);
+        if (v == null) {
+            throw new RuntimeException("Unable to add new field "
+                    + key.asString() + " to class " + className);
+        }
+        thisMap.set(key, value);
+    }
     public MapValue getThisMap() {
         return thisMap;
     }

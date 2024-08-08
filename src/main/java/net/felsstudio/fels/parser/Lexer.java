@@ -42,6 +42,7 @@ public final class Lexer {
         OPERATORS.put("~", TokenType.TILDE);
         OPERATORS.put("?", TokenType.QUESTION);
         OPERATORS.put(":", TokenType.COLON);
+        OPERATORS.put(";", TokenType.DOTCOMMA);
 
         OPERATORS.put("!", TokenType.EXCL);
         OPERATORS.put("&", TokenType.AMP);

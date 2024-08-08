@@ -1,16 +1,15 @@
-package main.java.net.felsstudio.fels.parser;
+package main.java.net.felsstudio.fels.parser
 
 /**
  *
  * @author felek
  */
-public enum TokenType {
-
+enum class TokenType {
     NUMBER,
     HEX_NUMBER,
     WORD,
     TEXT,
-    
+
     // keyword
     PRINT,
     PRINTLN,
@@ -31,68 +30,69 @@ public enum TokenType {
     PANIC,
     CLASS,
     NEW,
-    
-    PLUS, // +
-    MINUS, // -
-    STAR, // *
-    SLASH, // /
-    PERCENT,// %
-    AT,//@
-    
-    EQ, // =
-    EQEQ, // ==
-    EXCL, // !
-    EXCLEQ, // !=
-    LTEQ, // <=
-    LT, // <
-    GT, // >
-    GTEQ, // >=
-    ATEQ, // @=
+
+    PLUS,  // +
+    MINUS,  // -
+    STAR,  // *
+    SLASH,  // /
+    PERCENT,  // %
+    AT,  //@
+    DOTCOMMA,
+
+    EQ,  // =
+    EQEQ,  // ==
+    EXCL,  // !
+    EXCLEQ,  // !=
+    LTEQ,  // <=
+    LT,  // <
+    GT,  // >
+    GTEQ,  // >=
+    ATEQ,  // @=
     QUESTIONQUESTION,
-    
-    PLUSEQ, // +=
-    MINUSEQ, // -=
-    STAREQ, // *=
-    SLASHEQ, // /=
-    PERCENTEQ, // %=
-    AMPEQ, // &=
-    CARETEQ, // ^=
-    BAREQ, // |=
-    COLONCOLONEQ, // ::=
-    LTLTEQ, // <<=
-    GTGTEQ, // >>=
-    GTGTGTEQ, // >>>=
+
+    PLUSEQ,  // +=
+    MINUSEQ,  // -=
+    STAREQ,  // *=
+    SLASHEQ,  // /=
+    PERCENTEQ,  // %=
+    AMPEQ,  // &=
+    CARETEQ,  // ^=
+    BAREQ,  // |=
+    COLONCOLONEQ,  // ::=
+    LTLTEQ,  // <<=
+    GTGTEQ,  // >>=
+    GTGTGTEQ,  // >>>=
     PLUSPLUS,
     MINUSMINUS,
-    
-    LTLT, // <<
-    GTGT, // >>
-    GTGTGT, // >>>
-    
-    TILDE, // ~
-    CARET, // ^
-    BAR, // |
-    BARBAR, // ||
-    AMP, // &
-    AMPAMP, // &&
-    
-    QUESTION, // ?
-    COLON, // :
-    COLONCOLON, // ::
 
-    DOTDOT, // ..
-    STARSTAR, // **
-    QUESTIONCOLON, // ?:
+    LTLT,  // <<
+    GTGT,  // >>
+    GTGTGT,  // >>>
 
-    LPAREN, // (
-    RPAREN, // )
-    LBRACKET, // [
-    RBRACKET, // ]
-    LBRACE, // {
-    RBRACE, // }
-    COMMA, // ,
-    DOT, // .
+    TILDE,  // ~
+    CARET,  // ^
+    BAR,  // |
+    BARBAR,  // ||
+    AMP,  // &
+    AMPAMP,  // &&
+
+    QUESTION,  // ?
+    COLON,  // :
+    COLONCOLON,  // ::
+
+    DOTDOT,  // ..
+    STARSTAR,  // **
+    QUESTIONCOLON,  // ?:
+
+    LPAREN,  // (
+    RPAREN,  // )
+    LBRACKET,  // [
+    RBRACKET,  // ]
+    LBRACE,  // {
+    RBRACE,  // }
+    COMMA,  // ,
+    DOT,  // .
     CARETCARET,
-    
+
     EOF
 }

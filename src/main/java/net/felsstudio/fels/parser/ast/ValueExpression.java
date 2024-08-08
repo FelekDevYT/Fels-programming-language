@@ -6,21 +6,21 @@ import main.java.net.felsstudio.fels.lib.*;
  * @author felek
  */
 public final class ValueExpression implements Expression {
-    
+
     public final Value value;
-    
+
     public ValueExpression(Number value) {
         this.value = NumberValue.of(value);
     }
-    
+
     public ValueExpression(String value) {
         this.value = new StringValue(value);
     }
-    
+
     public ValueExpression(Function value) {
         this.value = new FunctionValue(value);
     }
-    
+
     public ValueExpression(Value value) {
         this.value = value;
     }
@@ -29,7 +29,7 @@ public final class ValueExpression implements Expression {
     public Value eval() {
         return value;
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

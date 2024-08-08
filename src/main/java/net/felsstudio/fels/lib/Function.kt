@@ -1,10 +1,9 @@
-package main.java.net.felsstudio.fels.lib;
+package main.java.net.felsstudio.fels.lib
 
 /**
  *
  * @author felek
  */
-public interface Function {
-
-    Value execute(Value... args);
+interface Function {
+    fun execute(vararg args: Value?): Value?
 }

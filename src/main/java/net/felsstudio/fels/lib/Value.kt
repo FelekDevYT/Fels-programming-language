@@ -1,18 +1,17 @@
-package main.java.net.felsstudio.fels.lib;
+package main.java.net.felsstudio.fels.lib
 
 /**
  *
  * @author felek
  */
-public interface Value extends Comparable<Value> {
-    
-    Object raw();
-    
-    int asInt();
-    
-    double asNumber();
-    
-    String asString();
-    
-    int type();
+interface Value : Comparable<Value?> {
+    fun raw(): Any?
+
+    fun asInt(): Int
+
+    fun asNumber(): Double
+
+    fun asString(): String?
+
+    fun type(): Int
 }

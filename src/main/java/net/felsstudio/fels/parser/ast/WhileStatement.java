@@ -7,7 +7,7 @@ import main.java.net.felsstudio.fels.lib.*;
  * @author felek
  */
 public final class WhileStatement implements Statement {
-    
+
     public final Expression condition;
     public final Statement statement;
 
@@ -15,7 +15,7 @@ public final class WhileStatement implements Statement {
         this.condition = condition;
         this.statement = statement;
     }
-    
+
     @Override
     public void execute() {
         while (condition.eval().asInt() != 0) {
@@ -28,7 +28,7 @@ public final class WhileStatement implements Statement {
             }
         }
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

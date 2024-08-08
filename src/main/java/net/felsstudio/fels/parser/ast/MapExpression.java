@@ -10,13 +10,13 @@ import java.util.Map;
  * @author felek
  */
 public final class MapExpression implements Expression {
-    
+
     public final Map<Expression, Expression> elements;
 
     public MapExpression(Map<Expression, Expression> arguments) {
         this.elements = arguments;
     }
-    
+
     @Override
     public Value eval() {
         final int size = elements.size();
@@ -26,7 +26,7 @@ public final class MapExpression implements Expression {
         }
         return map;
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

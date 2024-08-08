@@ -19,7 +19,7 @@ public final class UnaryExpression implements Expression, Statement {
         NOT("!"),
         // Bitwise
         COMPLEMENT("~");
-        
+
         private final String name;
 
         private Operator(String name) {
@@ -31,7 +31,7 @@ public final class UnaryExpression implements Expression, Statement {
             return name;
         }
     }
-    
+
     public final Expression expr1;
     public final Operator operation;
 
@@ -39,12 +39,12 @@ public final class UnaryExpression implements Expression, Statement {
         this.operation = operation;
         this.expr1 = expr1;
     }
-    
+
     @Override
     public void execute() {
         eval();
     }
-    
+
     @Override
     public Value eval() {
         final Value value = expr1.eval();
@@ -82,7 +82,7 @@ public final class UnaryExpression implements Expression, Statement {
                 throw new OperationIsNotSupportedException(operation);
         }
     }
-    
+
     private Value increment(Value value) {
         if (value.type() == Types.NUMBER) {
             final Number number = (Number) value.raw();
@@ -98,7 +98,7 @@ public final class UnaryExpression implements Expression, Statement {
         }
         return NumberValue.of(value.asInt() + 1);
     }
-    
+
     private Value decrement(Value value) {
         if (value.type() == Types.NUMBER) {
             final Number number = (Number) value.raw();
@@ -114,7 +114,7 @@ public final class UnaryExpression implements Expression, Statement {
         }
         return NumberValue.of(value.asInt() - 1);
     }
-    
+
     private Value negate(Value value) {
         if (value.type() == Types.STRING) {
             final StringBuilder sb = new StringBuilder(value.asString());
@@ -134,7 +134,7 @@ public final class UnaryExpression implements Expression, Statement {
         }
         return NumberValue.of(-value.asInt());
     }
-    
+
     private Value complement(Value value) {
         if (value.type() == Types.NUMBER) {
             final Number number = (Number) value.raw();
@@ -144,21 +144,21 @@ public final class UnaryExpression implements Expression, Statement {
         }
         return NumberValue.of(~value.asInt());
     }
-    
+
     private Value not(Value value) {
         return NumberValue.fromBoolean(value.asInt() == 0);
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
     }
-    
+
     @Override
     public <R, T> R accept(ResultVisitor<R, T> visitor, T t) {
         return visitor.visit(this, t);
     }
-    
+
     @Override
     public String toString() {
         switch (operation) {

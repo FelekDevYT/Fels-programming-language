@@ -8,9 +8,9 @@ import main.java.net.felsstudio.fels.lib.*;
  * @author felek
  */
 public final class VariableExpression implements Expression, Accessible {
-    
+
     public final String name;
-    
+
     public VariableExpression(String name) {
         this.name = name;
     }
@@ -19,7 +19,7 @@ public final class VariableExpression implements Expression, Accessible {
     public Value eval() {
         return get();
     }
-    
+
     @Override
     public Value get() {
         if (!Variables.isExists(name)) throw new VariableDoesNotExistsException(name);
@@ -31,7 +31,7 @@ public final class VariableExpression implements Expression, Accessible {
         Variables.set(name, value);
         return value;
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

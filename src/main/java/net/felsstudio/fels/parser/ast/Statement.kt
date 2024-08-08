@@ -1,10 +1,9 @@
-package main.java.net.felsstudio.fels.parser.ast;
+package main.java.net.felsstudio.fels.parser.ast
 
 /**
  *
  * @author felek
  */
-public interface Statement extends Node {
-    
-    void execute();
+interface Statement : Node {
+    fun execute()
 }

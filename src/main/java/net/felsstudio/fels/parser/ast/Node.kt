@@ -1,12 +1,11 @@
-package main.java.net.felsstudio.fels.parser.ast;
+package main.java.net.felsstudio.fels.parser.ast
 
 /**
  *
  * @author felek
  */
-public interface Node {
-    
-    void accept(Visitor visitor);
+interface Node {
+    fun accept(visitor: Visitor?)
 
-    <R, T> R accept(ResultVisitor<R, T> visitor, T input);
+    fun <R, T> accept(visitor: ResultVisitor<R, T>?, input: T): R
 }

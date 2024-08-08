@@ -7,7 +7,7 @@ import main.java.net.felsstudio.fels.lib.*;
  * @author felek
  */
 public final class PrintlnStatement implements Statement {
-    
+
     public final Expression expression;
 
     public PrintlnStatement(Expression expression) {
@@ -18,7 +18,7 @@ public final class PrintlnStatement implements Statement {
     public void execute() {
         System.out.println(expression.eval().asString());
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);
