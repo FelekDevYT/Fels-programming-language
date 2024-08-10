@@ -11,8 +11,8 @@ import java.util.Map;
  *
  * @author felek
  */
-public final class DestructuringAssignmentStatement implements Statement {
-    
+public final class DestructuringAssignmentStatement extends InterruptableNode implements Statement {
+
     public final List<String> variables;
     public final Expression containerExpression;
 
@@ -20,9 +20,10 @@ public final class DestructuringAssignmentStatement implements Statement {
         this.variables = arguments;
         this.containerExpression = container;
     }
-    
+
     @Override
     public void execute() {
+        super.interruptionCheck();
         final Value container = containerExpression.eval();
         switch (container.type()) {
             case Types.ARRAY:
@@ -33,13 +34,13 @@ public final class DestructuringAssignmentStatement implements Statement {
                 break;
         }
     }
-    
+
     private void execute(ArrayValue array) {
         final int size = variables.size();
         for (int i = 0; i < size; i++) {
             final String variable = variables.get(i);
             if (variable != null) {
-                Variables.define(variable, array.get(i));
+                ScopeHandler.defineVariableInCurrentScope(variable, array.get(i));
             }
         }
     }
@@ -48,14 +49,14 @@ public final class DestructuringAssignmentStatement implements Statement {
         for (Map.Entry<Value, Value> entry : map) {
             final String variable = variables.get(i);
             if (variable != null) {
-                Variables.define(variable, new ArrayValue(
+                ScopeHandler.defineVariableInCurrentScope(variable, new ArrayValue(
                         new Value[] { entry.getKey(), entry.getValue() }
                 ));
             }
             i++;
         }
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

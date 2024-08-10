@@ -217,11 +217,11 @@ public final class sfm implements Module {//Standard fels module
         return new StringValue(value.replace(f[1].asString(), f[2].asString()));
     });
 
-        Functions.set("trim", f ->{
+    Functions.set("trim", f ->{
         return new StringValue(f[0].asString().trim());
     });
 
-        Functions.set("getBytes", f ->{
+    Functions.set("getBytes", f ->{
         String value = f[0].asString();
         byte[] array = value.getBytes();
         ArrayValue arrayValue = new ArrayValue(array.length);
@@ -231,7 +231,7 @@ public final class sfm implements Module {//Standard fels module
         return arrayValue;
     });
 
-        Functions.set("split", args ->{
+    Functions.set("split", args ->{
         Arguments.checkOrOr(2, 3, args.length);
 
         final String input = args[0].asString();
@@ -242,7 +242,7 @@ public final class sfm implements Module {//Standard fels module
         return ArrayValue.of(parts);
     });
 
-        Functions.set("filter", new Function() {
+    Functions.set("filter", new Function() {
             @Override
             public Value execute(Value... args) {
             Arguments.check(2, args.length);
@@ -263,7 +263,7 @@ public final class sfm implements Module {//Standard fels module
             throw new TypeException("Invalid first argument. Array or map expected");
         }
 
-            private Value filterArray(ArrayValue array, Function predicate) {
+        private Value filterArray(ArrayValue array, Function predicate) {
                 final int size = array.size();
                 final List<Value> values = new ArrayList<Value>(size);
                 for (Value value : array) {
@@ -285,17 +285,7 @@ public final class sfm implements Module {//Standard fels module
                 return result;
             }
         });
-        Functions.set("parseLong",args ->{
-        Arguments.checkOrOr(1, 2, args.length);
-        final int radix = (args.length == 2) ? args[1].asInt() : 10;
-        return NumberValue.of(Long.parseLong(args[0].asString(), radix));
-    });
-        Functions.set("parseInt",args ->{
-        Arguments.checkOrOr(1, 2, args.length);
-        final int radix = (args.length == 2) ? args[1].asInt() : 10;
-        return NumberValue.of(Integer.parseInt(args[0].asString(), radix));
-    });
-        Functions.set("toHexString",args -> {
+    Functions.set("toHexString",args -> {
         Arguments.check(1, args.length);
         long value;
         if (args[0].type() == Types.NUMBER) {
@@ -306,7 +296,7 @@ public final class sfm implements Module {//Standard fels module
         return new StringValue(Long.toHexString(value));
     });
 
-        Functions.set("equals",f ->{
+    Functions.set("equals",f ->{
         if(Objects.equals(f[0],f[1])){
             return NumberValue.ONE;
         }else{
@@ -314,7 +304,7 @@ public final class sfm implements Module {//Standard fels module
         }
     });
 
-        Functions.set("concat", f -> {
+    Functions.set("concat", f -> {
         StringBuilder sb = new StringBuilder();
         for(Value v : f){
         sb.append(v.asString());
@@ -322,21 +312,21 @@ public final class sfm implements Module {//Standard fels module
         return new StringValue(sb.toString());
     });
 
-        Functions.set("equalsIgnoreCase", f ->{
+    Functions.set("equalsIgnoreCase", f ->{
         if(f[0].asString().equalsIgnoreCase(f[1].asString())){
             return NumberValue.ONE;
         }else return NumberValue.ZERO;
     });
 
-        Functions.set("compareTo", f ->{
+    Functions.set("compareTo", f ->{
         return NumberValue.of(f[0].asString().compareTo(f[1].asString()));
     });
 
-        Functions.set("compareToIgnoreCase", f ->{
+    Functions.set("compareToIgnoreCase", f ->{
         return NumberValue.of(f[0].asString().compareToIgnoreCase(f[1].asString()));
     });
 
-        Functions.set("isEmpty", f ->{
+    Functions.set("isEmpty", f ->{
         if(f[0].asString().isEmpty()){
             return NumberValue.ONE;
         }else{
@@ -344,7 +334,7 @@ public final class sfm implements Module {//Standard fels module
         }
     });
 
-        Functions.set("toUpperCase", f ->{
+    Functions.set("toUpperCase", f ->{
         return new StringValue(f[0].asString().toUpperCase());
     });
 

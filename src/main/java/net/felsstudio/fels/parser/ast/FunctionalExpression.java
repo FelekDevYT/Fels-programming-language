@@ -1,5 +1,7 @@
 package main.java.net.felsstudio.fels.parser.ast;
 
+import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
+import main.java.net.felsstudio.fels.exceptions.TypeException;
 import main.java.net.felsstudio.fels.exceptions.UnknownFunctionException;
 import main.java.net.felsstudio.fels.exceptions.VariableDoesNotExistsException;
 import main.java.net.felsstudio.fels.lib.*;
@@ -12,27 +14,28 @@ import java.util.List;
  *
  * @author felek
  */
-public final class FunctionalExpression implements Expression, Statement {
-    
+public final class FunctionalExpression extends InterruptableNode implements Expression, Statement {
+
     public final Expression functionExpr;
     public final List<Expression> arguments;
-    
+
     public FunctionalExpression(Expression functionExpr) {
         this.functionExpr = functionExpr;
         arguments = new ArrayList<>();
     }
-    
+
     public void addArgument(Expression arg) {
         arguments.add(arg);
     }
-    
+
     @Override
     public void execute() {
         eval();
     }
-    
+
     @Override
     public Value eval() {
+        super.interruptionCheck();
         final int size = arguments.size();
         final Value[] values = new Value[size];
         for (int i = 0; i < size; i++) {
@@ -40,11 +43,15 @@ public final class FunctionalExpression implements Expression, Statement {
         }
         final Function f = consumeFunction(functionExpr);
         CallStack.enter(functionExpr.toString(), f);
-        final Value result = f.execute(values);
-        CallStack.exit();
-        return result;
+        try {
+            final Value result = f.execute(values);
+            CallStack.exit();
+            return result;
+        } catch (ArgumentsMismatchException | TypeException | VariableDoesNotExistsException ex) {
+            throw new RuntimeException(ex.getMessage() + " in function " + functionExpr, ex);
+        }
     }
-    
+
     private Function consumeFunction(Expression expr) {
         try {
             final Value value = expr.eval();
@@ -56,18 +63,20 @@ public final class FunctionalExpression implements Expression, Statement {
             return getFunction(ex.getVariable());
         }
     }
-    
+
     private Function getFunction(String key) {
-        if (Functions.isExists(key)) return Functions.get(key);
-        if (Variables.isExists(key)) {
-            final Value variable = Variables.get(key);
+        if (ScopeHandler.isFunctionExists(key)) {
+            return ScopeHandler.getFunction(key);
+        }
+        if (ScopeHandler.isVariableOrConstantExists(key)) {
+            final Value variable = ScopeHandler.getVariableOrConstant(key);
             if (variable.type() == Types.FUNCTION) {
                 return ((FunctionValue)variable).getValue();
             }
         }
         throw new UnknownFunctionException(key);
     }
-    
+
     @Override
     public void accept(Visitor visitor) {
         visitor.visit(this);

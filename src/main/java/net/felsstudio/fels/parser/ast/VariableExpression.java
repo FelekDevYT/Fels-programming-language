@@ -7,7 +7,7 @@ import main.java.net.felsstudio.fels.lib.*;
  *
  * @author felek
  */
-public final class VariableExpression implements Expression, Accessible {
+public final class VariableExpression extends InterruptableNode implements Expression, Accessible {
 
     public final String name;
 
@@ -17,6 +17,7 @@ public final class VariableExpression implements Expression, Accessible {
 
     @Override
     public Value eval() {
+        super.interruptionCheck();
         return get();
     }
 
@@ -28,7 +29,7 @@ public final class VariableExpression implements Expression, Accessible {
 
     @Override
     public Value set(Value value) {
-        Variables.set(name, value);
+        ScopeHandler.setVariable(name, value);
         return value;
     }
 

@@ -1,2 +1,5 @@
 using ["sfm","ftypes"]
 
+if equals("a","a"){
+	println("asdf")
+}

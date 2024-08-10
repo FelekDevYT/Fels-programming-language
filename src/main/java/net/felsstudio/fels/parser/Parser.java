@@ -27,7 +27,7 @@ public final class Parser {
 
     private static final EnumMap<TokenType, BinaryExpression.Operator> ASSIGN_OPERATORS;
     static {
-        ASSIGN_OPERATORS = new EnumMap(TokenType.class);
+        ASSIGN_OPERATORS = new EnumMap<>(TokenType.class);
         ASSIGN_OPERATORS.put(TokenType.EQ, null);
         ASSIGN_OPERATORS.put(TokenType.PLUSEQ, BinaryExpression.Operator.ADD);
         ASSIGN_OPERATORS.put(TokenType.MINUSEQ, BinaryExpression.Operator.SUBTRACT);
@@ -82,8 +82,8 @@ public final class Parser {
 
     private int getErrorLine() {
         if (size == 0) return 0;
-        if (pos >= size) return tokens.get(size - 1).row;
-        return tokens.get(pos).row;
+        if (pos >= size) return tokens.get(size - 1).getRow();
+        return tokens.get(pos).getRow();
     }
 
     private void recover() {
@@ -164,30 +164,6 @@ public final class Parser {
         return assignmentStatement();
     }
 
-    private Statement classDeclaration() {
-        // class Name {
-        //   x = 123
-        //   str = ""
-        //   def method() = str
-        // }
-        final String name = consume(TokenType.WORD).text;
-        final ClassDeclarationStatement classDeclaration = new ClassDeclarationStatement(name);
-        consume(TokenType.LBRACE);
-        do {
-            if (match(TokenType.FUNC)) {
-                classDeclaration.addMethod(functionDefine());
-            } else {
-                final AssignmentExpression fieldDeclaration = assignmentStrict();
-                if (fieldDeclaration != null) {
-                    classDeclaration.addField(fieldDeclaration);
-                } else {
-                    throw new ParseException("Class can contain only assignments and function declarations");
-                }
-            }
-        } while (!match(TokenType.RBRACE));
-        return classDeclaration;
-    }
-
     private Statement assignmentStatement() {
         if (match(TokenType.EXTRACT)) {
             return destructuringAssignment();
@@ -205,7 +181,7 @@ public final class Parser {
         final List<String> variables = new ArrayList<>();
         while (!match(TokenType.RPAREN)) {
             if (lookMatch(0, TokenType.WORD)) {
-                variables.add(consume(TokenType.WORD).text);
+                variables.add(consume(TokenType.WORD).getText());
             } else {
                 variables.add(null);
             }
@@ -242,12 +218,15 @@ public final class Parser {
 
     private Statement forStatement() {
         int foreachIndex = lookMatch(0, TokenType.LPAREN) ? 1 : 0;
-        if (lookMatch(foreachIndex, TokenType.WORD) && lookMatch(foreachIndex + 1, TokenType.COLON)) {
+        if (lookMatch(foreachIndex, TokenType.WORD)
+                && lookMatch(foreachIndex + 1, TokenType.COLON)) {
             // for v : arr || for (v : arr)
             return foreachArrayStatement();
         }
-        if (lookMatch(foreachIndex, TokenType.WORD) && lookMatch(foreachIndex + 1, TokenType.COMMA)
-                && lookMatch(foreachIndex + 2, TokenType.WORD) && lookMatch(foreachIndex + 3, TokenType.COLON)) {
+        if (lookMatch(foreachIndex, TokenType.WORD)
+                && lookMatch(foreachIndex + 1, TokenType.COMMA)
+                && lookMatch(foreachIndex + 2, TokenType.WORD)
+                && lookMatch(foreachIndex + 3, TokenType.COLON)) {
             // for key, value : arr || for (key, value : arr)
             return foreachMapStatement();
         }
@@ -255,9 +234,9 @@ public final class Parser {
         // for (init, condition, increment) body
         boolean optParentheses = match(TokenType.LPAREN);
         final Statement initialization = assignmentStatement();
-        consume(TokenType.COMMA);//COMMA
+        consume(TokenType.COMMA);
         final Expression termination = expression();
-        consume(TokenType.COMMA);//COMMA
+        consume(TokenType.COMMA);
         final Statement increment = assignmentStatement();
         if (optParentheses) consume(TokenType.RPAREN); // close opt parentheses
         final Statement statement = statementOrBlock();
@@ -265,30 +244,36 @@ public final class Parser {
     }
 
     private ForeachArrayStatement foreachArrayStatement() {
+        // for x : arr
         boolean optParentheses = match(TokenType.LPAREN);
-        final String variable = consume(TokenType.WORD).text;
+        final String variable = consume(TokenType.WORD).getText();
         consume(TokenType.COLON);
         final Expression container = expression();
-        if (optParentheses) consume(TokenType.RPAREN); // close opt parentheses
+        if (optParentheses) {
+            consume(TokenType.RPAREN); // close opt parentheses
+        }
         final Statement statement = statementOrBlock();
         return new ForeachArrayStatement(variable, container, statement);
     }
 
     private ForeachMapStatement foreachMapStatement() {
+        // for k, v : map
         boolean optParentheses = match(TokenType.LPAREN);
-        final String key = consume(TokenType.WORD).text;
+        final String key = consume(TokenType.WORD).getText();
         consume(TokenType.COMMA);
-        final String value = consume(TokenType.WORD).text;
+        final String value = consume(TokenType.WORD).getText();
         consume(TokenType.COLON);
         final Expression container = expression();
-        if (optParentheses) consume(TokenType.RPAREN); // close opt parentheses
+        if (optParentheses) {
+            consume(TokenType.RPAREN); // close opt parentheses
+        }
         final Statement statement = statementOrBlock();
         return new ForeachMapStatement(key, value, container, statement);
     }
 
     private FunctionDefineStatement functionDefine() {
         // def name(arg1, arg2 = value) { ... }  ||  def name(args) = expr
-        final String name = consume(TokenType.WORD).text;
+        final String name = consume(TokenType.WORD).getText();
         final Arguments arguments = arguments();
         final Statement body = statementBody();
         return new FunctionDefineStatement(name, arguments, body);
@@ -300,7 +285,7 @@ public final class Parser {
         boolean startsOptionalArgs = false;
         consume(TokenType.LPAREN);
         while (!match(TokenType.RPAREN)) {
-            final String name = consume(TokenType.WORD).text;
+            final String name = consume(TokenType.WORD).getText();
             if (match(TokenType.EQ)) {
                 startsOptionalArgs = true;
                 arguments.addOptional(name, variable());
@@ -329,7 +314,9 @@ public final class Parser {
         }
         if (lookMatch(0, TokenType.DOT)) {
             final List<Expression> indices = variableSuffix();
-            if (indices == null | indices.isEmpty()) return expr;
+            if (indices == null || indices.isEmpty()) {
+                return expr;
+            }
 
             if (lookMatch(0, TokenType.LPAREN)) {
                 // next function call
@@ -392,26 +379,26 @@ public final class Parser {
             if (match(TokenType.NUMBER)) {
                 // case 0.5:
                 pattern = new MatchExpression.ConstantPattern(
-                        NumberValue.of(createNumber(current.text, 10))
+                        NumberValue.of(createNumber(current.getText(), 10))
                 );
             } else if (match(TokenType.HEX_NUMBER)) {
                 // case #FF:
                 pattern = new MatchExpression.ConstantPattern(
-                        NumberValue.of(createNumber(current.text, 16))
+                        NumberValue.of(createNumber(current.getText(), 16))
                 );
             } else if (match(TokenType.TEXT)) {
                 // case "text":
                 pattern = new MatchExpression.ConstantPattern(
-                        new StringValue(current.text)
+                        new StringValue(current.getText())
                 );
             } else if (match(TokenType.WORD)) {
                 // case value:
-                pattern = new MatchExpression.VariablePattern(current.text);
+                pattern = new MatchExpression.VariablePattern(current.getText());
             } else if (match(TokenType.LBRACKET)) {
                 // case [x :: xs]:
                 final MatchExpression.ListPattern listPattern = new MatchExpression.ListPattern();
                 while (!match(TokenType.RBRACKET)) {
-                    listPattern.add(consume(TokenType.WORD).text);
+                    listPattern.add(consume(TokenType.WORD).getText());
                     match(TokenType.COLONCOLON);
                 }
                 pattern = listPattern;
@@ -419,7 +406,7 @@ public final class Parser {
                 // case (1, 2):
                 final MatchExpression.TuplePattern tuplePattern = new MatchExpression.TuplePattern();
                 while (!match(TokenType.RPAREN)) {
-                    if ("_".equals(get(0).text)) {
+                    if ("_".equals(get(0).getText())) {
                         tuplePattern.addAny();
                         consume(TokenType.WORD);
                     } else {
@@ -450,6 +437,30 @@ public final class Parser {
         return new MatchExpression(expression, patterns);
     }
 
+    private Statement classDeclaration() {
+        // class Name {
+        //   x = 123
+        //   str = ""
+        //   def method() = str
+        // }
+        final String name = consume(TokenType.WORD).getText();
+        final ClassDeclarationStatement classDeclaration = new ClassDeclarationStatement(name);
+        consume(TokenType.LBRACE);
+        do {
+            if (match(TokenType.FUNC)) {
+                classDeclaration.addMethod(functionDefine());
+            } else {
+                final AssignmentExpression fieldDeclaration = assignmentStrict();
+                if (fieldDeclaration != null) {
+                    classDeclaration.addField(fieldDeclaration);
+                } else {
+                    throw new ParseException("Class can contain only assignments and function declarations");
+                }
+            }
+        } while (!match(TokenType.RBRACE));
+        return classDeclaration;
+    }
+
     private Expression expression() {
         return assignment();
     }
@@ -463,6 +474,7 @@ public final class Parser {
     }
 
     private AssignmentExpression assignmentStrict() {
+        // x[0].prop += ...
         final int position = pos;
         final Expression targetExpr = qualifiedName();
         if ((targetExpr == null) || !(targetExpr instanceof Accessible)) {
@@ -470,7 +482,7 @@ public final class Parser {
             return null;
         }
 
-        final TokenType currentType = get(0).type;
+        final TokenType currentType = get(0).getType();
         if (!ASSIGN_OPERATORS.containsKey(currentType)) {
             pos = position;
             return null;
@@ -484,7 +496,7 @@ public final class Parser {
     }
 
     private Expression ternary() {
-        Expression result = logicalOr();
+        Expression result = nullCoalesce();
 
         if (match(TokenType.QUESTION)) {
             final Expression trueExpr = expression();
@@ -495,6 +507,20 @@ public final class Parser {
         if (match(TokenType.QUESTIONCOLON)) {
             return new BinaryExpression(BinaryExpression.Operator.ELVIS, result, expression());
         }
+        return result;
+    }
+
+    private Expression nullCoalesce() {
+        Expression result = logicalOr();
+
+        while (true) {
+            if (match(TokenType.QUESTIONQUESTION)) {
+                result = new ConditionalExpression(ConditionalExpression.Operator.NULL_COALESCE, result, expression());
+                continue;
+            }
+            break;
+        }
+
         return result;
     }
 
@@ -691,7 +717,7 @@ public final class Parser {
 
     private Expression objectCreation() {
         if (match(TokenType.NEW)) {
-            final String className = consume(TokenType.WORD).text;
+            final String className = consume(TokenType.WORD).getText();
             final List<Expression> args = new ArrayList<>();
             consume(TokenType.LPAREN);
             while (!match(TokenType.RPAREN)) {
@@ -725,19 +751,7 @@ public final class Parser {
         }
         return primary();
     }
-    private Expression nullCoalesce() {
-        Expression result = logicalOr();
 
-        while (true) {
-            if (match(TokenType.QUESTIONQUESTION)) {
-                result = new ConditionalExpression(ConditionalExpression.Operator.NULL_COALESCE, result, expression());
-                continue;
-            }
-            break;
-        }
-
-        return result;
-    }
     private Expression primary() {
         if (match(TokenType.LPAREN)) {
             Expression result = expression();
@@ -746,13 +760,15 @@ public final class Parser {
         }
 
         if (match(TokenType.COLONCOLON)) {
-            final String functionName = consume(TokenType.WORD).text;
+            // ::method reference
+            final String functionName = consume(TokenType.WORD).getText();
             return new FunctionReferenceExpression(functionName);
         }
         if (match(TokenType.MATCH)) {
             return match();
         }
         if (match(TokenType.FUNC)) {
+            // anonymous function def(args) ...
             final Arguments arguments = arguments();
             final Statement statement = statementBody();
             return new ValueExpression(new UserDefinedFunction(arguments, statement));
@@ -763,7 +779,7 @@ public final class Parser {
     private Expression variable() {
         // function(...
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
-            return functionChain(new ValueExpression(consume(TokenType.WORD).text));
+            return functionChain(new ValueExpression(consume(TokenType.WORD).getText()));
         }
 
         final Expression qualifiedNameExpr = qualifiedName();
@@ -797,10 +813,10 @@ public final class Parser {
         if (!match(TokenType.WORD)) return null;
 
         final List<Expression> indices = variableSuffix();
-        if ((indices == null) || indices.isEmpty()) {
-            return new VariableExpression(current.text);
+        if (indices == null || indices.isEmpty()) {
+            return new VariableExpression(current.getText());
         }
-        return new ContainerAccessExpression(current.text, indices);
+        return new ContainerAccessExpression(current.getText(), indices);
     }
 
     private List<Expression> variableSuffix() {
@@ -811,7 +827,7 @@ public final class Parser {
         final List<Expression> indices = new ArrayList<>();
         while (lookMatch(0, TokenType.DOT) || lookMatch(0, TokenType.LBRACKET)) {
             if (match(TokenType.DOT)) {
-                final String fieldName = consume(TokenType.WORD).text;
+                final String fieldName = consume(TokenType.WORD).getText();
                 final Expression key = new ValueExpression(fieldName);
                 indices.add(key);
             }
@@ -826,24 +842,24 @@ public final class Parser {
     private Expression value() {
         final Token current = get(0);
         if (match(TokenType.NUMBER)) {
-            return new ValueExpression(createNumber(current.text, 10));
+            return new ValueExpression(createNumber(current.getText(), 10));
         }
         if (match(TokenType.HEX_NUMBER)) {
-            return new ValueExpression(createNumber(current.text, 16));
+            return new ValueExpression(createNumber(current.getText(), 16));
         }
         if (match(TokenType.TEXT)) {
-            final ValueExpression strExpr = new ValueExpression(current.text);
+            final ValueExpression strExpr = new ValueExpression(current.getText());
             // "text".property || "text".func()
             if (lookMatch(0, TokenType.DOT)) {
                 if (lookMatch(1, TokenType.WORD) && lookMatch(2, TokenType.LPAREN)) {
                     match(TokenType.DOT);
                     return functionChain(new ContainerAccessExpression(
                             strExpr, Collections.singletonList(
-                            new ValueExpression(consume(TokenType.WORD).text)
+                            new ValueExpression(consume(TokenType.WORD).getText())
                     )));
                 }
                 final List<Expression> indices = variableSuffix();
-                if (indices.isEmpty()) {
+                if (indices == null || indices.isEmpty()) {
                     return strExpr;
                 }
                 return new ContainerAccessExpression(strExpr, indices);
@@ -868,20 +884,24 @@ public final class Parser {
 
     private Token consume(TokenType type) {
         final Token current = get(0);
-        if (type != current.type) throw new ParseException("Token " + current + " doesn't match " + type);
+        if (type != current.getType()) {
+            throw new ParseException("Token " + current + " doesn't match " + type);
+        }
         pos++;
         return current;
     }
 
     private boolean match(TokenType type) {
         final Token current = get(0);
-        if (type != current.type) return false;
+        if (type != current.getType()) {
+            return false;
+        }
         pos++;
         return true;
     }
 
     private boolean lookMatch(int pos, TokenType type) {
-        return get(pos).type == type;
+        return get(pos).getType() == type;
     }
 
     private Token get(int relativePosition) {

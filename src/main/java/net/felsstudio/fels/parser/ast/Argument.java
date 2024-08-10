@@ -2,26 +2,10 @@ package main.java.net.felsstudio.fels.parser.ast;
 
 import main.java.net.felsstudio.fels.lib.*;
 
-public final class Argument {
-
-    private final String name;
-    private final Expression valueExpr;
+public record Argument(String name, Expression valueExpr) {
 
     public Argument(String name) {
         this(name, null);
-    }
-
-    public Argument(String name, Expression valueExpr) {
-        this.name = name;
-        this.valueExpr = valueExpr;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Expression getValueExpr() {
-        return valueExpr;
     }
 
     @Override

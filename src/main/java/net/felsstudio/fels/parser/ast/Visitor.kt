@@ -38,4 +38,5 @@ interface Visitor {
     fun visit(st: PanicStatement?)
     fun visit(st: ClassDeclarationStatement?)
     fun visit(st: ObjectCreationExpression?)
+    fun visit(st: RebreakStatement?)
 }
