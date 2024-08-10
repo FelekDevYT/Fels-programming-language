@@ -18,7 +18,7 @@ public final class Parser {
         final Parser parser = new Parser(tokens);
         final Statement program = parser.parse();
         if (parser.getParseErrors().hasErrors()) {
-            throw new ParseException();
+            throw new ParseException(parser.getParseErrors().toString());
         }
         return program;
     }

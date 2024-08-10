@@ -108,6 +108,7 @@ public final class Lexer {
         KEYWORDS.put("import", TokenType.IMPORT);
         KEYWORDS.put("class", TokenType.CLASS);
         KEYWORDS.put("new", TokenType.NEW);
+        KEYWORDS.put("panic",TokenType.PANIC);
     }
 
     private final String input;

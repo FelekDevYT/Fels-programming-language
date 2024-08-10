@@ -31,14 +31,12 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         super.interruptionCheck();
         final Value value = expression.eval();
         for (Pattern p : patterns) {
-            if (p instanceof ConstantPattern) {
-                final ConstantPattern pattern = (ConstantPattern) p;
+            if (p instanceof ConstantPattern pattern) {
                 if (match(value, pattern.constant) && optMatches(p)) {
                     return evalResult(p.result);
                 }
             }
-            if (p instanceof VariablePattern) {
-                final VariablePattern pattern = (VariablePattern) p;
+            if (p instanceof VariablePattern pattern) {
                 if (pattern.variable.equals("_")) return evalResult(p.result);
 
                 if (ScopeHandler.isVariableOrConstantExists(pattern.variable)) {
@@ -55,19 +53,14 @@ public final class MatchExpression extends InterruptableNode implements Expressi
                     ScopeHandler.removeVariable(pattern.variable);
                 }
             }
-            if ((value.type() == Types.ARRAY) && (p instanceof ListPattern)) {
-                final ListPattern pattern = (ListPattern) p;
-                if (matchListPattern((ArrayValue) value, pattern)) {
-                    // Clean up variables if matched
-                    final Value result = evalResult(p.result);
-                    for (String var : pattern.parts) {
-                        ScopeHandler.removeVariable(var);
+            if ((value.type() == Types.ARRAY) && (p instanceof ListPattern pattern)) {
+                try (final var ignored = ScopeHandler.closeableScope()) {
+                    if (matchListPattern((ArrayValue) value, pattern)) {
+                        return evalResult(p.result);
                     }
-                    return result;
                 }
             }
-            if ((value.type() == Types.ARRAY) && (p instanceof TuplePattern)) {
-                final TuplePattern pattern = (TuplePattern) p;
+            if ((value.type() == Types.ARRAY) && (p instanceof TuplePattern pattern)) {
                 if (matchTuplePattern((ArrayValue) value, pattern) && optMatches(p)) {
                     return evalResult(p.result);
                 }
@@ -95,18 +88,15 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         final int arraySize = array.size();
         switch (partsSize) {
             case 0: // match [] { case []: ... }
-                if ((arraySize == 0) && optMatches(p)) {
-                    return true;
-                }
-                return false;
+                return (arraySize == 0) && optMatches(p);
 
-            case 1: // match arr { case [x]: x = arr ... }
-                final String variable = parts.get(0);
-                ScopeHandler.defineVariableInCurrentScope(variable, array);
-                if (optMatches(p)) {
-                    return true;
+            case 1: // match arr { case [x]: x = arr[0] ... }
+                if (arraySize == 1) {
+                    final String variable = parts.get(0);
+                    final var value = array.get(0);
+                    ScopeHandler.defineVariableInCurrentScope(variable, value);
+                    return optMatches(p);
                 }
-                ScopeHandler.removeVariable(variable);
                 return false;
 
             default: { // match arr { case [...]: .. }
@@ -127,16 +117,7 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         for (int i = 0; i < partsSize; i++) {
             ScopeHandler.defineVariableInCurrentScope(parts.get(i), array.get(i));
         }
-        if (optMatches(p)) {
-            // Clean up will be provided after evaluate result
-            return true;
-        }
-        // Clean up variables if no match
-        for (String var : parts) {
-            // TODO removing without checking shadowing is dangerous
-            ScopeHandler.removeVariable(var);
-        }
-        return false;
+        return optMatches(p);
     }
 
     private boolean matchListPatternWithTail(ListPattern p, List<String> parts, int partsSize, ArrayValue array, int arraySize) {
@@ -151,16 +132,7 @@ public final class MatchExpression extends InterruptableNode implements Expressi
             tail.set(i - lastPart, array.get(i));
         }
         ScopeHandler.defineVariableInCurrentScope(parts.get(lastPart), tail);
-        // Check optional condition
-        if (optMatches(p)) {
-            // Clean up will be provided after evaluate result
-            return true;
-        }
-        // Clean up variables
-        for (String var : parts) {
-            ScopeHandler.removeVariable(var);
-        }
-        return false;
+        return optMatches(p);
     }
 
     private boolean match(Value value, Value constant) {
@@ -203,7 +175,7 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         return sb.toString();
     }
 
-    public abstract static class Pattern {
+    public abstract static sealed class Pattern {
         public Statement result;
         public Expression optCondition;
 
@@ -218,8 +190,8 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         }
     }
 
-    public static class ConstantPattern extends Pattern {
-        Value constant;
+    public static final class ConstantPattern extends Pattern {
+        final Value constant;
 
         public ConstantPattern(Value pattern) {
             this.constant = pattern;
@@ -231,8 +203,8 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         }
     }
 
-    public static class VariablePattern extends Pattern {
-        public String variable;
+    public static final class VariablePattern extends Pattern {
+        public final String variable;
 
         public VariablePattern(String pattern) {
             this.variable = pattern;
@@ -244,8 +216,8 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         }
     }
 
-    public static class ListPattern extends Pattern {
-        List<String> parts;
+    public static final class ListPattern extends Pattern {
+        final List<String> parts;
 
         public ListPattern() {
             this(new ArrayList<>());
@@ -275,11 +247,11 @@ public final class MatchExpression extends InterruptableNode implements Expressi
         }
     }
 
-    public static class TuplePattern extends Pattern {
-        public List<Expression> values;
+    public static final class TuplePattern extends Pattern {
+        public final List<Expression> values;
 
         public TuplePattern() {
-            this(new ArrayList<Expression>());
+            this(new ArrayList<>());
         }
 
         public TuplePattern(List<Expression> parts) {

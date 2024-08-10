@@ -37,5 +37,4 @@ interface ResultVisitor<R, T> {
     fun visit(s: UsingStatement?, t: T): R
     fun visit(s: ClassDeclarationStatement?, t: T): R
     fun visit(objectCreationExpression: ObjectCreationExpression?, t: T): R
-    fun <T1, R1> visit(s: RebreakStatement, t: T1): R1
 }

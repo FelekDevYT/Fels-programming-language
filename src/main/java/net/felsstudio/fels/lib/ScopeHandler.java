@@ -61,6 +61,11 @@ public final class ScopeHandler {
         return function;
     }
 
+    public static AutoCloseableScope closeableScope() {
+        push();
+        return new AutoCloseableScope();
+    }
+
     public static void setFunction(String name, Function function) {
         rootScope.setFunction(name, function);
     }

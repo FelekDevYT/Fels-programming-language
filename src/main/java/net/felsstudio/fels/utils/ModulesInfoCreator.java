@@ -29,14 +29,13 @@ public final class ModulesInfoCreator {
         for (String moduleName : moduleNames) {
             final String moduleClassPath = String.format("net.felsstudio.fels.Modules.%s.%s", moduleName, moduleName);
             Class<?> moduleClass = Class.forName(moduleClassPath);
-            Functions.getFunctions().clear();
-            Variables.variables().clear();
+            ScopeHandler.resetScope();
             final Module module = (Module) moduleClass.newInstance();
             module.init();
 
             final ModuleInfo moduleInfo = new ModuleInfo(moduleName);
-            moduleInfo.functions.addAll(Functions.getFunctions().keySet());
-            moduleInfo.constants.putAll(Variables.variables());
+            moduleInfo.functions.addAll(ScopeHandler.functions().keySet());
+            moduleInfo.constants.putAll(ScopeHandler.constants());
             moduleInfo.types.addAll(listValues(moduleClass));
             moduleInfos.add(moduleInfo);
         }

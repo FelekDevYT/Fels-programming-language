@@ -1,5 +1,12 @@
 using ["sfm","ftypes"]
 
-if equals("a","a"){
-	println("asdf")
+func testMatchValueAny(){
+    value = 20
+    result = match(value){
+        case 0: "zero"
+        case 1: "one"
+        case _: "other"
+    }
+    println(equals("other",result))
 }
+testMatchValueAny()
