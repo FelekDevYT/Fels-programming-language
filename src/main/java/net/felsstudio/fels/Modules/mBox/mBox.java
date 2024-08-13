@@ -11,35 +11,19 @@ public class mBox implements Module {
     @Override
     public void init() {
     Functions.set("showErrorMessage", args ->{
-        Alert dialog = new Alert(Alert.AlertType.ERROR);
-        dialog.setTitle(args[0].asString());
-        dialog.setHeaderText(null);
-        dialog.setContentText(args[1].asString());
-        dialog.showAndWait();
+        JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.ERROR_MESSAGE);
         return NumberValue.ZERO;
     });
     Functions.set("showInformationMessage",args ->{
-        Alert dialog = new Alert(Alert.AlertType.INFORMATION);
-        dialog.setTitle(args[0].asString());
-        dialog.setHeaderText(null);
-        dialog.setContentText(args[1].asString());
-        dialog.showAndWait();
-            return NumberValue.ZERO;
-        });
+        JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.INFORMATION_MESSAGE);
+        return NumberValue.ZERO;
+    });
     Functions.set("showWarningMessage",args -> {
-        Alert dialog = new Alert(Alert.AlertType.WARNING);
-        dialog.setTitle(args[0].asString());
-        dialog.setHeaderText(null);
-        dialog.setContentText(args[1].asString());
-        dialog.showAndWait();
+        JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.WARNING_MESSAGE);
         return NumberValue.ZERO;
     });
     Functions.set("showNoneMessage",args -> {
-        Alert dialog = new Alert(Alert.AlertType.NONE);
-        dialog.setTitle(args[0].asString());
-        dialog.setHeaderText(null);
-        dialog.setContentText(args[1].asString());
-        dialog.showAndWait();
+        JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.PLAIN_MESSAGE);
         return NumberValue.ZERO;
     });
     Functions.set("showInputDialog",args -> {

@@ -37,6 +37,10 @@ public final class fgl implements Module {
         Functions.set("drawstring", new DrawString());
         Functions.set("color", new SetColor());
         Functions.set("repaint", new Repaint());
+        Functions.set("closeWindow",args ->{
+            frame.dispose();
+            return NumberValue.ZERO;
+        });
 
         Functions.set("closeRequest", f ->{
             if(frame.isShowing()){

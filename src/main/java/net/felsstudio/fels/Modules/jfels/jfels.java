@@ -7,6 +7,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public final class jfels implements Module {
 
@@ -54,6 +55,9 @@ public final class jfels implements Module {
         Functions.set("newClass", this::newClass);
         Functions.set("toObject", this::toObject);
         Functions.set("toValue", this::toValue);
+
+    //    Locale l = new Locale("EN","INDIA");
+       // l.
     }
 
     //<editor-fold defaultstate="collapsed" desc="Values">

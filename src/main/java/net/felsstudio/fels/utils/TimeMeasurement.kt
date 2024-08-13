@@ -1,79 +1,70 @@
-package net.felsstudio.fels.utils;
+package net.felsstudio.fels.utils
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.*
+import java.util.concurrent.TimeUnit
 
-public final class TimeMeasurement {
+class TimeMeasurement {
+    private val finished: MutableMap<String, Long> = HashMap()
+    private val running: MutableMap<String, Long> = HashMap()
 
-    private final Map<String, Long> finished, running;
-
-    public TimeMeasurement() {
-        finished = new HashMap<>();
-        running = new HashMap<>();
+    fun clear() {
+        finished.clear()
+        running.clear()
     }
 
-    public void clear() {
-        finished.clear();
-        running.clear();
-    }
-
-    public void start(String... names) {
-        final long time = System.nanoTime();
-        for (String name : names) {
-            running.put(name, time);
+    fun start(vararg names: String) {
+        val time = System.nanoTime()
+        for (name in names) {
+            running[name] = time
         }
     }
 
-    public void pause(String... names) {
-        final long time = System.nanoTime();
-        for (String name : names) {
+    fun pause(vararg names: String) {
+        val time = System.nanoTime()
+        for (name in names) {
             if (running.containsKey(name)) {
-                addTime(name, time - running.get(name));
-                running.remove(name);
+                addTime(name, time - running[name]!!)
+                running.remove(name)
             }
         }
     }
 
-    public void stop(String... names) {
-        final long time = System.nanoTime();
-        for (String name : names) {
+    fun stop(vararg names: String) {
+        val time = System.nanoTime()
+        for (name in names) {
             if (running.containsKey(name)) {
-                addTime(name, time - running.get(name));
+                addTime(name, time - running[name]!!)
             }
         }
     }
 
-    public Map<String, Long> getFinished() {
-        return finished;
+    fun getFinished(): Map<String, Long> {
+        return finished
     }
 
-    public String summary() {
-        return summary(TimeUnit.SECONDS, true);
-    }
+    @JvmOverloads
+    fun summary(unit: TimeUnit = TimeUnit.SECONDS, showSummary: Boolean = true): String {
+        val unitName = unit.name.lowercase(Locale.getDefault())
+        val result = StringBuilder()
+        var summaryTime: Long = 0
+        for ((key, value) in finished) {
+            val convertedTime = unit.convert(value, TimeUnit.NANOSECONDS)
+            summaryTime += convertedTime
 
-    public String summary(TimeUnit unit, boolean showSummary) {
-        final String unitName = unit.name().toLowerCase();
-        final StringBuilder result = new StringBuilder();
-        long summaryTime = 0;
-        for (Map.Entry<String, Long> entry : finished.entrySet()) {
-            final long convertedTime = unit.convert(entry.getValue(), TimeUnit.NANOSECONDS);
-            summaryTime += convertedTime;
-
-            result.append(entry.getKey()).append(": ")
-                    .append(convertedTime).append(' ').append(unitName)
-                    .append(System.lineSeparator());
+            result.append(key).append(": ")
+                .append(convertedTime).append(' ').append(unitName)
+                .append(System.lineSeparator())
         }
         if (showSummary) {
             result.append("Summary: ")
-                    .append(summaryTime).append(' ').append(unitName)
-                    .append(System.lineSeparator());
+                .append(summaryTime).append(' ').append(unitName)
+                .append(System.lineSeparator())
         }
-        return result.toString();
+        return result.toString()
     }
 
-    private void addTime(String name, long time) {
-        final long alreadyElapsed = finished.getOrDefault(name, 0L);
-        finished.put(name, alreadyElapsed + time);
+    private fun addTime(name: String, time: Long) {
+        val alreadyElapsed = finished.getOrDefault(name, 0L)
+        finished[name] = alreadyElapsed + time
     }
 }
