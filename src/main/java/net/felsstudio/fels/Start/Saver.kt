@@ -1,25 +1,30 @@
-package main.java.net.felsstudio.fels.Start;
+package main.java.net.felsstudio.fels.Start
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 
-public class Saver {
-
-    public void save(vals v){
-        new File("saver.fsf");
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter("saver.fsf"))){
-            bw.write(String.valueOf(v.doShowVars)+"\n");
-            bw.write(String.valueOf(v.doShowTokens)+"\n");
-            bw.write(String.valueOf(v.doShowMe)+"\n");
-            bw.write(String.valueOf(v.doShowAst)+"\n");
-        }catch (IOException e){
-            e.printStackTrace();
+class Saver {
+    fun save(v: vals) {
+        File("saver.fsf")
+        try {
+            BufferedWriter(FileWriter("saver.fsf")).use { bw ->
+                bw.write(v.doShowVars.toString() + "\n")
+                bw.write(v.doShowTokens.toString() + "\n")
+                bw.write(v.doShowMe.toString() + "\n")
+                bw.write(v.doShowAst.toString() + "\n")
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
-    public String[] read() throws IOException {
-        String[] s = Files.readAllLines(Paths.get("saver.fsf")).toArray(new String[0]);
-        return s;
+    @Throws(IOException::class)
+    fun read(): Array<String> {
+        val s = Files.readAllLines(Paths.get("saver.fsf")).toTypedArray<String>()
+        return s
     }
 }

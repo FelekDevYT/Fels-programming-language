@@ -1,12 +1,14 @@
 package main.java.net.felsstudio.fels.Start
 
+import main.java.net.felsstudio.fels.lib.Information
 import java.io.IOException
 import java.util.*
+import kotlin.system.exitProcess
 
 /**
  * @author felek
  */
-internal class vals {
+class vals {
     @JvmField
     var doShowVars: Boolean = false
     @JvmField
@@ -51,6 +53,7 @@ internal object Main {
         val v = vals()
 
         while (true) {
+            print("FELS v${Information.FELS_VERSION}>>>")
             val line = scan.nextLine().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             when (line[0]) {
@@ -62,9 +65,10 @@ internal object Main {
                             v.doShowTokens = lines[1].toBoolean()
                             v.doShowMe = lines[2].toBoolean()
                             v.doShowAst = lines[3].toBoolean()
+                            println("FELS [ SUCCESSFUL ] setting up setting")
                             continue
                         } catch (exc: IOException) {
-                            exc.printStackTrace()
+                            System.err.println("FELS [ERROR] " + exc.message)
                         }
                     }
                     try {
@@ -75,6 +79,7 @@ internal object Main {
                     } catch (e: Exception) {
                         System.err.println("FELS [ERROR] " + e.message)
                     }
+                    println("FELS [ SUCCESSFUL ] setting up setting")
                 }
 
                 "-run" -> {
@@ -86,20 +91,22 @@ internal object Main {
                 }
 
                 "-help" -> {
-                    println("FELS programming language V.\${Information.FELS_VERSION}")
-                    println("Copyright \${Information.FELS_AUTHOR}")
+                    println("FELS programming language V.${Information.FELS_VERSION}")
+                    println("Copyright ${Information.FELS_AUTHOR}")
                     println("FELS console V.0.1")
                 }
 
-                "-version" -> println("FELS programming language V.\${Information.FELS_VERSION}")
+                "-version" -> println("FELS programming language V.${Information.FELS_VERSION}")
                 "-exit" -> {
-                    System.exit(0)
+                    println("FELS [ SUCCESSFUL ] exiting from console")
+                    exitProcess(0)
                 }
 
                 "-save" -> {
                     try {
                         val s = Saver()
                         s.save(v)
+                        println("FELS [ SUCCESSFUL ] run setting save to saver.fsf")
                     } catch (exc: Exception) {
                         exc.printStackTrace()
                     }

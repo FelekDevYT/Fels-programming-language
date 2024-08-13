@@ -7,7 +7,7 @@ import java.util.*;
 public class time implements Module {
     @Override
     public void init() {
-        Functions.set("sleep", f ->{
+    Functions.set("sleep", f ->{
         try{
             Thread.sleep((long) f[0].asNumber());
             return NumberValue.of(1);
@@ -15,10 +15,10 @@ public class time implements Module {
             return NumberValue.of(0);
         }
     });
-        Functions.set("getTime",f ->{
+    Functions.set("getTime",f ->{
         return new StringValue(new Date().toString());
     });
-        Functions.set("getMillis",f ->{
+    Functions.set("getMillis",f ->{
         return NumberValue.of(new Date().getTime());
     });
     }
