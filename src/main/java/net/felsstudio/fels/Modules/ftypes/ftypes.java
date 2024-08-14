@@ -19,6 +19,7 @@ public final class ftypes implements Module {
         Functions.set("typeOf", args -> NumberValue.of(args[0].type()));
         Functions.set("toString", args -> new StringValue(args[0].asString()));
         Functions.set("toNumber", args -> NumberValue.of(args[0].asNumber()));
+        Functions.set("getNameFromNumber",args -> new StringValue(Types.typeToString(args[0].asInt())));
 
         Functions.set("toByte", args -> NumberValue.of((byte)args[0].asInt()));
         Functions.set("toShort", args -> NumberValue.of((short)args[0].asInt()));

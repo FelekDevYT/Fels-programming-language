@@ -113,7 +113,7 @@ internal object Main {
                 }
 
                 "-cls" -> {
-                    print("\u001b[H\u001b[2J")
+                    println("\u001b[H\u001b[2J")
                     System.out.flush()
                 }
             }

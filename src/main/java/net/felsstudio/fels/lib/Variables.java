@@ -26,6 +26,10 @@ public final class Variables {
         ScopeHandler.setVariable(name, value);
     }
 
+    public static void remove(String name) {
+        ScopeHandler.removeVariable(name);
+    }
+
     /**
      * For compatibility with other modules
      */

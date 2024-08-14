@@ -120,6 +120,12 @@ public final class ScopeHandler {
         }
     }
 
+    public static void removeFunction(String name) {
+        synchronized (lock) {
+            findScope(name).scope.removeFunction(name);
+        }
+    }
+
     private static Scope.ScopeFindData findScope(String name) {
         Scope current = scope;
         do {

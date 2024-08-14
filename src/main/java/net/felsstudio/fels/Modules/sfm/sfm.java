@@ -13,12 +13,30 @@ public final class sfm implements Module {//Standard fels module
 
     @Override
     public void init() {
-        Functions.set("echo", args -> {
+    Functions.set("echo", args -> {
         for (Value arg : args) {
         System.out.println(arg.asString());
     }
         System.out.println();
         return NumberValue.ZERO;
+    });
+    Functions.set("remVar",args ->{
+        Variables.remove(args[0].asString());
+        return NumberValue.ZERO;
+    });//Remove variable from memory =))
+    Functions.set("defineVar",args ->{
+       Variables.set(args[0].asString(),args[1]);
+        return NumberValue.ZERO;
+    });
+    Functions.set("IsVarExists",args ->{
+        if(Variables.isExists(args[0].asString())){
+            return NumberValue.ONE;
+        }else{
+            return NumberValue.ZERO;
+        }
+    });
+    Functions.set("getVarValue",args ->{
+        return new StringValue(Variables.get(args[0].asString()).asString());
     });
         Functions.set("array", new Function() {
 
@@ -553,11 +571,10 @@ public final class sfm implements Module {//Standard fels module
         }
     });
 
-
-        MapValue map = new MapValue(3);
-        map.set("__VERSION__",new StringValue(Information.FELS_VERSION));
-        map.set("__AUTOR__",new StringValue(Information.FELS_AUTHOR));
-        map.set("__DATE__",new StringValue(Information.DATE));
+        ScopeHandler.setVariable("__VERSION__",new StringValue(Information.FELS_VERSION));
+        ScopeHandler.setVariable("__AUTOR__",new StringValue(Information.FELS_AUTHOR));
+        ScopeHandler.setVariable("__DATE__",new StringValue(Information.DATE));
+        ScopeHandler.setVariable("NULL",NumberValue.ZERO);
 
     }
 

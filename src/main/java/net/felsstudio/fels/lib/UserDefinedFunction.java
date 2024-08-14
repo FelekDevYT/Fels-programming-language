@@ -64,8 +64,8 @@ public class UserDefinedFunction implements Function {
     @Override
     public String toString() {
         if (body instanceof ReturnStatement returnStmt) {
-            return String.format("def%s = %s", arguments, returnStmt.expression);
+            return String.format("func%s = %s", arguments, returnStmt.expression);
         }
-        return String.format("def%s %s", arguments, body);
+        return String.format("func%s %s", arguments, body);
     }
 }
