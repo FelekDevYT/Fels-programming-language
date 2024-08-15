@@ -109,6 +109,7 @@ public final class Lexer {
         KEYWORDS.put("class", TokenType.CLASS);
         KEYWORDS.put("new", TokenType.NEW);
         KEYWORDS.put("panic",TokenType.PANIC);
+        KEYWORDS.put("perror",TokenType.PERROR);
     }
 
     private final String input;

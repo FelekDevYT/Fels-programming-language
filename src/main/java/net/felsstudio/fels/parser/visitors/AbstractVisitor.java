@@ -1,6 +1,9 @@
 package main.java.net.felsstudio.fels.parser.visitors;
 
-import main.java.net.felsstudio.fels.parser.ast.*;
+import main.java.net.felsstudio.fels.parser.ast.expressions.*;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Expression;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Visitor;
 
 import java.util.Map;
 

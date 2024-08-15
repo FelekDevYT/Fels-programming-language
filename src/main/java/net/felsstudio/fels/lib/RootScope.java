@@ -5,13 +5,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 final class RootScope extends Scope {
     private final Map<String, Value> constants;
-    private final Map<String, Function> functions;
+    public final Map<String, Function> functions;
 
     RootScope() {
         functions = new ConcurrentHashMap<>();
         constants = new ConcurrentHashMap<>();
         constants.put("true", NumberValue.ONE);
         constants.put("false", NumberValue.ZERO);
+        constants.put("NULL", NumberValue.ZERO);
+        constants.put("PI", NumberValue.of(Math.PI));
+        constants.put("E", NumberValue.of(Math.E));
     }
 
     @Override

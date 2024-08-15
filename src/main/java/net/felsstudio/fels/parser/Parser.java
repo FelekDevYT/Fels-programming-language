@@ -2,9 +2,11 @@ package main.java.net.felsstudio.fels.parser;
 
 import main.java.net.felsstudio.fels.exceptions.ParseException;
 import main.java.net.felsstudio.fels.lib.*;
-import main.java.net.felsstudio.fels.parser.ast.*;
 import main.java.net.felsstudio.fels.parser.ast.Arguments;
-import main.java.net.felsstudio.fels.parser.ast.Statement;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
+import main.java.net.felsstudio.fels.parser.ast.expressions.*;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Accessible;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Expression;
 
 import java.util.*;
 
@@ -157,6 +159,9 @@ public final class Parser {
         }
         if (match(TokenType.CLASS)) {
             return classDeclaration();
+        }
+        if(match(TokenType.PERROR)){
+            return new PerrorStatement(expression());
         }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return new ExprStatement(functionChain(qualifiedName()));

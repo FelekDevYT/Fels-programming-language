@@ -84,7 +84,7 @@ public final class fgl implements Module {
         Variables.set("VK_DOWN", NumberValue.of(KeyEvent.VK_DOWN));
         Variables.set("VK_LEFT", NumberValue.of(KeyEvent.VK_LEFT));
         Variables.set("VK_RIGHT", NumberValue.of(KeyEvent.VK_RIGHT));
-        Variables.set("VK_FIRE", NumberValue.of(KeyEvent.VK_ENTER));
+        Variables.set("VK_ENTER", NumberValue.of(KeyEvent.VK_ENTER));
         Variables.set("VK_ESCAPE", NumberValue.of(KeyEvent.VK_ESCAPE));
 
         lastKey = NumberValue.MINUS_ONE;

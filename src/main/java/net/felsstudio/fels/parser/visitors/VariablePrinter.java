@@ -1,7 +1,9 @@
 package main.java.net.felsstudio.fels.parser.visitors;
 
-import main.java.net.felsstudio.fels.parser.ast.AssignmentExpression;
-import main.java.net.felsstudio.fels.parser.ast.VariableExpression;
+import main.java.net.felsstudio.fels.parser.ast.expressions.AssignmentExpression;
+import main.java.net.felsstudio.fels.parser.ast.PerrorStatement;
+import main.java.net.felsstudio.fels.parser.ast.expressions.VariableExpression;
+import org.jetbrains.annotations.Nullable;
 
 /**
  *
@@ -19,5 +21,10 @@ public final class VariablePrinter extends AbstractVisitor {
     public void visit(VariableExpression s) {
         super.visit(s);
         System.out.println(s.name);
+    }
+
+    @Override
+    public void visit(@Nullable PerrorStatement st) {
+
     }
 }

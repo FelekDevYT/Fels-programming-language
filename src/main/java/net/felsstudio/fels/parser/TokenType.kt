@@ -30,6 +30,7 @@ enum class TokenType {
     PANIC,
     CLASS,
     NEW,
+    PERROR,
 
     PLUS,  // +
     MINUS,  // -

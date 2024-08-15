@@ -1,7 +1,7 @@
 package main.java.net.felsstudio.fels.Start
 
 import main.java.net.felsstudio.fels.lib.Information
-import java.io.IOException
+import java.io.*
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -22,41 +22,68 @@ class vals {
 internal object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        /*if (args.size == 0) {
-            Starter.start(false, true, true, false, "prog.fels")
-        } else if (args.size == 1) {
-            Starter.start(false, false, true, false, args[0])
-        } else if (args.size == 2) {
-            Starter.start(args[0].toBoolean(), false, true, false, args[1])
-        } else if (args.size == 3) {
-            Starter.start(args[0].toBoolean(), args[1].toBoolean(), true, false, args[2])
-        } else if (args.size == 4) {
-            Starter.start(args[0].toBoolean(), args[1].toBoolean(), args[2].toBoolean(), false, args[3])
-        } else if (args.size == 5) {
-            Starter.start(args[0].toBoolean(), args[1].toBoolean(), args[2].toBoolean(), false, args[4])
-        } else if (args.size == 6) {
-            Starter.start(args[0].toBoolean(), args[1].toBoolean(), args[2].toBoolean(), args[4].toBoolean(), args[5])
-        }*/
 
-        println("==========================================================")
+        println("=========================================================================================")
         println("                    WELCOME IN FELS                       ")
-        println("-run - run you script")
-        println("-setArgs - set args")
+        println("-setAS <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set auto start setting")
+        println("-debugger <PROJECT_NAME> - open debug setting of <PROJECT_NAME> project")
+        println("-run <NAME> - run you project")
+        println("-new <NAME> <VERSION> <AUTHOR> - create new project")
+        println("-setArgs <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set args")
         println("-help - about of FELS")
         println("-version - version of FELS")
         println("-cls - clear console")
         println("-exit - exit from program")
-        println("==========================================================")
+        println("=========================================================================================")
 
         val scan = Scanner(System.`in`)
 
         val v = vals()
+
+        if(File("as.fsf").exists()){
+            BufferedReader(FileReader(File("as.fsf"))).use { br ->
+                v.doShowVars = br.readLine().toString().toBoolean()
+                v.doShowTokens = br.readLine().toString().toBoolean()
+                v.doShowMe = br.readLine().toString().toBoolean()
+                v.doShowAst = br.readLine().toString().toBoolean()
+            }
+            println("Settings up automatically from as.fsf file")
+        }
 
         while (true) {
             print("FELS v${Information.FELS_VERSION}>>>")
             val line = scan.nextLine().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             when (line[0]) {
+                "-debugger" ->{
+                    println("This feature in development")
+                    TODO("CREATE THIS DEBUGGER!!!")
+                }
+
+                "-setAS" -> {
+                    try {
+                        File("as.fsf")
+
+                        BufferedWriter(FileWriter("as.fsf")).use { bw ->
+                            bw.write(line[1] + "\n")
+                            bw.write(line[2] + "\n")
+                            bw.write(line[3] + "\n")
+                            bw.write(line[4] + "\n")
+                        }
+                    } catch (e: Exception) {
+                        System.err.println("FELS [ERROR] " + e.message)
+                    }
+                    println("FELS [ SUCCESSFUL ] setting up auto setting")
+                }
+
+                "-run" ->{
+                    try {
+                        Starter.start(v.doShowVars, v.doShowTokens, v.doShowMe, v.doShowAst, line[1]+"\\src\\main.fels")
+                    } catch (e: Exception) {
+                        System.err.println("FELS [ERROR] " + e.message)
+                    }
+                }
+
                 "-setArgs" -> {
                     if (line[1] == ":f") {
                         try {
@@ -80,14 +107,6 @@ internal object Main {
                         System.err.println("FELS [ERROR] " + e.message)
                     }
                     println("FELS [ SUCCESSFUL ] setting up setting")
-                }
-
-                "-run" -> {
-                    try {
-                        Starter.start(v.doShowVars, v.doShowTokens, v.doShowMe, v.doShowAst, line[1])
-                    } catch (e: Exception) {
-                        System.err.println("FELS [ERROR] " + e.message)
-                    }
                 }
 
                 "-help" -> {
@@ -115,6 +134,12 @@ internal object Main {
                 "-cls" -> {
                     println("\u001b[H\u001b[2J")
                     System.out.flush()
+                }
+
+                "-new" ->{
+                    var p = Project(line[1],line[2],line[3])
+                    p.createProject()
+                    println("FELS [ SUCCESSFUL ] setting up project")
                 }
             }
         }

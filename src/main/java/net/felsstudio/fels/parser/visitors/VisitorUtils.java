@@ -3,7 +3,9 @@ package main.java.net.felsstudio.fels.parser.visitors;
 import main.java.net.felsstudio.fels.lib.NumberValue;
 import main.java.net.felsstudio.fels.lib.Types;
 import main.java.net.felsstudio.fels.lib.Value;
-import main.java.net.felsstudio.fels.parser.ast.*;
+import main.java.net.felsstudio.fels.parser.ast.expressions.*;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Node;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
 
 import java.io.IOException;
 import java.util.HashSet;

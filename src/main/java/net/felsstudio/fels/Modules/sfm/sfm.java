@@ -5,6 +5,8 @@ import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.exceptions.TypeException;
 import net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -37,6 +39,18 @@ public final class sfm implements Module {//Standard fels module
     });
     Functions.set("getVarValue",args ->{
         return new StringValue(Variables.get(args[0].asString()).asString());
+    });
+    Functions.set("remFuncs",args ->{
+        ScopeHandler.functions().clear();
+        return NumberValue.ZERO;
+    });
+    Functions.set("remFunc",args ->{
+        ScopeHandler.functions().remove(args[0].asString());
+        return NumberValue.ZERO;
+    });
+    Functions.set("const",args ->{
+        Variables.set(args[0].asString(),args[1]);
+        return NumberValue.ZERO;
     });
         Functions.set("array", new Function() {
 
@@ -574,7 +588,6 @@ public final class sfm implements Module {//Standard fels module
         ScopeHandler.setVariable("__VERSION__",new StringValue(Information.FELS_VERSION));
         ScopeHandler.setVariable("__AUTOR__",new StringValue(Information.FELS_AUTHOR));
         ScopeHandler.setVariable("__DATE__",new StringValue(Information.DATE));
-        ScopeHandler.setVariable("NULL",NumberValue.ZERO);
 
     }
 

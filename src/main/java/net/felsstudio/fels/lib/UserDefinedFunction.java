@@ -3,7 +3,7 @@ package main.java.net.felsstudio.fels.lib;
 import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.parser.ast.Argument;
 import main.java.net.felsstudio.fels.parser.ast.ReturnStatement;
-import main.java.net.felsstudio.fels.parser.ast.Statement;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
 
 /**
  *

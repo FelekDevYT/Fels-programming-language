@@ -1,7 +1,7 @@
 package main.java.net.felsstudio.fels.lib;
 
 import main.java.net.felsstudio.fels.parser.ast.Arguments;
-import main.java.net.felsstudio.fels.parser.ast.Statement;
+import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
 
 public class ClassMethod extends UserDefinedFunction {
 

@@ -49,7 +49,9 @@ public final class ScopeHandler {
         }
     }
 
-
+    public static void removeFunction(String name) {
+        rootScope.removeFunction(name);
+    }
 
     public static boolean isFunctionExists(String name) {
         return rootScope.containsFunction(name);
@@ -117,12 +119,6 @@ public final class ScopeHandler {
     public static void removeVariable(String name) {
         synchronized (lock) {
             findScope(name).scope.removeVariable(name);
-        }
-    }
-
-    public static void removeFunction(String name) {
-        synchronized (lock) {
-            findScope(name).scope.removeFunction(name);
         }
     }
 
