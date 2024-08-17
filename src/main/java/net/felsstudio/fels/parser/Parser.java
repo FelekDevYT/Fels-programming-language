@@ -25,7 +25,7 @@ public final class Parser {
         return program;
     }
 
-    private static final Token EOF = new Token(TokenType.EOF, "", -1, -1);
+    private static final Token EOF = new Token(TokenType.EOF, "", new Pos(-1, -1));
 
     private static final EnumMap<TokenType, BinaryExpression.Operator> ASSIGN_OPERATORS;
     static {
@@ -74,7 +74,7 @@ public final class Parser {
             try {
                 result.add(statement());
             } catch (Exception ex) {
-                parseErrors.add(ex, getErrorLine());
+                parseErrors.add(ex, getErrorPos());
                 recover();
             }
         }
@@ -82,10 +82,10 @@ public final class Parser {
         return result;
     }
 
-    private int getErrorLine() {
-        if (size == 0) return 0;
-        if (pos >= size) return tokens.get(size - 1).row();
-        return tokens.get(pos).row();
+    private Pos getErrorPos() {
+        if (size == 0) return new Pos(0, 0);
+        if (pos >= size) return tokens.get(size - 1).pos();
+        return tokens.get(pos).pos();
     }
 
     private void recover() {

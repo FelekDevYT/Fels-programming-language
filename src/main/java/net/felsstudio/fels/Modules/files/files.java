@@ -1,90 +1,97 @@
 package main.java.net.felsstudio.fels.Modules.files;
 
+import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.lib.*;
-import net.felsstudio.fels.Modules.Module;
+import main.java.net.felsstudio.fels.parser.Console.*;
+import main.java.net.felsstudio.fels.parser.Console.Console;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
 
 public final class files implements Module {
 
     private static Map<Integer, FileInfo> files;
 
-    public static void initConstants() {
-        Variables.define("FILES_COMPARATOR", new FunctionValue(new filesComparatorFunction()));
+    @Override
+    public Map<String, Value> constants() {
+        return Map.of(
+                "FILES_COMPARATOR", new FunctionValue(new filesComparatorFunction())
+        );
     }
 
     @Override
-    public void init() {
+    public Map<String, Function> functions() {
         files = new HashMap<>();
-        initConstants();
-
-        Functions.set("fopen", new fopen());
-        Functions.set("flush", new flush());
-        Functions.set("fclose", new fclose());
+        final var result = new LinkedHashMap<String, Function>(50);
+        result.put("fopen", new fopen());
+        result.put("flush", new flush());
+        result.put("fclose", new fclose());
 
         // Operations
-        Functions.set("copy", new copy());
-        Functions.set("delete", fileToBoolean(File::delete));
-        Functions.set("listFiles", new listFiles());
-        Functions.set("mkdir", fileToBoolean(File::mkdir));
-        Functions.set("mkdirs", fileToBoolean(File::mkdirs));
-        Functions.set("rename", new rename());
+        result.put("copy", new copy());
+        result.put("delete", fileToBoolean(File::delete));
+        result.put("listFiles", new listFiles());
+        result.put("mkdir", fileToBoolean(File::mkdir));
+        result.put("mkdirs", fileToBoolean(File::mkdirs));
+        result.put("rename", new rename());
 
         // Permissions and statuses
-        Functions.set("canExecute", fileToBoolean(File::canExecute));
-        Functions.set("canRead", fileToBoolean(File::canRead));
-        Functions.set("canWrite", fileToBoolean(File::canWrite));
-        Functions.set("isDirectory", fileToBoolean(File::isDirectory));
-        Functions.set("isFile", fileToBoolean(File::isFile));
-        Functions.set("isHidden", fileToBoolean(File::isHidden));
-        Functions.set("setExecutable", new setExecutable());
-        Functions.set("setReadable", new setReadable());
-        Functions.set("setReadOnly", new setReadOnly());
-        Functions.set("setWritable", new setWritable());
+        result.put("canExecute", fileToBoolean(File::canExecute));
+        result.put("canRead", fileToBoolean(File::canRead));
+        result.put("canWrite", fileToBoolean(File::canWrite));
+        result.put("isDirectory", fileToBoolean(File::isDirectory));
+        result.put("isFile", fileToBoolean(File::isFile));
+        result.put("isHidden", fileToBoolean(File::isHidden));
+        result.put("setExecutable", new setExecutable());
+        result.put("setReadable", new setReadable());
+        result.put("setReadOnly", new setReadOnly());
+        result.put("setWritable", new setWritable());
 
-        Functions.set("exists", fileToBoolean(File::exists));
-        Functions.set("fileSize", new fileSize());
-        Functions.set("getParent", new getParent());
-        Functions.set("lastModified", new lastModified());
-        Functions.set("setLastModified", new setLastModified());
+        result.put("exists", fileToBoolean(File::exists));
+        result.put("fileSize", new fileSize());
+        result.put("getParent", new getParent());
+        result.put("lastModified", new lastModified());
+        result.put("setLastModified", new setLastModified());
 
         // IO
-        Functions.set("readBoolean", new readBoolean());
-        Functions.set("readByte", new readByte());
-        Functions.set("readBytes", new readBytes());
-        Functions.set("readAllBytes", new readAllBytes());
-        Functions.set("readChar", new readChar());
-        Functions.set("readShort", new readShort());
-        Functions.set("readInt", new readInt());
-        Functions.set("readLong", new readLong());
-        Functions.set("readFloat", new readFloat());
-        Functions.set("readDouble", new readDouble());
-        Functions.set("readUTF", new readUTF());
-        Functions.set("readLine", new readLine());
-        Functions.set("readText", new readText());
-        Functions.set("writeBoolean", new writeBoolean());
-        Functions.set("writeByte", new writeByte());
-        Functions.set("writeBytes", new writeBytes());
-        Functions.set("writeChar", new writeChar());
-        Functions.set("writeShort", new writeShort());
-        Functions.set("writeInt", new writeInt());
-        Functions.set("writeLong", new writeLong());
-        Functions.set("writeFloat", new writeFloat());
-        Functions.set("writeDouble", new writeDouble());
-        Functions.set("writeUTF", new writeUTF());
-        Functions.set("writeLine", new writeLine());
-        Functions.set("writeText", new writeText());
+        result.put("readBoolean", new readBoolean());
+        result.put("readByte", new readByte());
+        result.put("readBytes", new readBytes());
+        result.put("readAllBytes", new readAllBytes());
+        result.put("readChar", new readChar());
+        result.put("readShort", new readShort());
+        result.put("readInt", new readInt());
+        result.put("readLong", new readLong());
+        result.put("readFloat", new readFloat());
+        result.put("readDouble", new readDouble());
+        result.put("readUTF", new readUTF());
+        result.put("readLine", new readLine());
+        result.put("readText", new readText());
+        result.put("writeBoolean", new writeBoolean());
+        result.put("writeByte", new writeByte());
+        result.put("writeBytes", new writeBytes());
+        result.put("writeChar", new writeChar());
+        result.put("writeShort", new writeShort());
+        result.put("writeInt", new writeInt());
+        result.put("writeLong", new writeLong());
+        result.put("writeFloat", new writeFloat());
+        result.put("writeDouble", new writeDouble());
+        result.put("writeUTF", new writeUTF());
+        result.put("writeLine", new writeLine());
+        result.put("writeText", new writeText());
+        return result;
     }
 
     private static class filesComparatorFunction implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.checkAtLeast(2, args.length);
 
             final int fd1 = args[0].asInt();
@@ -105,10 +112,10 @@ public final class files implements Module {
     private static class fopen implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.checkAtLeast(1, args.length);
 
-            final File file = new File(args[0].asString());
+            final File file = Console.fileInstance(args[0].asString());
             try {
                 if (args.length > 1) {
                     return process(file, args[1].asString().toLowerCase());
@@ -143,10 +150,10 @@ public final class files implements Module {
         }
     }
 
-    private static abstract class FileFunction implements Function {
+    private abstract static class FileFunction implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             if (args.length < 1) throw new ArgumentsMismatchException("File descriptor expected");
             final int key = args[0].asInt();
             try {
@@ -169,7 +176,7 @@ public final class files implements Module {
     private static class copy implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.check(2, args.length);
             try {
                 final FileInputStream is = new FileInputStream(fileFrom(args[0]));
@@ -188,7 +195,7 @@ public final class files implements Module {
     private static class rename implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.check(2, args.length);
             return NumberValue.fromBoolean( fileFrom(args[0]).renameTo(fileFrom(args[1])) );
         }
@@ -239,7 +246,7 @@ public final class files implements Module {
     private static class setExecutable extends FileFunction {
         @Override
         protected Value execute(FileInfo fileInfo, Value[] args) throws IOException {
-            final boolean ownerOnly = args.length < 3 || (args[2].asInt() != 0);
+            final boolean ownerOnly = (args.length < 3) || (args[2].asInt() != 0);
             return NumberValue.fromBoolean(
                     fileInfo.file.setExecutable(args[1].asInt() != 0, ownerOnly));
         }
@@ -248,7 +255,7 @@ public final class files implements Module {
     private static class setReadable extends FileFunction {
         @Override
         protected Value execute(FileInfo fileInfo, Value[] args) throws IOException {
-            final boolean ownerOnly = args.length < 3 || (args[2].asInt() != 0);
+            final boolean ownerOnly = (args.length < 3) || (args[2].asInt() != 0);
             return NumberValue.fromBoolean(
                     fileInfo.file.setReadable(args[1].asInt() != 0, ownerOnly));
         }
@@ -257,7 +264,7 @@ public final class files implements Module {
     private static class setWritable extends FileFunction {
         @Override
         protected Value execute(FileInfo fileInfo, Value[] args) throws IOException {
-            final boolean ownerOnly = args.length < 3 || (args[2].asInt() != 0);
+            final boolean ownerOnly = (args.length < 3) || (args[2].asInt() != 0);
             return NumberValue.fromBoolean(
                     fileInfo.file.setWritable(args[1].asInt() != 0, ownerOnly));
         }
@@ -288,11 +295,11 @@ public final class files implements Module {
             }
 
             final byte[] buffer = new byte[length];
-            final int readed = fileInfo.dis.read(buffer, offset, length);
-            for (int i = 0; i < readed; i++) {
-                array.set(i, NumberValue.of(buffer[i]));
+            final int read = fileInfo.dis.read(buffer, 0, length);
+            for (int i = 0; i < read; i++) {
+                array.set(offset + i, NumberValue.of(buffer[i]));
             }
-            return NumberValue.of(readed);
+            return NumberValue.of(read);
         }
     }
 
@@ -302,9 +309,9 @@ public final class files implements Module {
             final int bufferSize = 4096;
             final byte[] buffer = new byte[bufferSize];
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            int readed;
-            while ((readed = fileInfo.dis.read(buffer, 0, bufferSize)) != -1) {
-                baos.write(buffer, 0, readed);
+            int read;
+            while ((read = fileInfo.dis.read(buffer, 0, bufferSize)) != -1) {
+                baos.write(buffer, 0, read);
             }
             baos.flush();
             baos.close();
@@ -376,9 +383,9 @@ public final class files implements Module {
         protected Value execute(FileInfo fileInfo, Value[] args) throws IOException {
             final StringBuilder result = new StringBuilder();
             final char[] buffer = new char[BUFFER_SIZE];
-            int readed;
-            while ((readed = fileInfo.reader.read(buffer, 0, BUFFER_SIZE)) != -1) {
-                result.append(buffer, 0, readed);
+            int read;
+            while ((read = fileInfo.reader.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                result.append(buffer, 0, read);
             }
             return new StringValue(result.toString());
         }
@@ -543,7 +550,7 @@ public final class files implements Module {
         if (value.type() == Types.NUMBER) {
             return files.get(value.asInt()).file;
         }
-        return new File(value.asString());
+        return Console.fileInstance(value.asString());
     }
 
     private interface FileToBooleanFunction {

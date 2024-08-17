@@ -1,20 +1,23 @@
 package main.java.net.felsstudio.fels.lib;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 final class RootScope extends Scope {
     private final Map<String, Value> constants;
-    public final Map<String, Function> functions;
+    private final Map<String, Function> functions;
+    private final Set<String> loadedModules;
 
     RootScope() {
         functions = new ConcurrentHashMap<>();
         constants = new ConcurrentHashMap<>();
         constants.put("true", NumberValue.ONE);
         constants.put("false", NumberValue.ZERO);
-        constants.put("NULL", NumberValue.ZERO);
-        constants.put("PI", NumberValue.of(Math.PI));
-        constants.put("E", NumberValue.of(Math.E));
+        constants.put("NULL", NumberValue.ONE);
+        constants.put("EMPTY", new StringValue(""));
+        loadedModules = new CopyOnWriteArraySet<>();
     }
 
     @Override
@@ -67,5 +70,18 @@ final class RootScope extends Scope {
 
     public Map<String, Function> getFunctions() {
         return functions;
+    }
+
+
+    public Set<String> getLoadedModules() {
+        return loadedModules;
+    }
+
+    public boolean isModuleLoaded(String name) {
+        return loadedModules.contains(name);
+    }
+
+    public void addLoadedModule(String name) {
+        loadedModules.add(name);
     }
 }

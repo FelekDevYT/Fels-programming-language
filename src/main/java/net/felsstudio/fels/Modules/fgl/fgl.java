@@ -1,8 +1,8 @@
 package main.java.net.felsstudio.fels.Modules.fgl;
 
+import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.lib.*;
-import net.felsstudio.fels.Modules.Module;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,10 +11,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 public final class fgl implements Module {
 
-    private static JFrame frame;
     private static CanvasPanel panel;
     private static Graphics2D graphics;
     private static BufferedImage img;
@@ -22,31 +25,40 @@ public final class fgl implements Module {
     private static NumberValue lastKey;
     private static ArrayValue mouseHover;
 
+
     @Override
-    public void init() {
-        Functions.set("createWindow", new CreateWindow());
-        Functions.set("prompt", new Prompt());
-        Functions.set("keypressed", new KeyPressed());
-        Functions.set("mousehover", new MouseHover());
-        Functions.set("line", intConsumer4Convert(fgl::line));
-        Functions.set("oval", intConsumer4Convert(fgl::oval));
-        Functions.set("foval", intConsumer4Convert(fgl::foval));
-        Functions.set("rect", intConsumer4Convert(fgl::rect));
-        Functions.set("frect", intConsumer4Convert(fgl::frect));
-        Functions.set("clip", intConsumer4Convert(fgl::clip));
-        Functions.set("drawstring", new DrawString());
-        Functions.set("color", new SetColor());
-        Functions.set("repaint", new Repaint());
+    public Map<String, Value> constants() {
+        return Map.ofEntries(
+                entry("VK_UP", NumberValue.of(KeyEvent.VK_UP)),
+                entry("VK_DOWN", NumberValue.of(KeyEvent.VK_DOWN)),
+                entry("VK_LEFT", NumberValue.of(KeyEvent.VK_LEFT)),
+                entry("VK_RIGHT", NumberValue.of(KeyEvent.VK_RIGHT)),
+                entry("VK_FIRE", NumberValue.of(KeyEvent.VK_ENTER)),
+                entry("VK_ESCAPE", NumberValue.of(KeyEvent.VK_ESCAPE))
+        );
+    }
 
-        Variables.set("VK_UP", NumberValue.of(KeyEvent.VK_UP));
-        Variables.set("VK_DOWN", NumberValue.of(KeyEvent.VK_DOWN));
-        Variables.set("VK_LEFT", NumberValue.of(KeyEvent.VK_LEFT));
-        Variables.set("VK_RIGHT", NumberValue.of(KeyEvent.VK_RIGHT));
-        Variables.set("VK_ENTER", NumberValue.of(KeyEvent.VK_ENTER));
-        Variables.set("VK_ESCAPE", NumberValue.of(KeyEvent.VK_ESCAPE));
-
+    @Override
+    public Map<String, Function> functions() {
         lastKey = NumberValue.MINUS_ONE;
         mouseHover = new ArrayValue(new Value[] { NumberValue.ZERO, NumberValue.ZERO });
+
+        final var result = new LinkedHashMap<String, Function>(15);
+        result.put("window", new CreateWindow());
+        result.put("prompt", new Prompt());
+        result.put("keypressed", new KeyPressed());
+        result.put("mousehover", new MouseHover());
+        result.put("line", intConsumer4Convert(fgl::line));
+        result.put("oval", intConsumer4Convert(fgl::oval));
+        result.put("foval", intConsumer4Convert(fgl::foval));
+        result.put("rect", intConsumer4Convert(fgl::rect));
+        result.put("frect", intConsumer4Convert(fgl::frect));
+        result.put("clip", intConsumer4Convert(fgl::clip));
+        result.put("drawstring", new DrawString());
+        result.put("color", new SetColor());
+        result.put("repaint", new Repaint());
+
+        return result;
     }
 
     @FunctionalInterface
@@ -80,7 +92,7 @@ public final class fgl implements Module {
 
     private static Function intConsumer4Convert(IntConsumer4 consumer) {
         return args -> {
-            if (args.length != 4) throw new ArgumentsMismatchException("Four args expected");
+            Arguments.check(4, args.length);
             consumer.accept(args[0].asInt(), args[1].asInt(), args[2].asInt(), args[3].asInt());
             return NumberValue.ZERO;
         };
@@ -124,7 +136,7 @@ public final class fgl implements Module {
     private static class CreateWindow implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             String title = "";
             int width = 640;
             int height = 480;
@@ -144,7 +156,7 @@ public final class fgl implements Module {
             }
             panel = new CanvasPanel(width, height);
 
-            frame = new JFrame(title);
+            JFrame frame = new JFrame(title);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.add(panel);
             frame.pack();
@@ -156,7 +168,7 @@ public final class fgl implements Module {
     private static class KeyPressed implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             return lastKey;
         }
     }
@@ -164,7 +176,7 @@ public final class fgl implements Module {
     private static class MouseHover implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             return mouseHover;
         }
     }
@@ -172,8 +184,8 @@ public final class fgl implements Module {
     private static class DrawString implements Function {
 
         @Override
-        public Value execute(Value... args) {
-            if (args.length != 3) throw new ArgumentsMismatchException("Three args expected");
+        public Value execute(Value[] args) {
+            Arguments.check(3, args.length);
             int x = args[1].asInt();
             int y = args[2].asInt();
             graphics.drawString(args[0].asString(), x, y);
@@ -184,7 +196,7 @@ public final class fgl implements Module {
     private static class Prompt implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             final String v = JOptionPane.showInputDialog(args[0].asString());
             return new StringValue(v == null ? "0" : v);
         }
@@ -193,7 +205,7 @@ public final class fgl implements Module {
     private static class Repaint implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             panel.invalidate();
             panel.repaint();
             return NumberValue.ZERO;
@@ -203,7 +215,7 @@ public final class fgl implements Module {
     private static class SetColor implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             if (args.length == 1) {
                 graphics.setColor(new Color(args[0].asInt()));
                 return NumberValue.ZERO;

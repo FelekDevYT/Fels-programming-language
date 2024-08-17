@@ -1,59 +1,62 @@
 package main.java.net.felsstudio.fels.Modules.jfels;
 
-import net.felsstudio.fels.Modules.Module;
+import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
 
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+import static java.util.Map.entry;
 
 public final class jfels implements Module {
 
     private static final Value NULL = new NullValue();
 
-    public static void initConstants() {
+    @Override
+    public Map<String, Value> constants() {
+        final var result = new LinkedHashMap<String, Value>(16);
+        result.put("null", NULL);
+        result.put("boolean.class", new ClassValue(boolean.class));
+        result.put("boolean[].class", new ClassValue(boolean[].class));
+        result.put("boolean[][].class", new ClassValue(boolean[][].class));
+        result.put("byte.class", new ClassValue(byte.class));
+        result.put("byte[].class", new ClassValue(byte[].class));
+        result.put("byte[][].class", new ClassValue(byte[][].class));
+        result.put("short.class", new ClassValue(short.class));
+        result.put("short[].class", new ClassValue(short[].class));
+        result.put("short[][].class", new ClassValue(short[][].class));
+        result.put("char.class", new ClassValue(char.class));
+        result.put("char[].class", new ClassValue(char[].class));
+        result.put("char[][].class", new ClassValue(char[][].class));
+        result.put("int.class", new ClassValue(int.class));
+        result.put("int[].class", new ClassValue(int[].class));
+        result.put("int[][].class", new ClassValue(int[][].class));
+        result.put("long.class", new ClassValue(long.class));
+        result.put("long[].class", new ClassValue(long[].class));
+        result.put("long[][].class", new ClassValue(long[][].class));
+        result.put("float.class", new ClassValue(float.class));
+        result.put("float[].class", new ClassValue(float[].class));
+        result.put("float[][].class", new ClassValue(float[][].class));
+        result.put("double.class", new ClassValue(double.class));
+        result.put("double[].class", new ClassValue(double[].class));
+        result.put("double[][].class", new ClassValue(double[][].class));
+        result.put("String.class", new ClassValue(String.class));
+        result.put("String[].class", new ClassValue(String[].class));
+        result.put("String[][].class", new ClassValue(String[][].class));
+        result.put("Object.class", new ClassValue(Object.class));
+        result.put("Object[].class", new ClassValue(Object[].class));
+        result.put("Object[][].class", new ClassValue(Object[][].class));
+        return result;
     }
 
     @Override
-    public void init() {
-        initConstants();
-        Variables.define("null", NULL);
-        Variables.define("boolean.class", new ClassValue(boolean.class));
-        Variables.define("boolean[].class", new ClassValue(boolean[].class));
-        Variables.define("boolean[][].class", new ClassValue(boolean[][].class));
-        Variables.define("byte.class", new ClassValue(byte.class));
-        Variables.define("byte[].class", new ClassValue(byte[].class));
-        Variables.define("byte[][].class", new ClassValue(byte[][].class));
-        Variables.define("short.class", new ClassValue(short.class));
-        Variables.define("short[].class", new ClassValue(short[].class));
-        Variables.define("short[][].class", new ClassValue(short[][].class));
-        Variables.define("char.class", new ClassValue(char.class));
-        Variables.define("char[].class", new ClassValue(char[].class));
-        Variables.define("char[][].class", new ClassValue(char[][].class));
-        Variables.define("int.class", new ClassValue(int.class));
-        Variables.define("int[].class", new ClassValue(int[].class));
-        Variables.define("int[][].class", new ClassValue(int[][].class));
-        Variables.define("long.class", new ClassValue(long.class));
-        Variables.define("long[].class", new ClassValue(long[].class));
-        Variables.define("long[][].class", new ClassValue(long[][].class));
-        Variables.define("float.class", new ClassValue(float.class));
-        Variables.define("float[].class", new ClassValue(float[].class));
-        Variables.define("float[][].class", new ClassValue(float[][].class));
-        Variables.define("double.class", new ClassValue(double.class));
-        Variables.define("double[].class", new ClassValue(double[].class));
-        Variables.define("double[][].class", new ClassValue(double[][].class));
-        Variables.define("String.class", new ClassValue(String.class));
-        Variables.define("String[].class", new ClassValue(String[].class));
-        Variables.define("String[][].class", new ClassValue(String[][].class));
-        Variables.define("Object.class", new ClassValue(Object.class));
-        Variables.define("Object[].class", new ClassValue(Object[].class));
-        Variables.define("Object[][].class", new ClassValue(Object[][].class));
-
-        Functions.set("isNull", this::isNull);
-        Functions.set("newClass", this::newClass);
-        Functions.set("toObject", this::toObject);
-        Functions.set("toValue", this::toValue);
+    public Map<String, Function> functions() {
+        return Map.ofEntries(
+                entry("isNull", this::isNull),
+                entry("newClass", this::newClass),
+                entry("toObject", this::toObject),
+                entry("toValue", this::toValue)
+        );
     }
 
     //<editor-fold defaultstate="collapsed" desc="Values">

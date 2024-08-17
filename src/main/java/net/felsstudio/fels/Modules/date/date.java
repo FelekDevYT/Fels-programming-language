@@ -1,15 +1,16 @@
 package main.java.net.felsstudio.fels.Modules.date;
 
+import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.exceptions.ParseException;
 import main.java.net.felsstudio.fels.exceptions.TypeException;
 import main.java.net.felsstudio.fels.lib.*;
-import net.felsstudio.fels.Modules.Module;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public final class date implements Module {
 
@@ -25,17 +26,24 @@ public final class date implements Module {
             MILLISECOND = new StringValue("millisecond");
 
     @Override
-    public void init() {
-        Variables.set("STYLE_FULL", NumberValue.of(DateFormat.FULL));
-        Variables.set("STYLE_LONG", NumberValue.of(DateFormat.LONG));
-        Variables.set("STYLE_MEDIUM", NumberValue.of(DateFormat.MEDIUM));
-        Variables.set("STYLE_SHORT", NumberValue.of(DateFormat.SHORT));
+    public Map<String, Value> constants() {
+        return Map.of(
+                "STYLE_FULL", NumberValue.of(DateFormat.FULL),
+                "STYLE_LONG", NumberValue.of(DateFormat.LONG),
+                "STYLE_MEDIUM", NumberValue.of(DateFormat.MEDIUM),
+                "STYLE_SHORT", NumberValue.of(DateFormat.SHORT)
+        );
+    }
 
-        Functions.set("newDate", new date_newDate());
-        Functions.set("newFormat", new date_newFormat());
-        Functions.set("formatDate", new date_format());
-        Functions.set("parseDate", new date_parse());
-        Functions.set("toTimestamp", new date_toTimestamp());
+    @Override
+    public Map<String, Function> functions() {
+        return Map.of(
+                "newDate", new date_newDate(),
+                "newFormat", new date_newFormat(),
+                "formatDate", new date_format(),
+                "parseDate", new date_parse(),
+                "toTimestamp", new date_toTimestamp()
+        );
     }
 
     //<editor-fold defaultstate="collapsed" desc="Values">
@@ -52,7 +60,7 @@ public final class date implements Module {
             value.set(YEAR, NumberValue.of(calendar.get(Calendar.YEAR)));
             value.set(MONTH, NumberValue.of(calendar.get(Calendar.MONTH)));
             value.set(DAY, NumberValue.of(calendar.get(Calendar.DAY_OF_MONTH)));
-            value.set(HOUR, NumberValue.of(calendar.get(Calendar.HOUR)));
+            value.set(HOUR, NumberValue.of(calendar.get(Calendar.HOUR_OF_DAY)));
             value.set(MINUTE, NumberValue.of(calendar.get(Calendar.MINUTE)));
             value.set(SECOND, NumberValue.of(calendar.get(Calendar.SECOND)));
             value.set(MILLISECOND, NumberValue.of(calendar.get(Calendar.MILLISECOND)));
@@ -146,7 +154,7 @@ public final class date implements Module {
     private static class date_newDate implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             final Calendar calendar = Calendar.getInstance();
             calendar.clear();
             switch (args.length) {
@@ -190,7 +198,7 @@ public final class date implements Module {
             }
             try {
                 calendar.setTime(DateFormat.getDateTimeInstance().parse(arg1.asString()));
-            } catch (ParseException | java.text.ParseException ex) { }
+            } catch (ParseException | java.text.ParseException ignore) { }
         }
 
         private static void date(Calendar calendar, Value arg1, Value arg2) {
@@ -200,14 +208,14 @@ public final class date implements Module {
             }
             try {
                 calendar.setTime(new SimpleDateFormat(arg1.asString()).parse(arg2.asString()));
-            } catch (ParseException | java.text.ParseException ex) { }
+            } catch (ParseException | java.text.ParseException ignore) { }
         }
     }
 
     private static class date_newFormat implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             if (args.length == 0) {
                 return new DateFormatValue(new SimpleDateFormat());
             }
@@ -250,7 +258,7 @@ public final class date implements Module {
     private static class date_parse implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.checkOrOr(1, 2, args.length);
 
             final DateFormat format;
@@ -274,7 +282,7 @@ public final class date implements Module {
     private static class date_format implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.checkOrOr(1, 2, args.length);
 
             final DateFormat format;
@@ -294,7 +302,7 @@ public final class date implements Module {
     private static class date_toTimestamp implements Function {
 
         @Override
-        public Value execute(Value... args) {
+        public Value execute(Value[] args) {
             Arguments.check(1, args.length);
             return NumberValue.of(((Calendar) args[0].raw()).getTimeInMillis() );
         }

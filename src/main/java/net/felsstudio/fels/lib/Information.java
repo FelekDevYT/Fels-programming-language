@@ -13,4 +13,7 @@ public class Information {
 
     @INFO
     public static final String DATE = new Date().toString();
+
+    @INFO
+    public static final String LOADER_VERSION = "1.2";
 }

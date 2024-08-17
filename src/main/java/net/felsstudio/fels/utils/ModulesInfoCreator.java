@@ -1,7 +1,7 @@
 package main.java.net.felsstudio.fels.utils;
 
+import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
-import net.felsstudio.fels.Modules.Module;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public final class ModulesInfoCreator {
 
-    private static final String MODULES_PATH = "src/main/java/com/annimon/ownlang/modules";
+    private static final String MODULES_PATH = "src/main/java/net/felsstudio/fels/Modules";
 
     public static void main(String[] args)
             throws ReflectiveOperationException {
@@ -27,16 +27,12 @@ public final class ModulesInfoCreator {
                 .map(File::getName)
                 .toArray(String[]::new);
         for (String moduleName : moduleNames) {
-            final String moduleClassPath = String.format("com.annimon.ownlang.modules.%s.%s", moduleName, moduleName);
-            Class<?> moduleClass = Class.forName(moduleClassPath);
-            ScopeHandler.resetScope();
-            final Module module = (Module) moduleClass.getDeclaredConstructor().newInstance();
-            module.init();
+            final Module module = ModuleLoader.load(moduleName);
 
             final ModuleInfo moduleInfo = new ModuleInfo(moduleName);
-            moduleInfo.functions.addAll(ScopeHandler.functions().keySet());
-            moduleInfo.constants.putAll(ScopeHandler.constants());
-            moduleInfo.types.addAll(listValues(moduleClass));
+            moduleInfo.functions.addAll(module.functions().keySet());
+            moduleInfo.constants.putAll(module.constants());
+            moduleInfo.types.addAll(listValues(module.getClass()));
             moduleInfos.add(moduleInfo);
         }
 

@@ -1,13 +1,9 @@
 package main.java.net.felsstudio.fels.parser;
 
-public record Token(TokenType type, String text, int row, int col) {
-
-    public String position() {
-        return "[" + row + " " + col + "]";
-    }
+public record Token(TokenType type, String text, Pos pos) {
 
     @Override
     public String toString() {
-        return type.name() + " " + position() + " " + text;
+        return type.name() + " " + pos().format() + " " + text;
     }
 }

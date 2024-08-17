@@ -1,6 +1,7 @@
 package main.java.net.felsstudio.fels.lib;
 
 import main.java.net.felsstudio.fels.exceptions.UnknownFunctionException;
+import main.java.net.felsstudio.fels.lib.Scope.ScopeFindData;
 
 import java.util.Map;
 
@@ -27,12 +28,21 @@ public final class ScopeHandler {
         return rootScope.getFunctions();
     }
 
+    public static RootScope rootScope() {
+        return rootScope;
+    }
+
     /**
      * Resets a scope for new program execution
      */
     public static void resetScope() {
         rootScope = new RootScope();
         scope = rootScope;
+    }
+
+    public static AutoCloseableScope closeableScope() {
+        push();
+        return new AutoCloseableScope();
     }
 
     public static void push() {
@@ -49,9 +59,6 @@ public final class ScopeHandler {
         }
     }
 
-    public static void removeFunction(String name) {
-        rootScope.removeFunction(name);
-    }
 
     public static boolean isFunctionExists(String name) {
         return rootScope.containsFunction(name);
@@ -61,11 +68,6 @@ public final class ScopeHandler {
         final var function = rootScope.getFunction(name);
         if (function == null) throw new UnknownFunctionException(name);
         return function;
-    }
-
-    public static AutoCloseableScope closeableScope() {
-        push();
-        return new AutoCloseableScope();
     }
 
     public static void setFunction(String name, Function function) {
@@ -81,7 +83,7 @@ public final class ScopeHandler {
 
     public static Value getVariableOrConstant(String name) {
         synchronized (lock) {
-            final Scope.ScopeFindData scopeData = findScope(name);
+            final ScopeFindData scopeData = findScope(name);
             if (scopeData.isFound) {
                 return scopeData.scope.get(name);
             }
@@ -91,7 +93,7 @@ public final class ScopeHandler {
 
     public static Value getVariable(String name) {
         synchronized (lock) {
-            final Scope.ScopeFindData scopeData = findScope(name);
+            final ScopeFindData scopeData = findScope(name);
             if (scopeData.isFound) {
                 return scopeData.scope.getVariable(name);
             }
@@ -104,6 +106,10 @@ public final class ScopeHandler {
         synchronized (lock) {
             findScope(name).scope.setVariable(name, value);
         }
+    }
+
+    public static boolean isConstantExists(String name) {
+        return rootScope.containsConstant(name);
     }
 
     public static void setConstant(String name, Value value) {
@@ -122,14 +128,14 @@ public final class ScopeHandler {
         }
     }
 
-    private static Scope.ScopeFindData findScope(String name) {
+    private static ScopeFindData findScope(String name) {
         Scope current = scope;
         do {
             if (current.contains(name)) {
-                return new Scope.ScopeFindData(true, current);
+                return new ScopeFindData(true, current);
             }
         } while ((current = current.parent) != null);
 
-        return new Scope.ScopeFindData(false, scope);
+        return new ScopeFindData(false, scope);
     }
 }

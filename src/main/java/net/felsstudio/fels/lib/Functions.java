@@ -27,8 +27,4 @@ public final class Functions {
     public static void set(String key, Function function) {
         ScopeHandler.setFunction(key, function);
     }
-
-    public static void remove(String name) {
-        ScopeHandler.removeFunction(name);
-    }
 }

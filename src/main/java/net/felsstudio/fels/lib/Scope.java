@@ -48,10 +48,6 @@ sealed class Scope permits RootScope {
         variables.remove(name);
     }
 
-    public final void removeFunction(String name) {
-        Functions.remove(name);
-    }
-
     public Map<String, Value> getVariables() {
         return variables;
     }
