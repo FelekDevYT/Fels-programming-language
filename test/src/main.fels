@@ -1,4 +1,3 @@
 using sfm,random
 
 println random(0,100)
-//test
