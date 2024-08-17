@@ -1,7 +1,5 @@
 package main.java.net.felsstudio.fels.parser.ast;
 
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Expression;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

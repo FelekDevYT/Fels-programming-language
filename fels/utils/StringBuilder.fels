@@ -1,4 +1,4 @@
-using ["sfm"]
+using sfm
 
 class StringBuilder{
     val = getEmpty()
@@ -6,8 +6,12 @@ class StringBuilder{
 	func StringBuilder(){
     }
 	
-	func apply(value){
+	func append(value){
 		val = val + value
+	}
+
+	func set(value){
+	    val = value
 	}
 	
 	func get(){

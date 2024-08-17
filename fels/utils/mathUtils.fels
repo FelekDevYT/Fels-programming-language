@@ -1,4 +1,4 @@
-using ["sfm","math"]
+using sfm,math
 
 class FMath{
 	func FMath(){

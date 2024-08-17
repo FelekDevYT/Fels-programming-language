@@ -3,7 +3,7 @@ package main.java.net.felsstudio.fels.lib;
 import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.parser.ast.Argument;
 import main.java.net.felsstudio.fels.parser.ast.ReturnStatement;
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
+import main.java.net.felsstudio.fels.parser.ast.Statement;
 
 /**
  *
@@ -64,8 +64,8 @@ public class UserDefinedFunction implements Function {
     @Override
     public String toString() {
         if (body instanceof ReturnStatement returnStmt) {
-            return String.format("func%s = %s", arguments, returnStmt.expression);
+            return String.format("def%s = %s", arguments, returnStmt.expression);
         }
-        return String.format("func%s %s", arguments, body);
+        return String.format("def%s %s", arguments, body);
     }
 }

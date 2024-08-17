@@ -1,9 +1,9 @@
 package main.java.net.felsstudio.fels.parser.visitors;
 
-import main.java.net.felsstudio.fels.parser.ast.expressions.*;
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Expression;
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Visitor;
+import main.java.net.felsstudio.fels.parser.ast.*;
+import main.java.net.felsstudio.fels.parser.ast.Expression;
+import main.java.net.felsstudio.fels.parser.ast.Statement;
+import main.java.net.felsstudio.fels.parser.ast.Visitor;
 
 import java.util.Map;
 
@@ -188,7 +188,6 @@ public abstract class AbstractVisitor implements Visitor {
 
     @Override
     public void visit(UsingStatement st) {
-        st.expression.accept(this);
     }
     @Override
     public void visit(ImportStatement s) {

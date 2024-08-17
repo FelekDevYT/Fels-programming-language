@@ -12,25 +12,25 @@ import java.util.stream.Stream;
 
 public final class ModulesInfoCreator {
 
-    private static final String MODULES_PATH = "net/felsstudio/fels/Modules";
+    private static final String MODULES_PATH = "src/main/java/com/annimon/ownlang/modules";
 
     public static void main(String[] args)
-            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+            throws ReflectiveOperationException {
         final Class<Module> clazz = Module.class; // get classloader for package
 
         final List<ModuleInfo> moduleInfos = new ArrayList<>();
 
         String[] moduleNames = Optional.ofNullable(new File(MODULES_PATH).listFiles())
-                .map(Arrays::stream)
-                .orElse(Stream.empty())
+                .stream()
+                .flatMap(Arrays::stream)
                 .filter(File::isDirectory)
                 .map(File::getName)
                 .toArray(String[]::new);
         for (String moduleName : moduleNames) {
-            final String moduleClassPath = String.format("net.felsstudio.fels.Modules.%s.%s", moduleName, moduleName);
+            final String moduleClassPath = String.format("com.annimon.ownlang.modules.%s.%s", moduleName, moduleName);
             Class<?> moduleClass = Class.forName(moduleClassPath);
             ScopeHandler.resetScope();
-            final Module module = (Module) moduleClass.newInstance();
+            final Module module = (Module) moduleClass.getDeclaredConstructor().newInstance();
             module.init();
 
             final ModuleInfo moduleInfo = new ModuleInfo(moduleName);
@@ -59,24 +59,26 @@ public final class ModulesInfoCreator {
         System.out.println(modulesJson.toString(2));
     }
 
-    private static List<String> listValues(Class moduleClass) {
+    private static List<String> listValues(Class<?> moduleClass) {
         return Arrays.stream(moduleClass.getDeclaredClasses())
                 .filter(clazz -> getAllInterfaces(clazz).stream().anyMatch(i -> i.equals(Value.class)))
                 .map(Class::getSimpleName)
                 .collect(Collectors.toList());
     }
 
-    private static Set<Class> getAllInterfaces(Class clazz) {
-        if (clazz.getSuperclass() == null) return Collections.emptySet();
+    private static Set<Class<?>> getAllInterfaces(Class<?> clazz) {
+        if (clazz.getSuperclass() == null) {
+            return Collections.emptySet();
+        }
         return Stream.concat(Arrays.stream(clazz.getInterfaces()), getAllInterfaces(clazz.getSuperclass()).stream())
                 .collect(Collectors.toSet());
     }
 
     static class ModuleInfo {
         private final String name;
-        List<String> functions;
-        Map<String, Value> constants;
-        List<String> types;
+        final List<String> functions;
+        final Map<String, Value> constants;
+        final List<String> types;
 
         public ModuleInfo(String name) {
             this.name = name;
@@ -101,7 +103,7 @@ public final class ModulesInfoCreator {
         public List<Map<String, Object>> constants() {
             final List<Map<String, Object>> result = new ArrayList<>();
             constants.entrySet().stream()
-                    .sorted(Comparator.comparing(Map.Entry::getKey))
+                    .sorted(Map.Entry.comparingByKey())
                     .forEach(entry -> {
                         final Value value = entry.getValue();
 
@@ -110,7 +112,7 @@ public final class ModulesInfoCreator {
                         constant.put("type", value.type());
                         constant.put("typeName", Types.typeToString(value.type()));
                         if (value.type() == Types.MAP) {
-                            String text = ((Map<Value, Value>) value.raw()).entrySet().stream()
+                            String text = ((MapValue) value).getMap().entrySet().stream()
                                     .sorted(Comparator.comparing(
                                             e -> ((MapValue)value).size() > 16 ? e.getKey() : e.getValue()))
                                     .map(Object::toString)

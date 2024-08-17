@@ -1,5 +1,6 @@
 package main.java.net.felsstudio.fels.lib;
 
+import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.exceptions.TypeException;
 
 import java.util.Arrays;
@@ -22,22 +23,6 @@ public class ArrayValue implements Value, Iterable<Value> {
         return result;
     }
 
-    public Value get(Value index) {
-        final String prop = index.asString();
-        switch (prop) {
-            // Properties
-            case "length":
-                return NumberValue.of(size());
-
-            // Functions
-            case "isEmpty":
-                return NumberValue.fromBoolean(size() == 0);
-
-            default:
-                return get(index.asInt());
-        }
-    }
-
     public static ArrayValue of(String[] array) {
         final int size = array.length;
         final ArrayValue result = new ArrayValue(size);
@@ -46,7 +31,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         }
         return result;
     }
-    
+
     public static ArrayValue add(ArrayValue array, Value value) {
         final int last = array.elements.length;
         final ArrayValue result = new ArrayValue(last + 1);
@@ -54,7 +39,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         result.elements[last] = value;
         return result;
     }
-    
+
     public static ArrayValue merge(ArrayValue array1, ArrayValue array2) {
         final int length1 = array1.elements.length;
         final int length2 = array2.elements.length;
@@ -64,7 +49,18 @@ public class ArrayValue implements Value, Iterable<Value> {
         System.arraycopy(array2.elements, 0, result.elements, length1, length2);
         return result;
     }
-    
+
+    public static StringValue joinToString(ArrayValue array, String delimiter, String prefix, String suffix) {
+        final StringBuilder sb = new StringBuilder();
+        for (Value value : array) {
+            if (!sb.isEmpty()) sb.append(delimiter);
+            else sb.append(prefix);
+            sb.append(value.asString());
+        }
+        sb.append(suffix);
+        return new StringValue(sb.toString());
+    }
+
     private final Value[] elements;
 
     public ArrayValue(int size) {
@@ -75,12 +71,12 @@ public class ArrayValue implements Value, Iterable<Value> {
         this.elements = new Value[elements.length];
         System.arraycopy(elements, 0, this.elements, 0, elements.length);
     }
-    
+
     public ArrayValue(List<Value> values) {
         final int size = values.size();
         this.elements = values.toArray(new Value[size]);
     }
-    
+
     public ArrayValue(ArrayValue array) {
         this(array.elements);
     }
@@ -90,34 +86,57 @@ public class ArrayValue implements Value, Iterable<Value> {
         System.arraycopy(elements, 0, result, 0, elements.length);
         return result;
     }
-    
+
     @Override
     public int type() {
         return Types.ARRAY;
     }
-    
+
     public int size() {
         return elements.length;
     }
-    
+
     public Value get(int index) {
         return elements[index];
     }
-    
+
+    public Value get(Value index) {
+        return switch (index.asString()) {
+            // Properties
+            case "length" -> NumberValue.of(size());
+
+            // Functions
+            case "isEmpty" -> Converters.voidToBoolean(() -> size() == 0);
+            case "joinToString" -> new FunctionValue(this::joinToString);
+            default -> get(index.asInt());
+        };
+    }
+
+    public Value joinToString(Value[] args) {
+        Arguments.checkRange(0, 3, args.length);
+        return switch (args.length) {
+            case 0 -> joinToString(this, "", "", "");
+            case 1 -> joinToString(this, args[0].asString(), "", "");
+            case 2 -> joinToString(this, args[0].asString(), args[1].asString(), args[1].asString());
+            case 3 -> joinToString(this, args[0].asString(), args[1].asString(), args[2].asString());
+            default -> throw new ArgumentsMismatchException("Wrong number of arguments");
+        };
+    }
+
     public void set(int index, Value value) {
         elements[index] = value;
     }
-    
+
     @Override
     public Object raw() {
         return elements;
     }
-    
+
     @Override
     public int asInt() {
         throw new TypeException("Cannot cast array to integer");
     }
-    
+
     @Override
     public double asNumber() {
         throw new TypeException("Cannot cast array to number");
@@ -149,7 +168,7 @@ public class ArrayValue implements Value, Iterable<Value> {
         final ArrayValue other = (ArrayValue) obj;
         return Arrays.deepEquals(this.elements, other.elements);
     }
-    
+
     @Override
     public int compareTo(Value o) {
         if (o.type() == Types.ARRAY) {

@@ -1,4 +1,4 @@
-using ["sfm","ftypes"]
+using sfm,ftypes
 
 class ArrayDeque{
 	arr = 0

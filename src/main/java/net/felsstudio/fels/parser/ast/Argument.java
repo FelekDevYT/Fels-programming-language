@@ -1,7 +1,5 @@
 package main.java.net.felsstudio.fels.parser.ast;
 
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Expression;
-
 public record Argument(String name, Expression valueExpr) {
 
     public Argument(String name) {

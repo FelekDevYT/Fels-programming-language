@@ -23,5 +23,8 @@ public class random implements Module {
             min = (int) f[1].asNumber();
             return NumberValue.of(random(min, max));
         });
+        Functions.set("rnd",args ->{
+            return NumberValue.of(random(0,Integer.MAX_VALUE));
+        });
     }
 }

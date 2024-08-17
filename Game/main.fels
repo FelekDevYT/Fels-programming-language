@@ -1,8 +1,0 @@
-using "sfm";
-using "fgl";
-
-import "Game\\generator.fels";
-
-start();
-
-world_generate();

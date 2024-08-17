@@ -25,15 +25,15 @@ internal object Main {
 
         println("=========================================================================================")
         println("                    WELCOME IN FELS                       ")
-        println("-setAS <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set auto start setting")
-        println("-debugger <PROJECT_NAME> - open debug setting of <PROJECT_NAME> project")
-        println("-run <NAME> - run you project")
-        println("-new <NAME> <VERSION> <AUTHOR> - create new project")
-        println("-setArgs <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set args")
-        println("-help - about of FELS")
-        println("-version - version of FELS")
-        println("-cls - clear console")
-        println("-exit - exit from program")
+        println("setAS <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set auto start setting")
+        println("debugger <PROJECT_NAME> - open debug setting of <PROJECT_NAME> project")
+        println("run <NAME> - run you project")
+        println("new <NAME> <VERSION> <AUTHOR> - create new project")
+        println("setArgs <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set args")
+        println("help - about of FELS")
+        println("version - version of FELS")
+        println("cls - clear console")
+        println("exit - exit from program")
         println("=========================================================================================")
 
         val scan = Scanner(System.`in`)
@@ -55,12 +55,12 @@ internal object Main {
             val line = scan.nextLine().split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
             when (line[0]) {
-                "-debugger" ->{
+                "debugger" ->{
                     println("This feature in development")
                     TODO("CREATE THIS DEBUGGER!!!")
                 }
 
-                "-setAS" -> {
+                "setAS" -> {
                     try {
                         File("as.fsf")
 
@@ -76,7 +76,7 @@ internal object Main {
                     println("FELS [ SUCCESSFUL ] setting up auto setting")
                 }
 
-                "-run" ->{
+                "run" ->{
                     try {
                         Starter.start(v.doShowVars, v.doShowTokens, v.doShowMe, v.doShowAst, line[1]+"\\src\\main.fels")
                     } catch (e: Exception) {
@@ -84,7 +84,7 @@ internal object Main {
                     }
                 }
 
-                "-setArgs" -> {
+                "setArgs" -> {
                     if (line[1] == ":f") {
                         try {
                             val lines = Saver().read()
@@ -109,19 +109,19 @@ internal object Main {
                     println("FELS [ SUCCESSFUL ] setting up setting")
                 }
 
-                "-help" -> {
+                "help" -> {
                     println("FELS programming language V.${Information.FELS_VERSION}")
                     println("Copyright ${Information.FELS_AUTHOR}")
                     println("FELS console V.0.1")
                 }
 
-                "-version" -> println("FELS programming language V.${Information.FELS_VERSION}")
-                "-exit" -> {
+                "version" -> println("FELS programming language V.${Information.FELS_VERSION}")
+                "exit" -> {
                     println("FELS [ SUCCESSFUL ] exiting from console")
                     exitProcess(0)
                 }
 
-                "-save" -> {
+                "save" -> {
                     try {
                         val s = Saver()
                         s.save(v)
@@ -131,12 +131,12 @@ internal object Main {
                     }
                 }
 
-                "-cls" -> {
+                "cls" -> {
                     println("\u001b[H\u001b[2J")
                     System.out.flush()
                 }
 
-                "-new" ->{
+                "new" ->{
                     var p = Project(line[1],line[2],line[3])
                     p.createProject()
                     println("FELS [ SUCCESSFUL ] setting up project")

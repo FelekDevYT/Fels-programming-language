@@ -37,48 +37,6 @@ public final class fgl implements Module {
         Functions.set("drawstring", new DrawString());
         Functions.set("color", new SetColor());
         Functions.set("repaint", new Repaint());
-        Functions.set("closeWindow",args ->{
-            frame.dispose();
-            return NumberValue.ZERO;
-        });
-
-        Functions.set("closeRequest", f ->{
-            if(frame.isShowing()){
-                return NumberValue.ONE;
-            }else{
-                return NumberValue.ZERO;
-            }
-        });
-
-        Functions.set("getTitle", f ->{
-            return new StringValue(frame.getTitle());
-        });
-        Functions.set("getWidth", f ->{
-            return NumberValue.of(frame.getWidth());
-        });
-        Functions.set("getHeight", f ->{
-            return NumberValue.of(frame.getHeight());
-        });
-        Functions.set("setTitle",f ->{
-            frame.setTitle(f[0].asString());
-            return NumberValue.ZERO;
-        });
-        Functions.set("setWidth",f ->{
-            frame.setSize((int)f[0].asNumber(),frame.getHeight());
-            return NumberValue.ZERO;
-        });
-        Functions.set("setHeight",f ->{
-            frame.setSize(frame.getWidth(),(int)f[0].asNumber());
-            return NumberValue.ZERO;
-        });
-        Functions.set("setSize",f ->{
-            frame.setSize((int)f[0].asNumber(),(int)f[1].asNumber());
-            return NumberValue.ZERO;
-        });
-        Functions.set("clearWindow",f ->{
-           graphics.drawRect(0, 0, frame.getWidth(), frame.getHeight());
-           return NumberValue.ZERO;
-        });
 
         Variables.set("VK_UP", NumberValue.of(KeyEvent.VK_UP));
         Variables.set("VK_DOWN", NumberValue.of(KeyEvent.VK_DOWN));

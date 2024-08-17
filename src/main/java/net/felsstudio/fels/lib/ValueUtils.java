@@ -4,28 +4,28 @@ import main.java.net.felsstudio.fels.exceptions.TypeException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class ValueUtils {
 
+    private ValueUtils() { }
+
     public static Object toObject(Value val) {
-        switch (val.type()) {
-            case Types.ARRAY:
-                return toObject((ArrayValue) val);
-            case Types.MAP:
-                return toObject((MapValue) val);
-            case Types.NUMBER:
-                return val.raw();
-            case Types.STRING:
-                return val.asString();
-            default:
-                return JSONObject.NULL;
-        }
+        return switch (val.type()) {
+            case Types.ARRAY -> toObject((ArrayValue) val);
+            case Types.MAP -> toObject((MapValue) val);
+            case Types.NUMBER -> val.raw();
+            case Types.STRING -> val.asString();
+            default -> JSONObject.NULL;
+        };
     }
 
-    public static Object toObject(MapValue map) {
-        final JSONObject result = new JSONObject();
+    public static JSONObject toObject(MapValue map) {
+        final JSONObject result = new JSONObject(new LinkedHashMap<String, Object>());
         for (Map.Entry<Value, Value> entry : map) {
             final String key = entry.getKey().asString();
             final Object value = toObject(entry.getValue());
@@ -34,7 +34,7 @@ public final class ValueUtils {
         return result;
     }
 
-    public static Object toObject(ArrayValue array) {
+    public static JSONArray toObject(ArrayValue array) {
         final JSONArray result = new JSONArray();
         for (Value value : array) {
             result.put(toObject(value));
@@ -43,27 +43,27 @@ public final class ValueUtils {
     }
 
     public static Value toValue(Object obj) {
-        if (obj instanceof JSONObject) {
-            return toValue((JSONObject) obj);
+        if (obj instanceof JSONObject jsonObj) {
+            return toValue(jsonObj);
         }
-        if (obj instanceof JSONArray) {
-            return toValue((JSONArray) obj);
+        if (obj instanceof JSONArray jsonArr) {
+            return toValue(jsonArr);
         }
-        if (obj instanceof String) {
-            return new StringValue((String) obj);
+        if (obj instanceof String str) {
+            return new StringValue(str);
         }
-        if (obj instanceof Number) {
-            return NumberValue.of(((Number) obj));
+        if (obj instanceof Number num) {
+            return NumberValue.of(num);
         }
-        if (obj instanceof Boolean) {
-            return NumberValue.fromBoolean((Boolean) obj);
+        if (obj instanceof Boolean flag) {
+            return NumberValue.fromBoolean(flag);
         }
         // NULL or other
         return NumberValue.ZERO;
     }
 
     public static MapValue toValue(JSONObject json) {
-        final MapValue result = new MapValue(json.length());
+        final MapValue result = new MapValue(new LinkedHashMap<>(json.length()));
         final Iterator<String> it = json.keys();
         while(it.hasNext()) {
             final String key = it.next();
@@ -73,18 +73,19 @@ public final class ValueUtils {
         return result;
     }
 
+    public static ArrayValue toValue(JSONArray json) {
+        final int length = json.length();
+        final ArrayValue result = new ArrayValue(length);
+        for (int i = 0; i < length; i++) {
+            final Value value = toValue(json.get(i));
+            result.set(i, value);
+        }
+        return result;
+    }
+
     public static Number getNumber(Value value) {
         if (value.type() == Types.NUMBER) return ((NumberValue) value).raw();
         return value.asInt();
-    }
-
-    public static Function consumeFunction(Value value, int argumentNumber) throws TypeException {
-        final int type = value.type();
-        if (type != Types.FUNCTION) {
-            throw new TypeException("Function expected at argument " + (argumentNumber + 1)
-                    + ", but found " + Types.typeToString(type));
-        }
-        return ((FunctionValue) value).getValue();
     }
 
     public static float getFloatNumber(Value value) {
@@ -101,12 +102,29 @@ public final class ValueUtils {
         return result;
     }
 
-    public static ArrayValue toValue(JSONArray json) {
-        final int length = json.length();
-        final ArrayValue result = new ArrayValue(length);
-        for (int i = 0; i < length; i++) {
-            final Value value = toValue(json.get(i));
-            result.set(i, value);
+    public static Function consumeFunction(Value value, int argumentNumber) {
+        return consumeFunction(value, " at argument " + (argumentNumber + 1));
+    }
+
+    public static Function consumeFunction(Value value, String errorMessage) {
+        final int type = value.type();
+        if (type != Types.FUNCTION) {
+            throw new TypeException("Function expected" + errorMessage
+                    + ", but found " + Types.typeToString(type));
+        }
+        return ((FunctionValue) value).getValue();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Number> MapValue collectNumberConstants(Class<?> clazz, Class<T> type) {
+        MapValue result = new MapValue(20);
+        for (Field field : clazz.getDeclaredFields()) {
+            if (!Modifier.isStatic(field.getModifiers())) continue;
+            if (!field.getType().equals(type)) continue;
+            try {
+                result.set(field.getName(), NumberValue.of((T) field.get(type)));
+            } catch (IllegalAccessException ignore) {
+            }
         }
         return result;
     }

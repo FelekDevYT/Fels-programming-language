@@ -1,4 +1,4 @@
-using ["sfm"]
+using sfm
 
 class Buffer{
 	buffer = ""

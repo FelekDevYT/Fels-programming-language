@@ -2,7 +2,7 @@ package main.java.net.felsstudio.fels.Start;
 
 import main.java.net.felsstudio.fels.lib.CallStack;
 import main.java.net.felsstudio.fels.parser.*;
-import main.java.net.felsstudio.fels.parser.ast.interfaces.Statement;
+import main.java.net.felsstudio.fels.parser.ast.Statement;
 import main.java.net.felsstudio.fels.parser.visitors.AssignValidator;
 import main.java.net.felsstudio.fels.parser.visitors.FunctionAdder;
 import main.java.net.felsstudio.fels.parser.visitors.VariablePrinter;
