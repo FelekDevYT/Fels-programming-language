@@ -31,6 +31,10 @@ public final class Classes {
         return classes.get(key);
     }
 
+    public static void remove(String key) {
+        classes.remove(key);
+    }
+
     public static void set(String key, ClassInstanceValue classDef) {
         classes.put(key, classDef);
     }

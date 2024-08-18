@@ -4,6 +4,8 @@ import main.java.net.felsstudio.fels.lib.*;
 
 import javax.swing.*;
 
+import java.io.IOException;
+
 import static main.java.net.felsstudio.fels.lib.Converters.*;
 import static main.java.net.felsstudio.fels.lib.ValueUtils.consumeFunction;
 
@@ -33,7 +35,13 @@ public class JTextFieldValue extends JTextComponentValue {
     private Value addActionListener(Value... args) {
         Arguments.check(1, args.length);
         Function action = consumeFunction(args[0], 1);
-        textField.addActionListener(e -> action.execute());
+        textField.addActionListener(e -> {
+            try {
+                action.execute();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         return NumberValue.ZERO;
     }
 }

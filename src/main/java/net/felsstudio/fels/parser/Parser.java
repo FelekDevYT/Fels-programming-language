@@ -9,6 +9,7 @@ import main.java.net.felsstudio.fels.parser.ast.Accessible;
 import main.java.net.felsstudio.fels.parser.ast.Expression;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -451,11 +452,6 @@ public final class Parser {
     }
 
     private Statement classDeclaration() {
-        // class Name {
-        //   x = 123
-        //   str = ""
-        //   def method() = str
-        // }
         final String name = consume(TokenType.WORD).text();
         final ClassDeclarationStatement classDeclaration = new ClassDeclarationStatement(name);
         consume(TokenType.LBRACE);

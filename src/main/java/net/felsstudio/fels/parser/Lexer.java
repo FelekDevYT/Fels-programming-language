@@ -2,10 +2,7 @@ package main.java.net.felsstudio.fels.parser;
 
 import main.java.net.felsstudio.fels.exceptions.LexerException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -21,95 +18,100 @@ public final class Lexer {
 
     private static final Map<String, TokenType> OPERATORS;
     static {
-        OPERATORS = new HashMap<>();
-        OPERATORS.put("+", TokenType.PLUS);
-        OPERATORS.put("-", TokenType.MINUS);
-        OPERATORS.put("*", TokenType.STAR);
-        OPERATORS.put("/", TokenType.SLASH);
-        OPERATORS.put("%", TokenType.PERCENT);
-        OPERATORS.put("(", TokenType.LPAREN);
-        OPERATORS.put(")", TokenType.RPAREN);
-        OPERATORS.put("[", TokenType.LBRACKET);
-        OPERATORS.put("]", TokenType.RBRACKET);
-        OPERATORS.put("{", TokenType.LBRACE);
-        OPERATORS.put("}", TokenType.RBRACE);
-        OPERATORS.put("=", TokenType.EQ);
-        OPERATORS.put("<", TokenType.LT);
-        OPERATORS.put(">", TokenType.GT);
-        OPERATORS.put(".", TokenType.DOT);
-        OPERATORS.put(",", TokenType.COMMA);
-        OPERATORS.put("^", TokenType.CARET);
-        OPERATORS.put("~", TokenType.TILDE);
-        OPERATORS.put("?", TokenType.QUESTION);
-        OPERATORS.put(":", TokenType.COLON);
-        OPERATORS.put(";", TokenType.DOTCOMMA);
+        final var operators = new HashMap<String, TokenType>();
+        operators.put("+", TokenType.PLUS);
+        operators.put("-", TokenType.MINUS);
+        operators.put("*", TokenType.STAR);
+        operators.put("/", TokenType.SLASH);
+        operators.put("%", TokenType.PERCENT);
+        operators.put("(", TokenType.LPAREN);
+        operators.put(")", TokenType.RPAREN);
+        operators.put("[", TokenType.LBRACKET);
+        operators.put("]", TokenType.RBRACKET);
+        operators.put("{", TokenType.LBRACE);
+        operators.put("}", TokenType.RBRACE);
+        operators.put("=", TokenType.EQ);
+        operators.put("<", TokenType.LT);
+        operators.put(">", TokenType.GT);
+        operators.put(".", TokenType.DOT);
+        operators.put(",", TokenType.COMMA);
+        operators.put("^", TokenType.CARET);
+        operators.put("~", TokenType.TILDE);
+        operators.put("?", TokenType.QUESTION);
+        operators.put(":", TokenType.COLON);
 
-        OPERATORS.put("!", TokenType.EXCL);
-        OPERATORS.put("&", TokenType.AMP);
-        OPERATORS.put("|", TokenType.BAR);
+        operators.put("!", TokenType.EXCL);
+        operators.put("&", TokenType.AMP);
+        operators.put("|", TokenType.BAR);
 
-        OPERATORS.put("==", TokenType.EQEQ);
-        OPERATORS.put("!=", TokenType.EXCLEQ);
-        OPERATORS.put("<=", TokenType.LTEQ);
-        OPERATORS.put(">=", TokenType.GTEQ);
+        operators.put("==", TokenType.EQEQ);
+        operators.put("!=", TokenType.EXCLEQ);
+        operators.put("<=", TokenType.LTEQ);
+        operators.put(">=", TokenType.GTEQ);
 
-        OPERATORS.put("+=", TokenType.PLUSEQ);
-        OPERATORS.put("-=", TokenType.MINUSEQ);
-        OPERATORS.put("*=", TokenType.STAREQ);
-        OPERATORS.put("/=", TokenType.SLASHEQ);
-        OPERATORS.put("%=", TokenType.PERCENTEQ);
-        OPERATORS.put("&=", TokenType.AMPEQ);
-        OPERATORS.put("^=", TokenType.CARETEQ);
-        OPERATORS.put("|=", TokenType.BAREQ);
-        OPERATORS.put("::=", TokenType.COLONCOLONEQ);
-        OPERATORS.put("<<=", TokenType.LTLTEQ);
-        OPERATORS.put(">>=", TokenType.GTGTEQ);
-        OPERATORS.put(">>>=", TokenType.GTGTGTEQ);
+        operators.put("+=", TokenType.PLUSEQ);
+        operators.put("-=", TokenType.MINUSEQ);
+        operators.put("*=", TokenType.STAREQ);
+        operators.put("/=", TokenType.SLASHEQ);
+        operators.put("%=", TokenType.PERCENTEQ);
+        operators.put("&=", TokenType.AMPEQ);
+        operators.put("^=", TokenType.CARETEQ);
+        operators.put("|=", TokenType.BAREQ);
+        operators.put("::=", TokenType.COLONCOLONEQ);
+        operators.put("<<=", TokenType.LTLTEQ);
+        operators.put(">>=", TokenType.GTGTEQ);
+        operators.put(">>>=", TokenType.GTGTGTEQ);
 
-        OPERATORS.put("++", TokenType.PLUSPLUS);
-        OPERATORS.put("--", TokenType.MINUSMINUS);
+        operators.put("++", TokenType.PLUSPLUS);
+        operators.put("--", TokenType.MINUSMINUS);
 
-        OPERATORS.put("::", TokenType.COLONCOLON);
+        operators.put("::", TokenType.COLONCOLON);
 
-        OPERATORS.put("&&", TokenType.AMPAMP);
-        OPERATORS.put("||", TokenType.BARBAR);
+        operators.put("&&", TokenType.AMPAMP);
+        operators.put("||", TokenType.BARBAR);
 
-        OPERATORS.put("<<", TokenType.LTLT);
-        OPERATORS.put(">>", TokenType.GTGT);
-        OPERATORS.put(">>>", TokenType.GTGTGT);
+        operators.put("<<", TokenType.LTLT);
+        operators.put(">>", TokenType.GTGT);
+        operators.put(">>>", TokenType.GTGTGT);
 
-        OPERATORS.put("@", TokenType.AT);
-        OPERATORS.put("@=", TokenType.ATEQ);
-        OPERATORS.put("..", TokenType.DOTDOT);
-        OPERATORS.put("**", TokenType.STARSTAR);
-        OPERATORS.put("?:", TokenType.QUESTIONCOLON);
-        OPERATORS.put("^^", TokenType.CARETCARET);
-        OPERATORS.put("??", TokenType.QUESTIONQUESTION);
+        operators.put("@", TokenType.AT);
+        operators.put("@=", TokenType.ATEQ);
+        operators.put("..", TokenType.DOTDOT);
+        operators.put("**", TokenType.STARSTAR);
+        operators.put("^^", TokenType.CARETCARET);
+        operators.put("?:", TokenType.QUESTIONCOLON);
+        operators.put("??", TokenType.QUESTIONQUESTION);
+        OPERATORS = Map.copyOf(operators);
     }
 
     private static final Map<String, TokenType> KEYWORDS;
     static {
-        KEYWORDS = new HashMap<String, TokenType>();
-        KEYWORDS.put("print", TokenType.PRINT);
-        KEYWORDS.put("println", TokenType.PRINTLN);
-        KEYWORDS.put("if", TokenType.IF);
-        KEYWORDS.put("else", TokenType.ELSE);
-        KEYWORDS.put("while", TokenType.WHILE);
-        KEYWORDS.put("for", TokenType.FOR);
-        KEYWORDS.put("do", TokenType.DO);
-        KEYWORDS.put("break", TokenType.BREAK);
-        KEYWORDS.put("continue", TokenType.CONTINUE);
-        KEYWORDS.put("func", TokenType.FUNC);
-        KEYWORDS.put("return", TokenType.RETURN);
-        KEYWORDS.put("using", TokenType.USING);
-        KEYWORDS.put("match", TokenType.MATCH);
-        KEYWORDS.put("case", TokenType.CASE);
-        KEYWORDS.put("extract", TokenType.EXTRACT);
-        KEYWORDS.put("import", TokenType.IMPORT);
-        KEYWORDS.put("class", TokenType.CLASS);
-        KEYWORDS.put("new", TokenType.NEW);
-        KEYWORDS.put("panic",TokenType.PANIC);
-        KEYWORDS.put("perror",TokenType.PERROR);
+        final var keywords = new HashMap<String, TokenType>();
+        keywords.put("print", TokenType.PRINT);
+        keywords.put("println", TokenType.PRINTLN);
+        keywords.put("if", TokenType.IF);
+        keywords.put("else", TokenType.ELSE);
+        keywords.put("while", TokenType.WHILE);
+        keywords.put("for", TokenType.FOR);
+        keywords.put("do", TokenType.DO);
+        keywords.put("break", TokenType.BREAK);
+        keywords.put("continue", TokenType.CONTINUE);
+        keywords.put("func", TokenType.FUNC);
+        keywords.put("return", TokenType.RETURN);
+        keywords.put("using", TokenType.USING);
+        keywords.put("match", TokenType.MATCH);
+        keywords.put("case", TokenType.CASE);
+        keywords.put("extract", TokenType.EXTRACT);
+        keywords.put("import", TokenType.IMPORT);
+        keywords.put("class", TokenType.CLASS);
+        keywords.put("new", TokenType.NEW);
+        keywords.put("panic",TokenType.PANIC);
+        keywords.put("perror",TokenType.PERROR);
+        KEYWORDS = Map.copyOf(keywords);
+    }
+
+    public static Set<String> getKeywords() {
+        return KEYWORDS.keySet();
     }
 
     private final String input;
@@ -126,54 +128,92 @@ public final class Lexer {
         length = input.length();
 
         tokens = new ArrayList<>();
-        buffer = new StringBuilder();
+        buffer = new StringBuilder(40);
         row = col = 1;
     }
 
     public List<Token> tokenize() {
         while (pos < length) {
+            // Fast path for skipping whitespaces
+            while (Character.isWhitespace(peek(0))) {
+                skip();
+            }
+
             final char current = peek(0);
-            if (Character.isDigit(current)) tokenizeNumber();
-            else if (isOwnLangIdentifierStart(current)) tokenizeWord();
-            else if (current == '`') tokenizeExtendedWord();
+            if (isNumber(current)) tokenizeNumber();
+            else if (isFelsIdentifierStart(current)) tokenizeWord();
             else if (current == '"') tokenizeText();
-            else if (current == '#') {
-                next();
-                tokenizeHexNumber();
-            }
-            else if (OPERATOR_CHARS.indexOf(current) != -1) {
-                tokenizeOperator();
-            } else {
-                // whitespaces
-                next();
-            }
+            else if (OPERATOR_CHARS.indexOf(current) != -1) tokenizeOperator();
+            else if (Character.isWhitespace(current)) skip();
+            else if (current == '`') tokenizeExtendedWord();
+            else if (current == '#') tokenizeHexNumber(1);
+            else if (current == ';') skip(); // ignore semicolon
+            else if (current == '\0') break;
+            else throw error("Unknown token " + current);
         }
         return tokens;
     }
 
     private void tokenizeNumber() {
-        clearBuffer();
+        final var buffer = createBuffer();
+        final Pos startPos = markPos();
         char current = peek(0);
         if (current == '0' && (peek(1) == 'x' || (peek(1) == 'X'))) {
-            next();
-            next();
-            tokenizeHexNumber();
+            tokenizeHexNumber(2);
             return;
         }
+        boolean hasDot = false;
         while (true) {
             if (current == '.') {
-                if (buffer.indexOf(".") != -1) throw error("Invalid float number");
+                if (hasDot) throw error("Invalid float number " + buffer);
+                hasDot = true;
+            } else if (current == 'e' || current == 'E') {
+                int exp = subTokenizeScientificNumber();
+                buffer.append(current).append(exp);
+                break;
             } else if (!Character.isDigit(current)) {
                 break;
             }
             buffer.append(current);
             current = next();
         }
-        addToken(TokenType.NUMBER, buffer.toString());
+        addToken(TokenType.NUMBER, buffer.toString(), startPos);
     }
 
-    private void tokenizeHexNumber() {
-        clearBuffer();
+    private int subTokenizeScientificNumber() {
+        int sign = 1;
+        switch (next()) {
+            case '-': sign = -1;
+            case '+': skip(); break;
+        }
+
+        boolean hasValue = false;
+        char current = peek(0);
+        while (current == '0') {
+            hasValue = true;
+            current = next();
+        }
+        int result = 0;
+        int position = 0;
+        while (Character.isDigit(current)) {
+            result = result * 10 + (current - '0');
+            current = next();
+            position++;
+        }
+        if (position == 0 && !hasValue) throw error("Empty floating point exponent");
+        if (position >= 4) {
+            if (sign > 0) throw error("Float number too large");
+            else throw error("Float number too small");
+        }
+        return sign * result;
+    }
+
+    private void tokenizeHexNumber(int skipChars) {
+        final var buffer = createBuffer();
+        final Pos startPos = markPos();
+        // Skip HEX prefix 0x or #
+        for (int i = 0; i < skipChars; i++) skip();
+
         char current = peek(0);
         while (isHexNumber(current) || (current == '_')) {
             if (current != '_') {
@@ -182,13 +222,18 @@ public final class Lexer {
             }
             current = next();
         }
-        if (buffer.length() > 0) {
-            addToken(TokenType.HEX_NUMBER, buffer.toString());
-        }
+
+        if (buffer.isEmpty()) throw error("Empty HEX value");
+        if (peek(-1) == '_') throw error("HEX value cannot end with _");
+        addToken(TokenType.HEX_NUMBER, buffer.toString(), startPos);
+    }
+
+    private static boolean isNumber(char current) {
+        return ('0' <= current && current <= '9');
     }
 
     private static boolean isHexNumber(char current) {
-        return Character.isDigit(current)
+        return ('0' <= current && current <= '9')
                 || ('a' <= current && current <= 'f')
                 || ('A' <= current && current <= 'F');
     }
@@ -197,22 +242,19 @@ public final class Lexer {
         char current = peek(0);
         if (current == '/') {
             if (peek(1) == '/') {
-                next();
-                next();
                 tokenizeComment();
                 return;
             } else if (peek(1) == '*') {
-                next();
-                next();
                 tokenizeMultilineComment();
                 return;
             }
         }
-        clearBuffer();
+
+        final Pos startPos = markPos();
+        final var buffer = createBuffer();
         while (true) {
-            final String text = buffer.toString();
-            if (!text.isEmpty() && !OPERATORS.containsKey(text + current)) {
-                addToken(OPERATORS.get(text));
+            if (!buffer.isEmpty() && !OPERATORS.containsKey(buffer.toString() + current)) {
+                addToken(OPERATORS.get(buffer.toString()), startPos);
                 return;
             }
             buffer.append(current);
@@ -221,48 +263,48 @@ public final class Lexer {
     }
 
     private void tokenizeWord() {
-        clearBuffer();
+        final var buffer = createBuffer();
+        final Pos startPos = markPos();
         buffer.append(peek(0));
         char current = next();
-        while (true) {
-            if (!isOwnLangIdentifierPart(current)) {
-                break;
-            }
+        while (isFelsIdentifierPart(current)) {
             buffer.append(current);
             current = next();
         }
 
         final String word = buffer.toString();
         if (KEYWORDS.containsKey(word)) {
-            addToken(KEYWORDS.get(word));
+            addToken(KEYWORDS.get(word), startPos);
         } else {
-            addToken(TokenType.WORD, word);
+            addToken(TokenType.WORD, word, startPos);
         }
     }
 
     private void tokenizeExtendedWord() {
-        next();// skip `
-        clearBuffer();
+        final Pos startPos = markPos();
+        skip();// skip `
+        final var buffer = createBuffer();
         char current = peek(0);
-        while (true) {
-            if (current == '`') break;
+        while (current != '`') {
             if (current == '\0') throw error("Reached end of file while parsing extended word.");
             if (current == '\n' || current == '\r') throw error("Reached end of line while parsing extended word.");
             buffer.append(current);
             current = next();
         }
-        next(); // skip closing `
-        addToken(TokenType.WORD, buffer.toString());
+        skip(); // skip closing `
+        addToken(TokenType.WORD, buffer.toString(), startPos);
     }
 
     private void tokenizeText() {
-        next();// skip "
-        clearBuffer();
+        final Pos startPos = markPos();
+        skip();// skip "
+        final var buffer = createBuffer();
         char current = peek(0);
         while (true) {
             if (current == '\\') {
                 current = next();
                 switch (current) {
+                    case '\\': current = next(); buffer.append('\\'); continue;
                     case '"': current = next(); buffer.append('"'); continue;
                     case '0': current = next(); buffer.append('\0'); continue;
                     case 'b': current = next(); buffer.append('\b'); continue;
@@ -299,12 +341,14 @@ public final class Lexer {
             buffer.append(current);
             current = next();
         }
-        next(); // skip closing "
+        skip(); // skip closing "
 
-        addToken(TokenType.TEXT, buffer.toString());
+        addToken(TokenType.TEXT, buffer.toString(), startPos);
     }
 
     private void tokenizeComment() {
+        skip(); // /
+        skip(); // /
         char current = peek(0);
         while ("\r\n\0".indexOf(current) == -1) {
             current = next();
@@ -312,36 +356,47 @@ public final class Lexer {
     }
 
     private void tokenizeMultilineComment() {
+        skip(); // /
+        skip(); // *
         char current = peek(0);
-        while (true) {
-            if (current == '*' && peek(1) == '/') break;
+        while (current != '*' || peek(1) != '/') {
             if (current == '\0') throw error("Reached end of file while parsing multiline comment");
             current = next();
         }
-        next(); // *
-        next(); // /
+        skip(); // *
+        skip(); // /
     }
 
-    private boolean isOwnLangIdentifierStart(char current) {
+    private boolean isFelsIdentifierStart(char current) {
         return (Character.isLetter(current) || (current == '_') || (current == '$'));
     }
 
-    private boolean isOwnLangIdentifierPart(char current) {
-        return (Character.isLetterOrDigit(current) || (current == '_') || (current == '$'));
+    private boolean isFelsIdentifierPart(char current) {
+        return isFelsIdentifierStart(current) || isNumber(current);
     }
 
-    private void clearBuffer() {
+    private StringBuilder createBuffer() {
         buffer.setLength(0);
+        return buffer;
     }
 
-    private char next() {
-        pos++;
-        final char result = peek(0);
+    private Pos markPos() {
+        return new Pos(row, col);
+    }
+
+    private void skip() {
+        if (pos >= length) return;
+        final char result = input.charAt(pos);
         if (result == '\n') {
             row++;
             col = 1;
         } else col++;
-        return result;
+        pos++;
+    }
+
+    private char next() {
+        skip();
+        return peek(0);
     }
 
     private char peek(int relativePosition) {
@@ -350,15 +405,15 @@ public final class Lexer {
         return input.charAt(position);
     }
 
-    private void addToken(TokenType type) {
-        addToken(type, "");
+    private void addToken(TokenType type, Pos startPos) {
+        addToken(type, "", startPos);
     }
 
-    private void addToken(TokenType type, String text) {
-        tokens.add(new Token(type, text, new Pos(row, col)));
+    private void addToken(TokenType type, String text, Pos startRow) {
+        tokens.add(new Token(type, text, startRow));
     }
 
     private LexerException error(String text) {
-        return new LexerException(new Pos(row, col), text);
+        return new LexerException(text, markPos());
     }
 }

@@ -4,6 +4,7 @@ import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.exceptions.TypeException;
 import main.java.net.felsstudio.fels.lib.*;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -61,7 +62,13 @@ public class collections implements Module {
                         map.putAll(((MapValue) args[0]).getMap());
                     } else if (args[0].type() == Types.FUNCTION) {
                         final Function comparator = ValueUtils.consumeFunction(args[0], 0);
-                        map = comparatorToMapFunction.apply((o1, o2) -> comparator.execute(o1, o2).asInt());
+                        map = comparatorToMapFunction.apply((o1, o2) -> {
+                            try {
+                                return comparator.execute(o1, o2).asInt();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     } else {
                         throw new TypeException("Map or comparator function expected in first argument");
                     }
@@ -71,7 +78,13 @@ public class collections implements Module {
                         throw new TypeException("Map expected in first argument");
                     }
                     final Function comparator = ValueUtils.consumeFunction(args[1], 1);
-                    map = comparatorToMapFunction.apply((o1, o2) -> comparator.execute(o1, o2).asInt());
+                    map = comparatorToMapFunction.apply((o1, o2) -> {
+                        try {
+                            return comparator.execute(o1, o2).asInt();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                     map.putAll(((MapValue) args[0]).getMap());
                     break;
                 default:

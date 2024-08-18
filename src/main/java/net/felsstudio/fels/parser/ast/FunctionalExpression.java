@@ -6,6 +6,7 @@ import main.java.net.felsstudio.fels.exceptions.UnknownFunctionException;
 import main.java.net.felsstudio.fels.exceptions.VariableDoesNotExistsException;
 import main.java.net.felsstudio.fels.lib.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,7 @@ public final class FunctionalExpression extends InterruptableNode implements Exp
             final Value result = f.execute(values);
             CallStack.exit();
             return result;
-        } catch (ArgumentsMismatchException | TypeException | VariableDoesNotExistsException ex) {
+        } catch (ArgumentsMismatchException | TypeException | VariableDoesNotExistsException | IOException ex) {
             throw new RuntimeException(ex.getMessage() + " in function " + functionExpr, ex);
         }
     }

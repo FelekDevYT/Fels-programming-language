@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -73,20 +74,32 @@ public abstract class ComponentValue extends MapValue {
 
             @Override
             public void keyTyped(KeyEvent e) {
-                handleKeyEvent("typed", e);
+                try {
+                    handleKeyEvent("typed", e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                handleKeyEvent("pressed", e);
+                try {
+                    handleKeyEvent("pressed", e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                handleKeyEvent("released", e);
+                try {
+                    handleKeyEvent("released", e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
 
-            private void handleKeyEvent(String type, final KeyEvent e) {
+            private void handleKeyEvent(String type, final KeyEvent e) throws IOException {
                 final MapValue map = new MapValue(15);
                 map.set("extendedKeyCode", NumberValue.of(e.getExtendedKeyCode()));
                 map.set("keyChar", NumberValue.of(e.getKeyChar()));

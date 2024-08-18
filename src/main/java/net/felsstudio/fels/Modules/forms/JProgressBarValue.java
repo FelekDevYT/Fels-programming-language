@@ -5,6 +5,7 @@ import main.java.net.felsstudio.fels.lib.*;
 
 import static main.java.net.felsstudio.fels.lib.Converters.*;
 import javax.swing.JProgressBar;
+import java.io.IOException;
 
 public class JProgressBarValue extends JComponentValue {
 
@@ -42,7 +43,13 @@ public class JProgressBarValue extends JComponentValue {
     private Value addChangeListener(Value[] args) {
         Arguments.check(1, args.length);
         final Function action = ValueUtils.consumeFunction(args[0], 0);
-        progressBar.addChangeListener(e -> action.execute());
+        progressBar.addChangeListener(e -> {
+            try {
+                action.execute();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         return NumberValue.ZERO;
     }
 }

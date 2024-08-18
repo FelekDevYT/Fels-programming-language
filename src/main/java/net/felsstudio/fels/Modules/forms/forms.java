@@ -127,6 +127,7 @@ public final class forms implements Module {
         result.put("newScrollPane", Components::newScrollPane);
         result.put("newTextArea", Components::newTextArea);
         result.put("newTextField", Components::newTextField);
+        result.put("newPasswordField",Components::newPasswordField);
         result.put("newWindow", Components::newWindow);
 
         // LayoutManagers

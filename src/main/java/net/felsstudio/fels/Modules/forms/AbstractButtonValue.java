@@ -5,6 +5,8 @@ import main.java.net.felsstudio.fels.lib.*;
 
 import javax.swing.AbstractButton;
 
+import java.io.IOException;
+
 import static main.java.net.felsstudio.fels.lib.Converters.*;
 
 public class AbstractButtonValue extends JComponentValue {
@@ -45,14 +47,26 @@ public class AbstractButtonValue extends JComponentValue {
     private Value addActionListener(Value[] args) {
         Arguments.check(1, args.length);
         final Function action = ValueUtils.consumeFunction(args[0], 0);
-        abstractButton.addActionListener(e -> action.execute());
+        abstractButton.addActionListener(e -> {
+            try {
+                action.execute();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         return NumberValue.ZERO;
     }
     
     private Value addChangeListener(Value[] args) {
         Arguments.check(1, args.length);
         final Function action = ValueUtils.consumeFunction(args[0], 0);
-        abstractButton.addChangeListener(e -> action.execute());
+        abstractButton.addChangeListener(e -> {
+            try {
+                action.execute();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         return NumberValue.ZERO;
     }
 }

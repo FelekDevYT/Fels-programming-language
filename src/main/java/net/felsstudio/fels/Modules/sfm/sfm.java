@@ -7,6 +7,7 @@ import main.java.net.felsstudio.fels.exceptions.TypeException;
 import main.java.net.felsstudio.fels.lib.*;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,50 +27,6 @@ public final class sfm implements Module {//Standard fels module
                             System.out.println(arg.asString());
                         }
                         System.out.println();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("remVar", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        Variables.remove(args[0].asString());
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("defineVar", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        Variables.set(args[0].asString(),args[1]);
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("isVarExists", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        if(Variables.isExists(args[0].asString())){
-                            return NumberValue.ONE;
-                        }else{
-                            return NumberValue.ZERO;
-                        }
-                    }
-                }),
-                entry("getVarValue", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        return new StringValue(Variables.get(args[0].asString()).asString());
-                    }
-                }),
-                entry("remFuncs", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        ScopeHandler.functions().clear();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("remFunc", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        ScopeHandler.functions().remove(args[0].asString());
                         return NumberValue.ZERO;
                     }
                 }),
@@ -151,7 +108,13 @@ public final class sfm implements Module {//Standard fels module
                             System.arraycopy(args, 1, params, 0, params.length);
                         }
 
-                        final Thread thread = new Thread(() -> body.execute(params));
+                        final Thread thread = new Thread(() -> {
+                            try {
+                                body.execute(params);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                         thread.setUncaughtExceptionHandler(Starter::handleException);
                         thread.start();
                         return NumberValue.ZERO;
@@ -513,6 +476,29 @@ public final class sfm implements Module {//Standard fels module
                             return NumberValue.of(1);
                         }catch(InterruptedException ie){
                             return NumberValue.of(0);
+                        }
+                    }
+                }),
+                entry("try", new Function() {
+                    @Override
+                    public Value execute(Value[] args) throws IOException {
+                        Arguments.checkOrOr(1, 2, args.length);
+                        try {
+                            return ValueUtils.consumeFunction(args[0], 0).execute();
+                        } catch (Exception ex) {
+                            if (args.length == 2) {
+                                switch (args[1].type()) {
+                                    case Types.FUNCTION:
+                                        final String message = ex.getMessage();
+                                        final Function catchFunction = ((FunctionValue) args[1]).getValue();
+                                        return catchFunction.execute(
+                                                new StringValue(ex.getClass().getName()),
+                                                new StringValue(message == null ? "" : message));
+                                    default:
+                                        return args[1];
+                                }
+                            }
+                            return NumberValue.MINUS_ONE;
                         }
                     }
                 })

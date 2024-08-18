@@ -4,6 +4,8 @@ import main.java.net.felsstudio.fels.exceptions.OperationIsNotSupportedException
 import main.java.net.felsstudio.fels.exceptions.TypeException;
 import main.java.net.felsstudio.fels.lib.*;
 
+import java.io.IOException;
+
 /**
  *
  * @author felek
@@ -61,7 +63,11 @@ public final class BinaryExpression implements Expression {
             return eval(value1, value2);
         } catch (OperationIsNotSupportedException ex) {
             if (ScopeHandler.isFunctionExists(operation.toString())) {
-                return ScopeHandler.getFunction(operation.toString()).execute(value1, value2);
+                try {
+                    return ScopeHandler.getFunction(operation.toString()).execute(value1, value2);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             throw ex;
         }

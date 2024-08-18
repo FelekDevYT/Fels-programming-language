@@ -3,15 +3,7 @@ package main.java.net.felsstudio.fels.Modules.forms;
 import main.java.net.felsstudio.fels.lib.*;
 
 import java.awt.Component;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 /**
  * Functions for working with components.
@@ -64,6 +56,22 @@ public final class Components {
             } break;
         }
         return new JTextFieldValue(new JTextField(text, cols));
+    }
+
+    static Value newPasswordField(Value[] args) {
+        Arguments.checkRange(0, 2, args.length);
+        String text = "";
+        int cols = 0;
+        switch (args.length) {
+            case 1: {
+                text = args[0].asString();
+            } break;
+            case 2: {
+                text = args[0].asString();
+                cols = args[1].asInt();
+            } break;
+        }
+        return new JPasswordFieldValue(new JPasswordField(text, cols));
     }
     
     static Value newTextArea(Value[] args) {

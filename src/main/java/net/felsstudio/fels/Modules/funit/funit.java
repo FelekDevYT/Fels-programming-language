@@ -4,6 +4,7 @@ import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
 import main.java.net.felsstudio.fels.parser.Console.Console;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -119,6 +120,8 @@ public final class funit implements Module {
             } catch (OUnitAssertionException oae) {
                 isSuccessfull = false;
                 failureDescription = oae.getMessage();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
             final long elapsedTime = System.nanoTime() - startTime;
             return new TestInfo(name, isSuccessfull, failureDescription, elapsedTime / 1000);

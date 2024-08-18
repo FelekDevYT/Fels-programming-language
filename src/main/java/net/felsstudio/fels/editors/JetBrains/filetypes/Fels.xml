@@ -11,7 +11,7 @@
       <option name="HAS_PARENS" value="true" />
       <option name="HAS_STRING_ESCAPES" value="true" />
     </options>
-    <keywords keywords="remFunc;perror;panic;getVarValue;IsVarExists;remVar;defineVar;break;case;class;continue;do;else;extract;for;func;getNameFromNumber;if;match;new;print;println;return;toNumber;toString;typeOf;while" ignore_case="false" />
+    <keywords keywords="setSFunc;remFunc;perror;panic;getVarValue;IsVarExists;remVar;defineVar;break;case;class;continue;do;else;extract;for;func;getNameFromNumber;if;match;new;print;println;return;toNumber;toString;typeOf;while" ignore_case="false" />
     <keywords2 keywords="NULL;array;echo;try" />
     <keywords3 keywords="false;null;this;true" />
     <keywords4 keywords="import;using" />

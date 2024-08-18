@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Information {
     @INFO
-    public static final String FELS_VERSION = "3 PRE-RELEASE";
+    public static final String FELS_VERSION = "4 PRE-RELEASE";
 
     @INFO
     public static final String FELS_AUTHOR = "FelekDevYT,FelsStudio";
@@ -15,5 +15,5 @@ public class Information {
     public static final String DATE = new Date().toString();
 
     @INFO
-    public static final String LOADER_VERSION = "1.2";
+    public static final String LOADER_VERSION = "1.3";
 }

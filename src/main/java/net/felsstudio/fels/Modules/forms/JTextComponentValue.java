@@ -7,6 +7,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
+import java.io.IOException;
 
 public class JTextComponentValue extends JComponentValue {
 
@@ -50,7 +51,11 @@ public class JTextComponentValue extends JComponentValue {
             final MapValue map = new MapValue(2);
             map.set("getDot", NumberValue.of(e.getDot()));
             map.set("getMark", NumberValue.of(e.getMark()));
-            action.execute(map);
+            try {
+                action.execute(map);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         });
         return NumberValue.ZERO;
     }
@@ -61,20 +66,32 @@ public class JTextComponentValue extends JComponentValue {
         textComponent.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                handleDocumentEvent(DocumentEvent.EventType.INSERT, e);
+                try {
+                    handleDocumentEvent(DocumentEvent.EventType.INSERT, e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                handleDocumentEvent(DocumentEvent.EventType.REMOVE, e);
+                try {
+                    handleDocumentEvent(DocumentEvent.EventType.REMOVE, e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                handleDocumentEvent(DocumentEvent.EventType.CHANGE, e);
+                try {
+                    handleDocumentEvent(DocumentEvent.EventType.CHANGE, e);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
             
-            private void handleDocumentEvent(DocumentEvent.EventType type, final DocumentEvent e) {
+            private void handleDocumentEvent(DocumentEvent.EventType type, final DocumentEvent e) throws IOException {
                 final MapValue map = new MapValue(3);
                 map.set("getLength", NumberValue.of(e.getLength()));
                 map.set("getOffset", NumberValue.of(e.getOffset()));
