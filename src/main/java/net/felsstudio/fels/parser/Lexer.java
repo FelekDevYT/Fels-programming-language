@@ -163,11 +163,14 @@ public final class Lexer {
             return;
         }
         boolean hasDot = false;
+        boolean deciminal = false;
         while (true) {
             if (current == '.') {
+                deciminal = true;
                 if (hasDot) throw error("Invalid float number " + buffer);
                 hasDot = true;
             } else if (current == 'e' || current == 'E') {
+                deciminal = true;
                 int exp = subTokenizeScientificNumber();
                 buffer.append(current).append(exp);
                 break;
@@ -177,7 +180,11 @@ public final class Lexer {
             buffer.append(current);
             current = next();
         }
-        addToken(TokenType.NUMBER, buffer.toString(), startPos);
+        if (deciminal) {
+            addToken(TokenType.DECIMAL_NUMBER, buffer.toString(), startPos);
+        } else {
+            addToken(TokenType.NUMBER, buffer.toString(), startPos);
+        }
     }
 
     private int subTokenizeScientificNumber() {

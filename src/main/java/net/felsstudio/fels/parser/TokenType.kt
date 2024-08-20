@@ -8,6 +8,7 @@ enum class TokenType {
     NUMBER,
     HEX_NUMBER,
     WORD,
+    DECIMAL_NUMBER,
     TEXT,
 
     // keyword
