@@ -164,10 +164,19 @@ public final class Parser {
         if(match(TokenType.PERROR)){
             return new PerrorStatement(expression());
         }
+        if(match(TokenType.PANIC)){
+            return new PanicStatement(expression());
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
-            return new ExprStatement(functionChain(qualifiedName()));
+            return functionCallStatement();
         }
         return assignmentStatement();
+    }
+
+    private ExprStatement functionCallStatement() {
+        return new ExprStatement(
+                functionChain(new ValueExpression(consume(TokenType.WORD).text()))
+        );
     }
 
     private UsingStatement using() {

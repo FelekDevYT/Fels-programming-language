@@ -17,6 +17,32 @@ import java.util.Map;
 import static java.util.Map.entry;
 
 public class clipboard implements Module {
+
+    private class cp{
+        static String get(){
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            DataFlavor flavor = DataFlavor.stringFlavor;
+            if (clipboard.isDataFlavorAvailable(flavor)) {
+                String text = null;
+                try {
+                    text = (String) clipboard.getData(flavor);
+                } catch (UnsupportedFlavorException e) {
+                    throw new RuntimeException("RuntimeException: ");
+                } catch (IOException e) {
+                    throw new RuntimeException("IOException");
+                }
+                return text;
+            }
+            return null;
+        }
+
+        static void set(String text){
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            StringSelection stringSelection = new StringSelection(text);
+            clipboard.setContents(stringSelection, null);
+        }
+    }
+
     @Override
     public Map<String, Value> constants() {
         return Map.of();
@@ -28,37 +54,27 @@ public class clipboard implements Module {
                 entry("getClipboard", new Function() {
                     @Override
                     public Value execute(Value... args) throws IOException {
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                        DataFlavor flavor = DataFlavor.stringFlavor;
-                        if (clipboard.isDataFlavorAvailable(flavor)) {
-                            String text = null;
-                            try {
-                                text = (String) clipboard.getData(flavor);
-                            } catch (UnsupportedFlavorException e) {
-                                throw new RuntimeException("RuntimeException: ");
-                            } catch (IOException e) {
-                                throw new RuntimeException("IOException");
-                            }
-                            return new StringValue(text);
-                        }
-                        return NumberValue.ZERO;
+                        return new StringValue(cp.get());
                     }
                 }),
                 entry("setClipboard", new Function() {
                     @Override
                     public Value execute(Value... args) throws IOException {
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                        StringSelection stringSelection = new StringSelection(args[0].asString());
-                        clipboard.setContents(stringSelection, null);
+                        cp.set(args[0].asString());
                         return new StringValue(args[0].asString());
                     }
                 }),
                 entry("clearClipboard", new Function() {
                     @Override
                     public Value execute(Value... args) throws IOException {
-                        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                        StringSelection stringSelection = new StringSelection("");
-                        clipboard.setContents(stringSelection, null);
+                        cp.set(null);
+                        return NumberValue.ZERO;
+                    }
+                }),
+                entry("add", new Function() {
+                    @Override
+                    public Value execute(Value... args) throws IOException {
+                        cp.set(cp.get()+args[0].asString());
                         return NumberValue.ZERO;
                     }
                 })

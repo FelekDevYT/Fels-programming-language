@@ -31,14 +31,13 @@ public final class ftypes implements Module {
                 entry("toString", args -> new StringValue(args[0].asString())),
                 entry("toNumber", args -> NumberValue.of(args[0].asNumber())),
                 entry("getNameFromNumber",args -> new StringValue(Types.typeToString(args[0].asInt()))),
-                entry("toStringfromBooleam",args -> new StringValue(args[0].asString())),
 
-                entry("byte", args -> NumberValue.of((byte)args[0].asInt())),
-                entry("short", args -> NumberValue.of((short)args[0].asInt())),
-                entry("int", args -> NumberValue.of(args[0].asInt())),
-                entry("long", args -> NumberValue.of((long)args[0].asNumber())),
-                entry("float", args -> NumberValue.of((float)args[0].asNumber())),
-                entry("double", args -> NumberValue.of(args[0].asNumber()))
+                entry("toByte", args -> NumberValue.of((byte)args[0].asInt())),
+                entry("toShort", args -> NumberValue.of((short)args[0].asInt())),
+                entry("toInt", args -> NumberValue.of(args[0].asInt())),
+                entry("toLong", args -> NumberValue.of((long)args[0].asNumber())),
+                entry("toFloat", args -> NumberValue.of((float)args[0].asNumber())),
+                entry("toDouble", args -> NumberValue.of(args[0].asNumber()))
         );
     }
 }

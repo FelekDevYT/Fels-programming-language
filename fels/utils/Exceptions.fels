@@ -16,4 +16,7 @@ class Exceptions{
 	func felsAPIException(name,text){
 		panic("Exception in felsAPI module "+name+" with message: "+text)
 	}
+	func FunitException(message){
+	    panic("Funit exception: "+message)
+	}
 }
