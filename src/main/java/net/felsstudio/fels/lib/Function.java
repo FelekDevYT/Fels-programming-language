@@ -10,4 +10,7 @@ public interface Function {
 
     Value execute(Value... args) throws IOException;
 
+    default int getArgsCount() {
+        return 0;
+    }
 }

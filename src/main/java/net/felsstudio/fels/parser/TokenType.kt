@@ -32,6 +32,7 @@ enum class TokenType {
     CLASS,
     NEW,
     PERROR,
+    ECHO,
 
     PLUS,  // +
     MINUS,  // -

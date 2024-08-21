@@ -69,7 +69,7 @@ public class Project {
             }
 
             try(BufferedWriter bw = new BufferedWriter(new FileWriter(this.name+"\\src\\main.fels"))){
-                bw.write("using [\"sfm\"]");
+                bw.write("using sfm");
                 bw.write("\n\n");
                 bw.write("println(\"Hello,World!\")");
                 bw.write("\n");

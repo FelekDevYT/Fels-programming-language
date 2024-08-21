@@ -1,5 +1,7 @@
 package main.java.net.felsstudio.fels.parser;
 
+import main.java.net.felsstudio.fels.parser.Console.Console;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,8 +18,8 @@ public final class ParseErrors implements Iterable<ParseError> {
         errors.clear();
     }
 
-    public void add(Exception ex, Pos pos) {
-        errors.add(new ParseError(ex, pos));
+    public void add(ParseError parseError) {
+        errors.add(parseError);
     }
 
     public boolean hasErrors() {
@@ -33,8 +35,8 @@ public final class ParseErrors implements Iterable<ParseError> {
     public String toString() {
         final StringBuilder result = new StringBuilder();
         for (ParseError error : errors) {
-        result.append(error).append(System.lineSeparator());
-    }
+            result.append(error).append(Console.newline());
+        }
         return result.toString();
     }
 }

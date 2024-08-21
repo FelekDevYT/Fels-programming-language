@@ -48,8 +48,10 @@ public final class FunctionalExpression extends InterruptableNode implements Exp
             final Value result = f.execute(values);
             CallStack.exit();
             return result;
-        } catch (ArgumentsMismatchException | TypeException | VariableDoesNotExistsException | IOException ex) {
+        } catch (ArgumentsMismatchException | TypeException | VariableDoesNotExistsException ex) {
             throw new RuntimeException(ex.getMessage() + " in function " + functionExpr, ex);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

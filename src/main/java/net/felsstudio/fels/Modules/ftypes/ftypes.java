@@ -30,7 +30,7 @@ public final class ftypes implements Module {
                 entry("typeOf", args -> NumberValue.of(args[0].type())),
                 entry("toString", args -> new StringValue(args[0].asString())),
                 entry("toNumber", args -> NumberValue.of(args[0].asNumber())),
-                entry("getNameFromNumber",args -> new StringValue(Types.typeToString(args[0].asInt()))),
+                entry("typeToString",args -> new StringValue(Types.typeToString(args[0].asInt()))),
 
                 entry("toByte", args -> NumberValue.of((byte)args[0].asInt())),
                 entry("toShort", args -> NumberValue.of((short)args[0].asInt())),

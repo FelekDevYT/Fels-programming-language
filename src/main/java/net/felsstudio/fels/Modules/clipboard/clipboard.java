@@ -53,27 +53,27 @@ public class clipboard implements Module {
         return Map.ofEntries(
                 entry("getClipboard", new Function() {
                     @Override
-                    public Value execute(Value... args) throws IOException {
+                    public Value execute(Value... args) {
                         return new StringValue(cp.get());
                     }
                 }),
                 entry("setClipboard", new Function() {
                     @Override
-                    public Value execute(Value... args) throws IOException {
+                    public Value execute(Value... args) {
                         cp.set(args[0].asString());
                         return new StringValue(args[0].asString());
                     }
                 }),
                 entry("clearClipboard", new Function() {
                     @Override
-                    public Value execute(Value... args) throws IOException {
+                    public Value execute(Value... args) {
                         cp.set(null);
                         return NumberValue.ZERO;
                     }
                 }),
                 entry("add", new Function() {
                     @Override
-                    public Value execute(Value... args) throws IOException {
+                    public Value execute(Value... args) {
                         cp.set(cp.get()+args[0].asString());
                         return NumberValue.ZERO;
                     }

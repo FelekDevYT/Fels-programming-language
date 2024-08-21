@@ -452,6 +452,18 @@ public final class sfm implements Module {//Standard fels module
                         return new StringValue(String.valueOf((char) args[0].asInt()));
                     }
                 }),
+                entry("toCharArray", new Function() {
+                    @Override
+                    public Value execute(Value... args) {
+                        //"This is a simple line"
+                        char[] chars = args[0].asString().toCharArray();
+                        List<Value> vals = new ArrayList<>(chars.length);
+                        for (char c : chars) {
+                            vals.add(new StringValue(String.valueOf(c)));
+                        }
+                        return new ArrayValue(vals);
+                    }
+                }),
                 entry("charAt", new Function() {
                     @Override
                     public Value execute(Value[] args) {
@@ -460,12 +472,6 @@ public final class sfm implements Module {//Standard fels module
                         final int index = args[1].asInt();
 
                         return NumberValue.of((short)input.charAt(index));
-                    }
-                }),
-                entry("num", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        return NumberValue.of(args[0].asNumber());
                     }
                 }),
                 entry("sleep", new Function() {
@@ -500,6 +506,12 @@ public final class sfm implements Module {//Standard fels module
                             }
                             return NumberValue.MINUS_ONE;
                         }
+                    }
+                }),
+                entry("getEmpty", new Function() {
+                    @Override
+                    public Value execute(Value... args){
+                        return new StringValue("");
                     }
                 })
         );

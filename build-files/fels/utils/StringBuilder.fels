@@ -1,0 +1,20 @@
+using sfm
+
+class StringBuilder{
+    val = getEmpty()
+	
+	func StringBuilder(){
+    }
+	
+	func append(value){
+		val = val + value
+	}
+
+	func set(value){
+	    val = value
+	}
+	
+	func get(){
+		return val
+	}
+}

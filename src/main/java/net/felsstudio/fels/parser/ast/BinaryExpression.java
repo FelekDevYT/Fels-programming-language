@@ -63,10 +63,10 @@ public final class BinaryExpression implements Expression {
             return eval(value1, value2);
         } catch (OperationIsNotSupportedException ex) {
             if (ScopeHandler.isFunctionExists(operation.toString())) {
-                try {
+                try{
                     return ScopeHandler.getFunction(operation.toString()).execute(value1, value2);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                }catch(IOException exc){
+
                 }
             }
             throw ex;

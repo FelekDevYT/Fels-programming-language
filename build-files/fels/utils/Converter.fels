@@ -1,0 +1,36 @@
+using sfm,ftypes
+
+import "fels/utils/Exceptions.fels"
+
+class Converter{
+	func Converter(){
+	
+	}
+	
+	func toNumber(num){
+		if(typeOf(num) == STRING){
+			NN = toInt(num)
+			return NN
+		}
+	}
+	
+	func toBoolean(is){
+		if(typeOf(is) == NUMBER){
+			if(is == 0){
+				return false
+			}else{
+				return true
+			}
+		}else if(typeOf(is) == STRING){
+			if(is == "true") return true
+			else if(is == "false") return false
+			else if(is == "0") return false
+			else return true
+		}
+	}
+	
+	func getTypeOf(is){
+		return typeOf(is)
+	}
+	
+}

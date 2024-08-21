@@ -1,3 +1,7 @@
-using sfm,jfels
+using sfm
 
+var = "This is a simple text!@Created by FelekDevYT"
 
+arr = toCharArray(var)
+
+println arr
