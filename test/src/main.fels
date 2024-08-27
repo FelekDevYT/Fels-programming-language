@@ -1,7 +1,15 @@
-using sfm
+using sfm,rayFels
 
-var = "This is a simple text!@Created by FelekDevYT"
+rfInitWindow(500,500,"hello,rayFels")
 
-arr = toCharArray(var)
+rfSetFPS(60)
 
-println arr
+while(!rfIsCloseRequest()){
+    rfBeginDrawing()
+
+        rfClearBackground(255,255,255)
+
+    rfEndDrawing()
+}
+
+rfCloseWindow()

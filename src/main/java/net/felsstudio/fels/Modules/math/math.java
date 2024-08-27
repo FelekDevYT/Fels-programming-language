@@ -12,6 +12,7 @@ import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.UnaryOperator;
+import java.lang.Math;
 
 public final class math implements Module {
 
