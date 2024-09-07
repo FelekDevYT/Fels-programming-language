@@ -1,10 +1,7 @@
 package main.java.net.felsstudio.fels.Modules.clipboard;
 
 import main.java.net.felsstudio.fels.Modules.Module;
-import main.java.net.felsstudio.fels.lib.Function;
-import main.java.net.felsstudio.fels.lib.NumberValue;
-import main.java.net.felsstudio.fels.lib.StringValue;
-import main.java.net.felsstudio.fels.lib.Value;
+import main.java.net.felsstudio.fels.lib.*;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -44,40 +41,26 @@ public class clipboard implements Module {
     }
 
     @Override
-    public Map<String, Value> constants() {
-        return Map.of();
-    }
+    public void init() {
+        MapValue map = new MapValue(4);
 
-    @Override
-    public Map<String, Function> functions() {
-        return Map.ofEntries(
-                entry("getClipboard", new Function() {
-                    @Override
-                    public Value execute(Value... args) {
-                        return new StringValue(cp.get());
-                    }
-                }),
-                entry("setClipboard", new Function() {
-                    @Override
-                    public Value execute(Value... args) {
-                        cp.set(args[0].asString());
-                        return new StringValue(args[0].asString());
-                    }
-                }),
-                entry("clearClipboard", new Function() {
-                    @Override
-                    public Value execute(Value... args) {
-                        cp.set(null);
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("add", new Function() {
-                    @Override
-                    public Value execute(Value... args) {
-                        cp.set(cp.get()+args[0].asString());
-                        return NumberValue.ZERO;
-                    }
-                })
-        );
+        map.set("get",args -> new StringValue(cp.get()));
+
+        map.set("set",args->{
+            cp.set(args[0].asString());
+            return new StringValue(cp.get());
+        });
+
+        map.set("clear",args ->{
+            cp.set(null);
+            return NumberValue.ZERO;
+        });
+
+        map.set("add",args ->{
+            cp.set(cp.get()+args[0].asString());
+            return NumberValue.ZERO;
+        });
+
+        Variables.define("clipboard", map);
     }
 }

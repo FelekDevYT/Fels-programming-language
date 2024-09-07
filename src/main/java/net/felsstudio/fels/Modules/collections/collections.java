@@ -15,19 +15,12 @@ import static java.util.Map.entry;
 public class collections implements Module {
 
     @Override
-    public Map<String, Value> constants() {
-        return Collections.emptyMap();
-    }
-
-    @Override
-    public Map<String, Function> functions() {
-        return Map.ofEntries(
-                entry("hashMap", mapFunction(HashMap::new)),
-                entry("linkedHashMap", mapFunction(LinkedHashMap::new)),
-                entry("concurrentHashMap", mapFunction(ConcurrentHashMap::new)),
-                entry("treeMap", sortedMapFunction(TreeMap::new, TreeMap::new)),
-                entry("concurrentSkipListMap", sortedMapFunction(ConcurrentSkipListMap::new, ConcurrentSkipListMap::new))
-        );
+    public void init() {
+        Functions.set("hashMap",mapFunction(HashMap::new));
+        Functions.set("concurrentHashMap",mapFunction(ConcurrentHashMap::new));
+        Functions.set("linkedHashMap",mapFunction(LinkedHashMap::new));
+        Functions.set("treeMap",mapFunction(TreeMap::new));
+        Functions.set("concurrentTreeMap",mapFunction(ConcurrentHashMap::new));
     }
 
     private Function mapFunction(final Supplier<Map<Value, Value>> mapSupplier) {

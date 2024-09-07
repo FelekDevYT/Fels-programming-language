@@ -12,38 +12,33 @@ import java.util.Optional;
 public class mBox implements Module {
 
     @Override
-    public Map<String, Value> constants() {
-        return Map.of();
-    }
+    public void init() {
+        final MapValue map = new MapValue(7);
 
-    @Override
-    public Map<String, Function> functions() {
-        final var result = new LinkedHashMap<String, Function>(5);
-
-        result.put("showErrorMessage", args ->{
+        map.set("showErrorMessage", args ->{
             JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.ERROR_MESSAGE);
             return NumberValue.ZERO;
         });
 
-        result.put("showInformationMessage",args ->{
+        map.set("showInformationMessage",args ->{
             JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.INFORMATION_MESSAGE);
             return NumberValue.ZERO;
         });
 
-        result.put("showWarningMessage",args -> {
+        map.set("showWarningMessage",args -> {
             JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.WARNING_MESSAGE);
             return NumberValue.ZERO;
         });
 
-        result.put("showNoneMessage",args -> {
+        map.set("showNoneMessage",args -> {
             JOptionPane.showMessageDialog(null, args[0].asString(),args[1].asString(),JOptionPane.PLAIN_MESSAGE);
             return NumberValue.ZERO;
         });
 
-        result.put("showInputDialog",args -> {
+        map.set("showInputDialog",args -> {
             return new StringValue(JOptionPane.showInputDialog(null,args[0], String.valueOf(args[1]),JOptionPane.QUESTION_MESSAGE));
         });
 
-        return result;
+        Variables.define("mBox",map);
     }
 }

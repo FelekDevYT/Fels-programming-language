@@ -2,225 +2,215 @@ package main.java.net.felsstudio.fels.Modules.rayFels;
 
 import com.raylib.Raylib;
 import main.java.net.felsstudio.fels.Modules.Module;
-import main.java.net.felsstudio.fels.lib.ArrayValue;
-import main.java.net.felsstudio.fels.lib.Function;
-import main.java.net.felsstudio.fels.lib.NumberValue;
-import main.java.net.felsstudio.fels.lib.Value;
+import main.java.net.felsstudio.fels.lib.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import static java.util.Map.entry;
 
 public class rayFels implements Module {
 
     @Override
-    public Map<String, Function> functions() {
+    public void init() {
         Raylib rl = new Raylib();
-        return Map.ofEntries(
-                entry("rfInitWindow", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.InitWindow(args[0].asInt(),args[1].asInt(),args[2].asString());
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfIsCloseRequest", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        if(rl.WindowShouldClose()) return NumberValue.ONE;
-                        else return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfCloseWindow", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.CloseWindow();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfSetFPS", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.SetTargetFPS(args[0].asInt());
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfBeginDrawing", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.BeginDrawing();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfEndDrawing", new Function() {
-                    @Override
-                    public Value execute(Value... args){
-                        rl.EndDrawing();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfDrawText", new Function() {
-                    @Override
-                    public Value execute(Value... args){
-                        rl.DrawText(args[0].asString(),
-                                args[1].asInt(),
-                                args[2].asInt(),
-                                args[3].asInt(),
-                                c(args[4].asInt(),
-                                        args[5].asInt(),
-                                        args[6].asInt(),
-                                        255));
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfDrawLine", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.DrawLine(args[0].asInt(),
-                                args[1].asInt(),
-                                args[2].asInt(),
-                                args[3].asInt(),
-                                c(args[4].asInt(),
-                                        args[5].asInt(),
-                                        args[6].asInt(),
-                                        255));
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfDrawRect", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.DrawRectangle(args[0].asInt(),
-                                args[1].asInt(),
-                                args[2].asInt(),
-                                args[3].asInt(),
-                                c(args[4].asInt(),
-                                        args[5].asInt(),
-                                        args[6].asInt(),
-                                        255));
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfGetFPS", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        return NumberValue.of(rl.GetFPS());
-                    }
-                }),
-                entry("rfDrawFPS", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.DrawFPS(args[0].asInt(),
-                                args[1].asInt());
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfDrawGrid", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.DrawGrid(args[0].asInt(),
-                                args[1].asInt());
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfClearBackground", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.ClearBackground(c(args[0].asInt(),
-                                args[1].asInt(),
-                                args[2].asInt(),
-                                255));
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfIsKeyPressed", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        if(rl.IsKeyPressed(getKey(args[0].asString()))){
-                            return NumberValue.ONE;
-                        }
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfIsKeyDown", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        if(rl.IsKeyDown(getKey(args[0].asString()))){
-                            return NumberValue.ONE;
-                        }
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfIsKeyReleased", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        if(rl.IsKeyReleased(getKey(args[0].asString()))){
-                            return NumberValue.ONE;
-                        }
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfHideCursor", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.HideCursor();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("rfShowCursor", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        rl.ShowCursor();
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("IsMouseDown", new Function() {
-                    @Override
-                    public Value execute(Value... args){
-                        if(getMB(args[0].asString()) == 0){
-                            return rl.IsMouseButtonDown(Raylib.MOUSE_BUTTON_LEFT)?
-                                    NumberValue.ONE : NumberValue.ZERO;
-                        }else if(getMB(args[0].asString()) == 1){
-                            return rl.IsMouseButtonDown(Raylib.MOUSE_BUTTON_RIGHT)?
-                                    NumberValue.ONE : NumberValue.ZERO;
-                        }
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("IsMouseUp", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        if(getMB(args[0].asString()) == 0){
-                            return rl.IsMouseButtonUp(Raylib.MOUSE_BUTTON_LEFT)?
-                                    NumberValue.ONE : NumberValue.ZERO;
-                        }else if(getMB(args[0].asString()) == 1){
-                            return rl.IsMouseButtonUp(Raylib.MOUSE_BUTTON_RIGHT)?
-                                    NumberValue.ONE : NumberValue.ZERO;
-                        }
-                        return NumberValue.ZERO;
-                    }
-                }),
-                entry("IsMouseReleased", new Function() {
-                    @Override
-                    public Value execute(Value... args) throws IOException {
-                        if(getMB(args[0].asString()) == 0){
-                            return rl.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)?
-                                    NumberValue.ONE : NumberValue.ZERO;
-                        }else if(getMB(args[0].asString()) == 1){
-                            return rl.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_RIGHT)?
-                                    NumberValue.ONE : NumberValue.ZERO;
-                        }
-                        return NumberValue.ZERO;
-                    }
-                })
-        );
-    }
+        final MapValue map = new MapValue(25);
 
-    @Override
-    public Map<String, Value> constants() {
-        return Map.of();
+        map.set("rfInitWindow", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.InitWindow(args[0].asInt(),args[1].asInt(),args[2].asString());
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfIsCloseRequest", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                if(rl.WindowShouldClose()) return NumberValue.ONE;
+                else return NumberValue.ZERO;
+            }
+        });
+        map.set("rfCloseWindow", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.CloseWindow();
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfSetFPS", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.SetTargetFPS(args[0].asInt());
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfBeginDrawing", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.BeginDrawing();
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfEndDrawing", new Function() {
+            @Override
+            public Value execute(Value... args){
+                rl.EndDrawing();
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfDrawText", new Function() {
+            @Override
+            public Value execute(Value... args){
+                rl.DrawText(args[0].asString(),
+                        args[1].asInt(),
+                        args[2].asInt(),
+                        args[3].asInt(),
+                        c(args[4].asInt(),
+                                args[5].asInt(),
+                                args[6].asInt(),
+                                255));
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfDrawLine", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.DrawLine(args[0].asInt(),
+                        args[1].asInt(),
+                        args[2].asInt(),
+                        args[3].asInt(),
+                        c(args[4].asInt(),
+                                args[5].asInt(),
+                                args[6].asInt(),
+                                255));
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfDrawRect", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.DrawRectangle(args[0].asInt(),
+                        args[1].asInt(),
+                        args[2].asInt(),
+                        args[3].asInt(),
+                        c(args[4].asInt(),
+                                args[5].asInt(),
+                                args[6].asInt(),
+                                255));
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfGetFPS", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                return NumberValue.of(rl.GetFPS());
+            }
+        });
+        map.set("rfDrawFPS", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.DrawFPS(args[0].asInt(),
+                        args[1].asInt());
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfDrawGrid", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.DrawGrid(args[0].asInt(),
+                        args[1].asInt());
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfClearBackground", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.ClearBackground(c(args[0].asInt(),
+                        args[1].asInt(),
+                        args[2].asInt(),
+                        255));
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfIsKeyPressed", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                if(rl.IsKeyPressed(getKey(args[0].asString()))){
+                    return NumberValue.ONE;
+                }
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfIsKeyDown", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                if(rl.IsKeyDown(getKey(args[0].asString()))){
+                    return NumberValue.ONE;
+                }
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfIsKeyReleased", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                if(rl.IsKeyReleased(getKey(args[0].asString()))){
+                    return NumberValue.ONE;
+                }
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfHideCursor", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.HideCursor();
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("rfShowCursor", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                rl.ShowCursor();
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("IsMouseDown", new Function() {
+            @Override
+            public Value execute(Value... args){
+                if(getMB(args[0].asString()) == 0){
+                    return rl.IsMouseButtonDown(Raylib.MOUSE_BUTTON_LEFT)?
+                            NumberValue.ONE : NumberValue.ZERO;
+                }else if(getMB(args[0].asString()) == 1){
+                    return rl.IsMouseButtonDown(Raylib.MOUSE_BUTTON_RIGHT)?
+                            NumberValue.ONE : NumberValue.ZERO;
+                }
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("IsMouseUp", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                if(getMB(args[0].asString()) == 0){
+                    return rl.IsMouseButtonUp(Raylib.MOUSE_BUTTON_LEFT)?
+                            NumberValue.ONE : NumberValue.ZERO;
+                }else if(getMB(args[0].asString()) == 1){
+                    return rl.IsMouseButtonUp(Raylib.MOUSE_BUTTON_RIGHT)?
+                            NumberValue.ONE : NumberValue.ZERO;
+                }
+                return NumberValue.ZERO;
+            }
+        });
+        map.set("IsMouseReleased", new Function() {
+            @Override
+            public Value execute(Value... args) throws IOException {
+                if(getMB(args[0].asString()) == 0){
+                    return rl.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)?
+                            NumberValue.ONE : NumberValue.ZERO;
+                }else if(getMB(args[0].asString()) == 1){
+                    return rl.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_RIGHT)?
+                            NumberValue.ONE : NumberValue.ZERO;
+                }
+                return NumberValue.ZERO;
+            }
+        });
+
+        Variables.define("rf",map);
     }
 
     private static int getMB(final String name){

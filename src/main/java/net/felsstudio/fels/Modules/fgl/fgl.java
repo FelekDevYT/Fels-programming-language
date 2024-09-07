@@ -25,40 +25,31 @@ public final class fgl implements Module {
     private static NumberValue lastKey;
     private static ArrayValue mouseHover;
 
-
     @Override
-    public Map<String, Value> constants() {
-        return Map.ofEntries(
-                entry("VK_UP", NumberValue.of(KeyEvent.VK_UP)),
-                entry("VK_DOWN", NumberValue.of(KeyEvent.VK_DOWN)),
-                entry("VK_LEFT", NumberValue.of(KeyEvent.VK_LEFT)),
-                entry("VK_RIGHT", NumberValue.of(KeyEvent.VK_RIGHT)),
-                entry("VK_FIRE", NumberValue.of(KeyEvent.VK_ENTER)),
-                entry("VK_ESCAPE", NumberValue.of(KeyEvent.VK_ESCAPE))
-        );
-    }
-
-    @Override
-    public Map<String, Function> functions() {
-        lastKey = NumberValue.MINUS_ONE;
-        mouseHover = new ArrayValue(new Value[] { NumberValue.ZERO, NumberValue.ZERO });
-
-        final var result = new LinkedHashMap<String, Function>(15);
-        result.put("window", new CreateWindow());
-        result.put("prompt", new Prompt());
-        result.put("keypressed", new KeyPressed());
-        result.put("mousehover", new MouseHover());
-        result.put("line", intConsumer4Convert(fgl::line));
-        result.put("oval", intConsumer4Convert(fgl::oval));
-        result.put("foval", intConsumer4Convert(fgl::foval));
-        result.put("rect", intConsumer4Convert(fgl::rect));
-        result.put("frect", intConsumer4Convert(fgl::frect));
-        result.put("clip", intConsumer4Convert(fgl::clip));
-        result.put("drawstring", new DrawString());
-        result.put("color", new SetColor());
-        result.put("repaint", new Repaint());
-
-        return result;
+    public void init() {
+        Variables.define("VK_UP", NumberValue.of(KeyEvent.VK_UP));
+        Variables.define("VK_DOWN", NumberValue.of(KeyEvent.VK_DOWN));
+        Variables.define("VK_LEFT", NumberValue.of(KeyEvent.VK_LEFT));
+        Variables.define("VK_RIGHT", NumberValue.of(KeyEvent.VK_RIGHT));
+        Variables.define("VK_FIRE", NumberValue.of(KeyEvent.VK_ENTER));
+        Variables.define("VK_ESCAPE", NumberValue.of(KeyEvent.VK_ESCAPE));
+        
+        final var result = new MapValue(15);
+        result.set("window", new CreateWindow());
+        result.set("prompt", new Prompt());
+        result.set("keypressed", new KeyPressed());
+        result.set("mousehover", new MouseHover());
+        result.set("line", intConsumer4Convert(fgl::line));
+        result.set("oval", intConsumer4Convert(fgl::oval));
+        result.set("foval", intConsumer4Convert(fgl::foval));
+        result.set("rect", intConsumer4Convert(fgl::rect));
+        result.set("frect", intConsumer4Convert(fgl::frect));
+        result.set("clip", intConsumer4Convert(fgl::clip));
+        result.set("drawstring", new DrawString());
+        result.set("color", new SetColor());
+        result.set("repaint", new Repaint());
+        
+        Variables.define("fgl",result);
     }
 
     @FunctionalInterface

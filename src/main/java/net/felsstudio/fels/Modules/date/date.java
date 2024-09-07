@@ -26,24 +26,17 @@ public final class date implements Module {
             MILLISECOND = new StringValue("millisecond");
 
     @Override
-    public Map<String, Value> constants() {
-        return Map.of(
-                "STYLE_FULL", NumberValue.of(DateFormat.FULL),
-                "STYLE_LONG", NumberValue.of(DateFormat.LONG),
-                "STYLE_MEDIUM", NumberValue.of(DateFormat.MEDIUM),
-                "STYLE_SHORT", NumberValue.of(DateFormat.SHORT)
-        );
-    }
+    public void init() {
+        Variables.define("STYLE_FULL", NumberValue.of(DateFormat.FULL));
+        Variables.define("STYLE_LONG", NumberValue.of(DateFormat.LONG));
+        Variables.define("STYLE_MEDIUM", NumberValue.of(DateFormat.MEDIUM));
+        Variables.define("STYLE_SHORT", NumberValue.of(DateFormat.SHORT));
 
-    @Override
-    public Map<String, Function> functions() {
-        return Map.of(
-                "newDate", new date_newDate(),
-                "newFormat", new date_newFormat(),
-                "formatDate", new date_format(),
-                "parseDate", new date_parse(),
-                "toTimestamp", new date_toTimestamp()
-        );
+        Functions.set("newDate", new date_newDate());
+        Functions.set("newFormat", new date_newFormat());
+        Functions.set("formatDate", new date_format());
+        Functions.set("parseDate", new date_parse());
+        Functions.set("toTimestamp", new date_toTimestamp());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Values">

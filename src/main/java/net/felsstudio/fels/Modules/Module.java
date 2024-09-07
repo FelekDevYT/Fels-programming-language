@@ -7,7 +7,5 @@ import java.util.Map;
 
 public interface Module {
 
-    Map<String, Value> constants();
-
-    Map<String, Function> functions();
+    public void init();
 }

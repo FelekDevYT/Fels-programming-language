@@ -1,15 +1,7 @@
-using sfm,rayFels
+using sfm,ftypes
 
-rfInitWindow(500,500,"hello,rayFels")
-
-rfSetFPS(60)
-
-while(!rfIsCloseRequest()){
-    rfBeginDrawing()
-
-        rfClearBackground(255,255,255)
-
-    rfEndDrawing()
+if(typeOf(1) == ftypes.NUMBER){
+    println("1 is a number value")
+}else{
+    println("1 isn't a number value")
 }
-
-rfCloseWindow()

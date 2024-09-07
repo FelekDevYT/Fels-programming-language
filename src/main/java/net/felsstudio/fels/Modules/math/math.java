@@ -1,10 +1,7 @@
 package main.java.net.felsstudio.fels.Modules.math;
 
 import main.java.net.felsstudio.fels.Modules.Module;
-import main.java.net.felsstudio.fels.lib.Arguments;
-import main.java.net.felsstudio.fels.lib.Function;
-import main.java.net.felsstudio.fels.lib.NumberValue;
-import main.java.net.felsstudio.fels.lib.Value;
+import main.java.net.felsstudio.fels.lib.*;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,53 +16,50 @@ public final class math implements Module {
     private static final DoubleFunction<NumberValue> doubleToNumber = NumberValue::of;
 
     @Override
-    public Map<String, Value> constants() {
-        return Map.of(
-                "PI", NumberValue.of(Math.PI),
-                "E", NumberValue.of(Math.E)
-        );
-    }
+    public void init() {
+        final MapValue map = new MapValue(45);
+        
+        map.set("PI",NumberValue.of(Math.PI));
+        map.set("E",NumberValue.of(Math.E));
 
-    @Override
-    public Map<String, Function> functions() {
-        final var result = new LinkedHashMap<String, Function>(16);
-        result.put("abs", math::abs);
-        result.put("acos", functionConvert(Math::acos));
-        result.put("asin", functionConvert(Math::asin));
-        result.put("atan", functionConvert(Math::atan));
-        result.put("atan2", biFunctionConvert(Math::atan2));
-        result.put("cbrt", functionConvert(Math::cbrt));
-        result.put("ceil", functionConvert(Math::ceil));
-        result.put("copySign", math::copySign);
-        result.put("cos", functionConvert(Math::cos));
-        result.put("cosh", functionConvert(Math::cosh));
-        result.put("exp", functionConvert(Math::exp));
-        result.put("expm1", functionConvert(Math::expm1));
-        result.put("floor", functionConvert(Math::floor));
-        result.put("getExponent", math::getExponent);
-        result.put("hypot", biFunctionConvert(Math::hypot));
-        result.put("IEEEremainder", biFunctionConvert(Math::IEEEremainder));
-        result.put("log", functionConvert(Math::log));
-        result.put("log1p", functionConvert(Math::log1p));
-        result.put("log10", functionConvert(Math::log10));
-        result.put("max", math::max);
-        result.put("min", math::min);
-        result.put("nextAfter", math::nextAfter);
-        result.put("nextUp", functionConvert(Math::nextUp, Math::nextUp));
-        result.put("nextDown", functionConvert(Math::nextDown, Math::nextDown));
-        result.put("pow", biFunctionConvert(Math::pow));
-        result.put("rint", functionConvert(Math::rint));
-        result.put("round", math::round);
-        result.put("signum", functionConvert(Math::signum, Math::signum));
-        result.put("sin", functionConvert(Math::sin));
-        result.put("sinh", functionConvert(Math::sinh));
-        result.put("sqrt", functionConvert(Math::sqrt));
-        result.put("tan", functionConvert(Math::tan));
-        result.put("tanh", functionConvert(Math::tanh));
-        result.put("toDegrees", functionConvert(Math::toDegrees));
-        result.put("toRadians", functionConvert(Math::toRadians));
-        result.put("ulp", functionConvert(Math::ulp, Math::ulp));
-        return result;
+        map.set("abs", math::abs);
+        map.set("acos", functionConvert(Math::acos));
+        map.set("asin", functionConvert(Math::asin));
+        map.set("atan", functionConvert(Math::atan));
+        map.set("atan2", biFunctionConvert(Math::atan2));
+        map.set("cbrt", functionConvert(Math::cbrt));
+        map.set("ceil", functionConvert(Math::ceil));
+        map.set("copySign", math::copySign);
+        map.set("cos", functionConvert(Math::cos));
+        map.set("cosh", functionConvert(Math::cosh));
+        map.set("exp", functionConvert(Math::exp));
+        map.set("expm1", functionConvert(Math::expm1));
+        map.set("floor", functionConvert(Math::floor));
+        map.set("getExponent", math::getExponent);
+        map.set("hypot", biFunctionConvert(Math::hypot));
+        map.set("IEEEremainder", biFunctionConvert(Math::IEEEremainder));
+        map.set("log", functionConvert(Math::log));
+        map.set("log1p", functionConvert(Math::log1p));
+        map.set("log10", functionConvert(Math::log10));
+        map.set("max", math::max);
+        map.set("min", math::min);
+        map.set("nextAfter", math::nextAfter);
+        map.set("nextUp", functionConvert(Math::nextUp, Math::nextUp));
+        map.set("nextDown", functionConvert(Math::nextDown, Math::nextDown));
+        map.set("pow", biFunctionConvert(Math::pow));
+        map.set("rint", functionConvert(Math::rint));
+        map.set("round", math::round);
+        map.set("signum", functionConvert(Math::signum, Math::signum));
+        map.set("sin", functionConvert(Math::sin));
+        map.set("sinh", functionConvert(Math::sinh));
+        map.set("sqrt", functionConvert(Math::sqrt));
+        map.set("tan", functionConvert(Math::tan));
+        map.set("tanh", functionConvert(Math::tanh));
+        map.set("toDegrees", functionConvert(Math::toDegrees));
+        map.set("toRadians", functionConvert(Math::toRadians));
+        map.set("ulp", functionConvert(Math::ulp, Math::ulp));
+
+        Variables.define("math",map);
     }
 
     private static Value abs(Value[] args) {

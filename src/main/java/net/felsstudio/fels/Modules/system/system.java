@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static java.util.Map.entry;
 
-public class system implements Module {
+/*public class system implements Module {
 
     @Override
     public Map<String, Value> constants() {
@@ -53,4 +53,4 @@ public class system implements Module {
         );
     }
 
-}
+}*/

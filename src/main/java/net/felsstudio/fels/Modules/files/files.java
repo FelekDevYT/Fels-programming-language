@@ -19,73 +19,70 @@ public final class files implements Module {
     private static Map<Integer, FileInfo> files;
 
     @Override
-    public Map<String, Value> constants() {
-        return Map.of(
-                "FILES_COMPARATOR", new FunctionValue(new filesComparatorFunction())
-        );
-    }
+    public void init() {
+        Variables.define("FILES_COMPARATOR", new FunctionValue(new filesComparatorFunction()));
 
-    @Override
-    public Map<String, Function> functions() {
-        files = new HashMap<>();
-        final var result = new LinkedHashMap<String, Function>(50);
-        result.put("fopen", new fopen());
-        result.put("flush", new flush());
-        result.put("fclose", new fclose());
+        final MapValue map = new MapValue(30);
+
+        map.set("fopen", new fopen());
+        map.set("flush", new flush());
+        map.set("fclose", new fclose());
 
         // Operations
-        result.put("copy", new copy());
-        result.put("delete", fileToBoolean(File::delete));
-        result.put("listFiles", new listFiles());
-        result.put("mkdir", fileToBoolean(File::mkdir));
-        result.put("mkdirs", fileToBoolean(File::mkdirs));
-        result.put("rename", new rename());
+        map.set("copy", new copy());
+        map.set("delete", fileToBoolean(File::delete));
+        map.set("listFiles", new listFiles());
+        map.set("mkdir", fileToBoolean(File::mkdir));
+        map.set("mkdirs", fileToBoolean(File::mkdirs));
+        map.set("rename", new rename());
 
         // Permissions and statuses
-        result.put("canExecute", fileToBoolean(File::canExecute));
-        result.put("canRead", fileToBoolean(File::canRead));
-        result.put("canWrite", fileToBoolean(File::canWrite));
-        result.put("isDirectory", fileToBoolean(File::isDirectory));
-        result.put("isFile", fileToBoolean(File::isFile));
-        result.put("isHidden", fileToBoolean(File::isHidden));
-        result.put("setExecutable", new setExecutable());
-        result.put("setReadable", new setReadable());
-        result.put("setReadOnly", new setReadOnly());
-        result.put("setWritable", new setWritable());
+        map.set("canExecute", fileToBoolean(File::canExecute));
+        map.set("canRead", fileToBoolean(File::canRead));
+        map.set("canWrite", fileToBoolean(File::canWrite));
+        map.set("isDirectory", fileToBoolean(File::isDirectory));
+        map.set("isFile", fileToBoolean(File::isFile));
+        map.set("isHidden", fileToBoolean(File::isHidden));
+        map.set("setExecutable", new setExecutable());
+        map.set("setReadable", new setReadable());
+        map.set("setReadOnly", new setReadOnly());
+        map.set("setWritable", new setWritable());
 
-        result.put("exists", fileToBoolean(File::exists));
-        result.put("fileSize", new fileSize());
-        result.put("getParent", new getParent());
-        result.put("lastModified", new lastModified());
-        result.put("setLastModified", new setLastModified());
+        map.set("exists", fileToBoolean(File::exists));
+        map.set("fileSize", new fileSize());
+        map.set("getParent", new getParent());
+        map.set("lastModified", new lastModified());
+        map.set("setLastModified", new setLastModified());
 
         // IO
-        result.put("readBoolean", new readBoolean());
-        result.put("readByte", new readByte());
-        result.put("readBytes", new readBytes());
-        result.put("readAllBytes", new readAllBytes());
-        result.put("readChar", new readChar());
-        result.put("readShort", new readShort());
-        result.put("readInt", new readInt());
-        result.put("readLong", new readLong());
-        result.put("readFloat", new readFloat());
-        result.put("readDouble", new readDouble());
-        result.put("readUTF", new readUTF());
-        result.put("readLine", new readLine());
-        result.put("readText", new readText());
-        result.put("writeBoolean", new writeBoolean());
-        result.put("writeByte", new writeByte());
-        result.put("writeBytes", new writeBytes());
-        result.put("writeChar", new writeChar());
-        result.put("writeShort", new writeShort());
-        result.put("writeInt", new writeInt());
-        result.put("writeLong", new writeLong());
-        result.put("writeFloat", new writeFloat());
-        result.put("writeDouble", new writeDouble());
-        result.put("writeUTF", new writeUTF());
-        result.put("writeLine", new writeLine());
-        result.put("writeText", new writeText());
-        return result;
+        map.set("readBoolean", new readBoolean());
+        map.set("readByte", new readByte());
+        map.set("readBytes", new readBytes());
+        map.set("readAllBytes", new readAllBytes());
+        map.set("readChar", new readChar());
+        map.set("readShort", new readShort());
+        map.set("readInt", new readInt());
+        map.set("readLong", new readLong());
+        map.set("readFloat", new readFloat());
+        map.set("readDouble", new readDouble());
+        map.set("readUTF", new readUTF());
+        map.set("readLine", new readLine());
+        map.set("readText", new readText());
+        map.set("writeBoolean", new writeBoolean());
+        map.set("writeByte", new writeByte());
+        map.set("writeBytes", new writeBytes());
+        map.set("writeChar", new writeChar());
+        map.set("writeShort", new writeShort());
+        map.set("writeInt", new writeInt());
+        map.set("writeLong", new writeLong());
+        map.set("writeFloat", new writeFloat());
+        map.set("writeDouble", new writeDouble());
+        map.set("writeUTF", new writeUTF());
+        map.set("writeLine", new writeLine());
+        map.set("writeText", new writeText());
+
+        Variables.define("files",map);
+        
     }
 
     private static class filesComparatorFunction implements Function {

@@ -15,32 +15,27 @@ public class random implements Module {
     }
 
     @Override
-    public Map<String, Value> constants() {
-        return Map.of();
-    }
+    public void init() {
+        final MapValue map = new MapValue(10);
 
-    @Override
-    public Map<String, Function> functions() {
-        return Map.ofEntries(
-                entry("random", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        return NumberValue.of(random(args[0].asInt(), args[1].asInt()));
-                    }
-                }),
-                entry("rand", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        int max = args[0].asInt();
-                        return NumberValue.of(random(0, max));
-                    }
-                }),
-                entry("rnd", new Function() {
-                    @Override
-                    public Value execute(Value[] args) {
-                        return NumberValue.of(random(0,Integer.MAX_VALUE));
-                    }
-                })
-        );
+        map.set("random", new Function() {
+            @Override
+            public Value execute(Value[] args) {
+                return NumberValue.of(random(args[0].asInt(), args[1].asInt()));
+            }
+        });
+        map.set("rand", new Function() {
+            @Override
+            public Value execute(Value[] args) {
+                int max = args[0].asInt();
+                return NumberValue.of(random(0, max));
+            }
+        });
+                map.set("rnd", new Function() {
+            @Override
+            public Value execute(Value[] args) {
+                return NumberValue.of(random(0,Integer.MAX_VALUE));
+            }
+        });
     }
 }

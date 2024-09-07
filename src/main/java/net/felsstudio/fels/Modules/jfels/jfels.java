@@ -6,57 +6,52 @@ import main.java.net.felsstudio.fels.lib.*;
 import java.lang.reflect.*;
 import java.util.*;
 
-import static java.util.Map.entry;
-
 public final class jfels implements Module {
 
     private static final Value NULL = new NullValue();
 
     @Override
-    public Map<String, Value> constants() {
-        final var result = new LinkedHashMap<String, Value>(16);
-        result.put("null", NULL);
-        result.put("boolean.class", new ClassValue(boolean.class));
-        result.put("boolean[].class", new ClassValue(boolean[].class));
-        result.put("boolean[][].class", new ClassValue(boolean[][].class));
-        result.put("byte.class", new ClassValue(byte.class));
-        result.put("byte[].class", new ClassValue(byte[].class));
-        result.put("byte[][].class", new ClassValue(byte[][].class));
-        result.put("short.class", new ClassValue(short.class));
-        result.put("short[].class", new ClassValue(short[].class));
-        result.put("short[][].class", new ClassValue(short[][].class));
-        result.put("char.class", new ClassValue(char.class));
-        result.put("char[].class", new ClassValue(char[].class));
-        result.put("char[][].class", new ClassValue(char[][].class));
-        result.put("int.class", new ClassValue(int.class));
-        result.put("int[].class", new ClassValue(int[].class));
-        result.put("int[][].class", new ClassValue(int[][].class));
-        result.put("long.class", new ClassValue(long.class));
-        result.put("long[].class", new ClassValue(long[].class));
-        result.put("long[][].class", new ClassValue(long[][].class));
-        result.put("float.class", new ClassValue(float.class));
-        result.put("float[].class", new ClassValue(float[].class));
-        result.put("float[][].class", new ClassValue(float[][].class));
-        result.put("double.class", new ClassValue(double.class));
-        result.put("double[].class", new ClassValue(double[].class));
-        result.put("double[][].class", new ClassValue(double[][].class));
-        result.put("String.class", new ClassValue(String.class));
-        result.put("String[].class", new ClassValue(String[].class));
-        result.put("String[][].class", new ClassValue(String[][].class));
-        result.put("Object.class", new ClassValue(Object.class));
-        result.put("Object[].class", new ClassValue(Object[].class));
-        result.put("Object[][].class", new ClassValue(Object[][].class));
-        return result;
-    }
+    public void init() {
+        final MapValue map = new MapValue(35);
 
-    @Override
-    public Map<String, Function> functions() {
-        return Map.ofEntries(
-                entry("isNull", this::isNull),
-                entry("newClass", this::newClass),
-                entry("toObject", this::toObject),
-                entry("toValue", this::toValue)
-        );
+        map.set("isNull", this::isNull);
+        map.set("newClass", this::newClass);
+        map.set("toObject", this::toObject);
+        map.set("toValue", this::toValue);
+
+        map.set("null", NULL);
+        map.set("boolean.class", new ClassValue(boolean.class));
+        map.set("boolean[].class", new ClassValue(boolean[].class));
+        map.set("boolean[][].class", new ClassValue(boolean[][].class));
+        map.set("byte.class", new ClassValue(byte.class));
+        map.set("byte[].class", new ClassValue(byte[].class));
+        map.set("byte[][].class", new ClassValue(byte[][].class));
+        map.set("short.class", new ClassValue(short.class));
+        map.set("short[].class", new ClassValue(short[].class));
+        map.set("short[][].class", new ClassValue(short[][].class));
+        map.set("char.class", new ClassValue(char.class));
+        map.set("char[].class", new ClassValue(char[].class));
+        map.set("char[][].class", new ClassValue(char[][].class));
+        map.set("int.class", new ClassValue(int.class));
+        map.set("int[].class", new ClassValue(int[].class));
+        map.set("int[][].class", new ClassValue(int[][].class));
+        map.set("long.class", new ClassValue(long.class));
+        map.set("long[].class", new ClassValue(long[].class));
+        map.set("long[][].class", new ClassValue(long[][].class));
+        map.set("float.class", new ClassValue(float.class));
+        map.set("float[].class", new ClassValue(float[].class));
+        map.set("float[][].class", new ClassValue(float[][].class));
+        map.set("double.class", new ClassValue(double.class));
+        map.set("double[].class", new ClassValue(double[].class));
+        map.set("double[][].class", new ClassValue(double[][].class));
+        map.set("String.class", new ClassValue(String.class));
+        map.set("String[].class", new ClassValue(String[].class));
+        map.set("String[][].class", new ClassValue(String[][].class));
+        map.set("Object.class", new ClassValue(Object.class));
+        map.set("Object[].class", new ClassValue(Object[].class));
+        map.set("Object[][].class", new ClassValue(Object[][].class));
+
+        Variables.define("jfels",map);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Values">
