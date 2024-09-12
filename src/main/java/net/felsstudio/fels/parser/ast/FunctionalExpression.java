@@ -52,6 +52,8 @@ public final class FunctionalExpression extends InterruptableNode implements Exp
             throw new RuntimeException(ex.getMessage() + " in function " + functionExpr, ex);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

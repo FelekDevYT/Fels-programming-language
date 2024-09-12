@@ -87,6 +87,13 @@ public final class Lexer {
     private static final Map<String, TokenType> KEYWORDS;
     static {
         final var keywords = new HashMap<String, TokenType>();
+        //logical operators
+
+        keywords.put("and",TokenType.AMPAMP);
+        keywords.put("or",TokenType.BARBAR);
+        keywords.put("not",TokenType.EXCL);
+
+        //functions/core names
         keywords.put("print", TokenType.PRINT);
         keywords.put("println", TokenType.PRINTLN);
         keywords.put("if", TokenType.IF);
@@ -107,7 +114,6 @@ public final class Lexer {
         keywords.put("new", TokenType.NEW);
         keywords.put("panic",TokenType.PANIC);
         keywords.put("perror",TokenType.PERROR);
-        keywords.put("echo",TokenType.ECHO);
         KEYWORDS = Map.copyOf(keywords);
     }
 
@@ -147,7 +153,9 @@ public final class Lexer {
             else if (OPERATOR_CHARS.indexOf(current) != -1) tokenizeOperator();
             else if (Character.isWhitespace(current)) skip();
             else if (current == '`') tokenizeExtendedWord();
-            else if (current == '#') tokenizeHexNumber(1);
+            else if (current == '#') {
+                tokenizeHexNumber(1);
+            }
             else if (current == ';') skip(); // ignore semicolon
             else if (current == '\0') break;
             else throw error("Unknown token " + current);

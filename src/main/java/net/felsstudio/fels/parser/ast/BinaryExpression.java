@@ -67,6 +67,8 @@ public final class BinaryExpression implements Expression {
                     return ScopeHandler.getFunction(operation.toString()).execute(value1, value2);
                 }catch(IOException exc){
 
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
             throw ex;

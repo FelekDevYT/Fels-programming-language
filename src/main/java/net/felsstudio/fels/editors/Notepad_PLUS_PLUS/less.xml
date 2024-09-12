@@ -28,7 +28,7 @@
             <Keywords name="Keywords2"></Keywords>
             <Keywords name="Keywords3">~ ^ | || ? : ::</Keywords>
             <Keywords name="Keywords4"></Keywords>
-            <Keywords name="Keywords5">setSFunc remFuncs remFunc getVarValue IsVarExists remVar defineVarthis true false class new panic func println print if else match case extract do while for break continue return using import</Keywords>
+            <Keywords name="Keywords5">and or not setSFunc remFuncs remFunc getVarValue IsVarExists remVar defineVarthis true false class new panic func println print if else match case extract do while for break continue return using import</Keywords>
             <Keywords name="Keywords6">+ - * / % += -= /= *= %= ^= |= ::= ++ --</Keywords>
             <Keywords name="Keywords7"></Keywords>
             <Keywords name="Keywords8"></Keywords>

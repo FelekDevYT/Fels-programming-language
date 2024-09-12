@@ -3,8 +3,6 @@ package main.java.net.felsstudio.fels.Modules.math;
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.function.DoubleBinaryOperator;
 import java.util.function.DoubleFunction;
 import java.util.function.DoubleUnaryOperator;

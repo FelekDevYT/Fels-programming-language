@@ -13,7 +13,7 @@
     </options>
     <keywords keywords="setSFunc;remFunc;perror;panic;getVarValue;IsVarExists;remVar;defineVar;break;case;class;continue;do;else;extract;for;func;getNameFromNumber;if;match;new;print;println;return;toNumber;toString;typeOf;while" ignore_case="false" />
     <keywords2 keywords="NULL;array;echo;try" />
-    <keywords3 keywords="false;null;this;true" />
+    <keywords3 keywords="and;or;not;false;null;this;true" />
     <keywords4 keywords="import;using" />
   </highlighting>
   <extensionMap>

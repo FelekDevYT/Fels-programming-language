@@ -48,6 +48,8 @@ public class JProgressBarValue extends JComponentValue {
                 action.execute();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         });
         return NumberValue.ZERO;

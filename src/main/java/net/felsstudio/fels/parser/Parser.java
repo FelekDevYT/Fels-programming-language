@@ -53,10 +53,13 @@ public final class Parser {
     private final ParseErrors parseErrors;
     private Statement parsedStatement;
 
+    private Preprocessor preprocessor;
+
     private int index;
 
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
+        this.preprocessor = new Preprocessor();
         size = tokens.size();
         parseErrors = new ParseErrors();
     }
@@ -153,14 +156,14 @@ public final class Parser {
         if (match(TokenType.MATCH)) {
             return match();
         }
-        if (match(TokenType.CLASS)) {
-            return classDeclaration();
-        }
         if(match(TokenType.PERROR)){
             return new PerrorStatement(expression());
         }
         if(match(TokenType.PANIC)){
             return new PanicStatement(expression());
+        }
+        if(match(TokenType.GRID)){
+            System.out.println("asdf");
         }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return functionCallStatement();

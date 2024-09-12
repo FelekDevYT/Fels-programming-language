@@ -55,6 +55,8 @@ public class JTextComponentValue extends JComponentValue {
                 action.execute(map);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         });
         return NumberValue.ZERO;
@@ -68,7 +70,7 @@ public class JTextComponentValue extends JComponentValue {
             public void insertUpdate(DocumentEvent e) {
                 try {
                     handleDocumentEvent(DocumentEvent.EventType.INSERT, e);
-                } catch (IOException ex) {
+                } catch (IOException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -77,7 +79,7 @@ public class JTextComponentValue extends JComponentValue {
             public void removeUpdate(DocumentEvent e) {
                 try {
                     handleDocumentEvent(DocumentEvent.EventType.REMOVE, e);
-                } catch (IOException ex) {
+                } catch (IOException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -86,12 +88,12 @@ public class JTextComponentValue extends JComponentValue {
             public void changedUpdate(DocumentEvent e) {
                 try {
                     handleDocumentEvent(DocumentEvent.EventType.CHANGE, e);
-                } catch (IOException ex) {
+                } catch (IOException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
             
-            private void handleDocumentEvent(DocumentEvent.EventType type, final DocumentEvent e) throws IOException {
+            private void handleDocumentEvent(DocumentEvent.EventType type, final DocumentEvent e) throws IOException, InterruptedException {
                 final MapValue map = new MapValue(3);
                 map.set("getLength", NumberValue.of(e.getLength()));
                 map.set("getOffset", NumberValue.of(e.getOffset()));

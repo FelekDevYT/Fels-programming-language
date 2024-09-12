@@ -52,6 +52,8 @@ public class AbstractButtonValue extends JComponentValue {
                 action.execute();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         });
         return NumberValue.ZERO;
@@ -63,7 +65,7 @@ public class AbstractButtonValue extends JComponentValue {
         abstractButton.addChangeListener(e -> {
             try {
                 action.execute();
-            } catch (IOException ex) {
+            } catch (IOException | InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
         });

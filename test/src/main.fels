@@ -1,7 +1,4 @@
-using sfm,ftypes
+using sfm,memory
 
-if(typeOf(1) == ftypes.NUMBER){
-    println("1 is a number value")
-}else{
-    println("1 isn't a number value")
-}
+a = array(10)
+

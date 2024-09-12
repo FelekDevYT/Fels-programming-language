@@ -12,23 +12,21 @@ public class memory implements Module {
 
     @Override
     public void init() {
-        final MapValue map = new MapValue(10);
-
-        map.set("remVar", new Function() {
+        Functions.set("remVar", new Function() {
             @Override
             public Value execute(Value[] args) {
                 Variables.remove(args[0].asString());
                 return NumberValue.ZERO;
             }
         });
-        map.set("defineVar", new Function() {
+        Functions.set("defineVar", new Function() {
             @Override
             public Value execute(Value[] args) {
-                Variables.set(args[0].asString(),args[1]);
+                Variables.define(args[0].asString(),args[1]);
                 return NumberValue.ZERO;
             }
         });
-        map.set("isVarExists", new Function() {
+        Functions.set("isVarExists", new Function() {
             @Override
             public Value execute(Value[] args) {
                 if(Variables.isExists(args[0].asString())){
@@ -38,34 +36,34 @@ public class memory implements Module {
                 }
             }
         });
-        map.set("getVarValue", new Function() {
+        Functions.set("getVarValue", new Function() {
             @Override
             public Value execute(Value[] args) {
                 return new StringValue(Variables.get(args[0].asString()).asString());
             }
         });
-        map.set("remFuncs", new Function() {
+        Functions.set("remFuncs", new Function() {
             @Override
             public Value execute(Value[] args) {
                 ScopeHandler.functions().clear();
                 return NumberValue.ZERO;
             }
         });
-        map.set("remFunc", new Function() {
+        Functions.set("remFunc", new Function() {
             @Override
             public Value execute(Value[] args) {
                 ScopeHandler.functions().remove(args[0].asString());
                 return NumberValue.ZERO;
             }
         });
-        map.set("setSFunc", new Function() {//setSFunc("function_name","return statement")
+        Functions.set("putSFunc", new Function() {//putSFunc("function_name","return statement")
             @Override
             public Value execute(Value... args) {
                 ScopeHandler.setFunction(args[0].asString(),fargs -> args[1]);
                 return args[1];
             }
         });
-        map.set("runFile", new Function() {
+        Functions.set("runFile", new Function() {
             @Override
             public Value execute(Value... args) throws IOException {
                 Starter.start(false,false,false,false,args[0].asString());

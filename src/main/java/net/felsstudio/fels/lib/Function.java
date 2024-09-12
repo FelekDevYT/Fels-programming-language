@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public interface Function {
 
-    Value execute(Value... args) throws IOException;
+    Value execute(Value... args) throws IOException, InterruptedException;
 
     default int getArgsCount() {
         return 0;

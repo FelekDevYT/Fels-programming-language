@@ -1,7 +1,6 @@
 package main.java.net.felsstudio.fels.Modules.fgl;
 
 import main.java.net.felsstudio.fels.Modules.Module;
-import main.java.net.felsstudio.fels.exceptions.ArgumentsMismatchException;
 import main.java.net.felsstudio.fels.lib.*;
 
 import javax.swing.*;
@@ -11,10 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static java.util.Map.entry;
 
 public final class fgl implements Module {
 

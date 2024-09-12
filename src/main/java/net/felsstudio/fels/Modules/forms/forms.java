@@ -5,8 +5,6 @@ import main.java.net.felsstudio.fels.lib.*;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.ScrollPaneConstants;

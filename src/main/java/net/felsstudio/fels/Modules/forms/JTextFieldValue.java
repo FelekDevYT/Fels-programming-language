@@ -40,6 +40,8 @@ public class JTextFieldValue extends JTextComponentValue {
                 action.execute();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         });
         return NumberValue.ZERO;

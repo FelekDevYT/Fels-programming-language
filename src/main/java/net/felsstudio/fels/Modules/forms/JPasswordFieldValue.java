@@ -3,7 +3,6 @@ package main.java.net.felsstudio.fels.Modules.forms;
 import main.java.net.felsstudio.fels.lib.*;
 
 import javax.swing.*;
-import javax.swing.text.JTextComponent;
 
 import java.io.IOException;
 
@@ -40,6 +39,8 @@ public class JPasswordFieldValue extends JTextComponentValue {
             try {
                 action.execute();
             } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
         });

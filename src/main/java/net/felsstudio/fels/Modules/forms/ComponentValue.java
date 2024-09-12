@@ -76,7 +76,7 @@ public abstract class ComponentValue extends MapValue {
             public void keyTyped(KeyEvent e) {
                 try {
                     handleKeyEvent("typed", e);
-                } catch (IOException ex) {
+                } catch (IOException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -85,7 +85,7 @@ public abstract class ComponentValue extends MapValue {
             public void keyPressed(KeyEvent e) {
                 try {
                     handleKeyEvent("pressed", e);
-                } catch (IOException ex) {
+                } catch (IOException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
@@ -94,12 +94,12 @@ public abstract class ComponentValue extends MapValue {
             public void keyReleased(KeyEvent e) {
                 try {
                     handleKeyEvent("released", e);
-                } catch (IOException ex) {
+                } catch (IOException | InterruptedException ex) {
                     throw new RuntimeException(ex);
                 }
             }
 
-            private void handleKeyEvent(String type, final KeyEvent e) throws IOException {
+            private void handleKeyEvent(String type, final KeyEvent e) throws IOException, InterruptedException {
                 final MapValue map = new MapValue(15);
                 map.set("extendedKeyCode", NumberValue.of(e.getExtendedKeyCode()));
                 map.set("keyChar", NumberValue.of(e.getKeyChar()));
