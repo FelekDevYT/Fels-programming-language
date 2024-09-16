@@ -1,4 +1,13 @@
-using sfm,memory
+using sfm,rayFels
 
-a = array(10)
+rfInitWindow(500,500,"Hello, rayFels!")
 
+while(not(rfIsCloseRequest())){
+    rfBeginDrawing()
+
+        rfDrawText("Hello,rayFels",10,10,10,[100,100,100])
+
+    rfEndDrawing()
+}
+
+rfCloseWindow()

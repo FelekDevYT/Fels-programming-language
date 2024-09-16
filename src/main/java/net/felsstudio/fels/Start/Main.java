@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
 
         System.out.println("=========================================================================================");
         System.out.println("                    WELCOME IN FELS                       ");
@@ -78,17 +78,13 @@ public class Main {
 
                 case "setArgs" -> {
                     if (line[1].equals(":f")) {
-                        try {
-                            var lines = new Saver().read();
-                            v.doShowVars = Boolean.parseBoolean(lines[0]);
-                            v.doShowTokens = Boolean.parseBoolean(lines[1]);
-                            v.doShowMe = Boolean.parseBoolean(lines[2]);
-                            v.doShowAst = Boolean.parseBoolean(lines[3]);
-                            System.out.println("FELS [ SUCCESSFUL ] setting up setting");
-                            continue;
-                        } catch (IOException exc) {
-                            System.err.println("FELS [ERROR] " + exc.getMessage());
-                        }
+                        var lines = new Saver().read();
+                        v.doShowVars = Boolean.parseBoolean(lines[0]);
+                        v.doShowTokens = Boolean.parseBoolean(lines[1]);
+                        v.doShowMe = Boolean.parseBoolean(lines[2]);
+                        v.doShowAst = Boolean.parseBoolean(lines[3]);
+                        System.out.println("FELS [ SUCCESSFUL ] setting up setting");
+                        continue;
                     }
                     try {
                         var lines = new Saver().read();
