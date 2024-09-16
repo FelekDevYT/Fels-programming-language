@@ -5,7 +5,11 @@ rfInitWindow(500,500,"Hello, rayFels!")
 while(not(rfIsCloseRequest())){
     rfBeginDrawing()
 
-        rfDrawText("Hello,rayFels",10,10,10,[100,100,100])
+        rfClearBackground([255,255,255])
+
+        rfDrawText("Hello,rayFels",10,10,40,[100,100,100])
+
+        rfDrawText("Press any key for change this text!",100,100,50,[100,100,100])
 
     rfEndDrawing()
 }

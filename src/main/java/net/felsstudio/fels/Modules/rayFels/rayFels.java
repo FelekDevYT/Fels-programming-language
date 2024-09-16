@@ -123,7 +123,7 @@ public class rayFels implements Module {
         Functions.set("rfClearBackground", new Function() {
             @Override
             public Value execute(Value... args) throws IOException {
-                ArrayValue value = (ArrayValue)args[4];
+                ArrayValue value = (ArrayValue)args[0];
                 rl.ClearBackground(c(value.get(0).asInt(),
                         value.get(1).asInt(),
                         value.get(2).asInt(),
