@@ -1,0 +1,25 @@
+using sfm,system,rayFels
+
+func startGame(title,width,height){
+    rfInitWindow(width,height,title)
+
+    rfSetFPS(60)
+}
+
+func updateGame(background){
+
+    rfBeginDrawing()
+
+        rfClearBackground(background)
+
+        rfDrawText("This is render game",10,10,40,[100,100,100])
+
+    rfEndDrawing()
+}
+
+func closeGame(){
+    rfCloseWindow()
+    system.exit(0)
+}
+
+func isCloseGame() = rfIsCloseRequest()

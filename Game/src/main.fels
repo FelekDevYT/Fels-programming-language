@@ -1,0 +1,11 @@
+using sfm
+
+import "Game/src/renderEngine.fels"
+
+startGame("Game",640,320)
+
+while(not(isCloseGame())){
+    updateGame([255,255,255])
+}
+
+closeGame()

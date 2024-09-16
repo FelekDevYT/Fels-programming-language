@@ -44,6 +44,10 @@ public class system implements Module {
                 return NumberValue.of(-1);
             }
         });
+        map.set("exit",args ->{
+            System.exit(args[0].asInt());
+            return NumberValue.of(args[0].asInt());
+        });
 
         Variables.define("system", map);
     }
