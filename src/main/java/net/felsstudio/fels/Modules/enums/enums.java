@@ -1,9 +1,9 @@
 package main.java.net.felsstudio.fels.Modules.enums;
 
 import main.java.net.felsstudio.fels.Modules.Module;
-import main.java.net.felsstudio.fels.lib.ArrayValue;
-import main.java.net.felsstudio.fels.lib.MapValue;
-import main.java.net.felsstudio.fels.lib.Variables;
+import main.java.net.felsstudio.fels.lib.*;
+
+import java.io.IOException;
 
 public class enums implements Module {
     @Override

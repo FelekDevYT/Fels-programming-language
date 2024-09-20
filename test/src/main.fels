@@ -1,21 +1,6 @@
-using sfm,rayFels
+using sfm,enums
 
-rfInitWindow(500,500,"Hello, rayFels!")
+enums.asdf()
 
-rfSetFPS(100000)
-
-while(not(rfIsCloseRequest())){
-    rfBeginDrawing()
-
-        color = [255,255,255]
-
-        rfClearBackground(color)
-
-        rfDrawText("Hello,rayFels",10,10,40,[100,100,100])
-
-        rfDrawText(rfGetFPS(),100,100,30,[100,100,100])
-
-    rfEndDrawing()
-}
-
-rfCloseWindow()
+a = new asdf()
+println(a.f())

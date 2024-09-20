@@ -37,5 +37,6 @@ public class random implements Module {
                 return NumberValue.of(random(0,Integer.MAX_VALUE));
             }
         });
+                Variables.define("random", map);
     }
 }

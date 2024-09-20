@@ -1,0 +1,23 @@
+using sfm,random,scanner
+
+println("Welcome in fsRand")
+
+pcNumber = random.random(1000,9999)
+attempt = 0
+
+while(true){
+    print("You attempts: "+attempt+", Enter value>>>")
+    un = scanner.readNumber()
+
+    if(un > pcNumber){
+        println("Value very height!")
+    }else if(un < pcNumber){
+        println("You value vert smallest!")
+    }else{
+        break;
+    }
+
+    attempt++
+}
+
+println("You are win in "+attempt+" attempts")

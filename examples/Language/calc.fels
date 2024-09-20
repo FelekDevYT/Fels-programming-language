@@ -1,5 +1,5 @@
-using "sfm"
-using "ftypes"
+using sfm
+using ftypes
 
 operations = {
     "+":func(a,b)=a+b,
