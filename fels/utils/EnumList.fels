@@ -1,0 +1,7 @@
+using sfm
+
+class EnumList{//Simple enumeration list
+    
+
+    func EnumList(){}
+}

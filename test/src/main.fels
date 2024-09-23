@@ -1,6 +1,3 @@
-using sfm,enums
+using sfm
 
-enums.asdf()
-
-a = new asdf()
-println(a.f())
+itoa("asdf")

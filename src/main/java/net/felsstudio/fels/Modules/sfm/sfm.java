@@ -131,6 +131,11 @@ public class sfm implements Module {
                 return NumberValue.MINUS_ONE;
             }
         });
+
+        Functions.set("itoa", args -> new StringValue(args[0].asString()));
+        Functions.set("atoi", args -> NumberValue.of(args[0].asNumber()));
+        Functions.set("typeOf", args -> NumberValue.of(args[0].type()));
+
         Functions.set("default",new Function() {
             @Override
             public Value execute(Value... args) {

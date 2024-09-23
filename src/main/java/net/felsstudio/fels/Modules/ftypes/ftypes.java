@@ -18,10 +18,6 @@ public final class ftypes implements Module {
         map.set("FUNCTION", NumberValue.of(Types.FUNCTION));
         map.set("CLASS",NumberValue.of(Types.CLASS));
 
-        Functions.set("typeOf", args -> NumberValue.of(args[0].type()));
-        Functions.set("toString", args -> new StringValue(args[0].asString()));
-        Functions.set("toNumber", args -> NumberValue.of(args[0].asNumber()));
-
         map.set("typeToString",args -> new StringValue(Types.typeToString(args[0].asInt())));
 
         map.set("toByte", args -> NumberValue.of((byte)args[0].asInt()));
