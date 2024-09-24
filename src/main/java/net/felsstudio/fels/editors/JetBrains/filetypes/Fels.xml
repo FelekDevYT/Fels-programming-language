@@ -11,7 +11,7 @@
       <option name="HAS_PARENS" value="true" />
       <option name="HAS_STRING_ESCAPES" value="true" />
     </options>
-    <keywords keywords="loop;IsVarExists;break;case;class;const;continue;defineVar;do;else;extract;for;func;getVarValue;if;length;match;new;panic;perror;print;println;remFunc;remFuncs;remVar;return;setSFunc;atoi;itoa;typeOf;typeToString;while" ignore_case="false" />
+    <keywords keywords="range;loop;IsVarExists;break;case;class;const;continue;defineVar;do;else;extract;for;func;getVarValue;if;length;match;new;panic;perror;print;println;remFunc;remFuncs;remVar;return;setSFunc;atoi;itoa;typeOf;typeToString;while" ignore_case="false" />
     <keywords2 keywords="NULL;array;echo;try" />
     <keywords3 keywords="EMPTY;and;false;not;or;this;true" />
     <keywords4 keywords="import;using" />

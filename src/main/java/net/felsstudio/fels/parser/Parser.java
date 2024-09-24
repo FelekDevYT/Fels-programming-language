@@ -168,10 +168,19 @@ public final class Parser {
         if(match(TokenType.LOOP)){
             return loopStatement();
         }
+        if(match(TokenType.RANGE)){
+            return rangeStatement();
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return functionCallStatement();
         }
         return assignmentStatement();
+    }
+
+    private Statement rangeStatement(){
+        final Expression condition = expression();
+        final Statement statement = statementOrBlock();
+        return new RangeLoopStatement(statement,condition);
     }
 
     private Statement loopStatement() {

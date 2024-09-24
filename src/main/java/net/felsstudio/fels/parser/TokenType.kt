@@ -32,9 +32,8 @@ enum class TokenType {
     CLASS,
     NEW,
     PERROR,
-    ENUM,
-    PREPROCESSOR,
     LOOP,
+    RANGE,
 
     PLUS,  // +
     MINUS,  // -
@@ -100,5 +99,5 @@ enum class TokenType {
     CARETCARET,
     GRID,//#
 
-    EOF
+    EOF;
 }

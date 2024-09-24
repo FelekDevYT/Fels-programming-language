@@ -1,12 +1,5 @@
 using sfm
 
-i = 0
-
-loop{
-    if(i == 10){
-        break
-    }
-    i++;
+range(6){
+    println("This is range loop!")
 }
-
-println("break of statement "+i)
