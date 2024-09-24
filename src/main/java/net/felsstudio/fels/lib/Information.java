@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class Information {
     @INFO
-    public static final String FELS_VERSION = "4 PRE-RELEASE";
+    public static final String FELS_VERSION = "5 PRE-RELEASE";
 
     @INFO
     public static final String FELS_AUTHOR = "FelekDevYT,FelsStudio";

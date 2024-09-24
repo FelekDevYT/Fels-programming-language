@@ -1,3 +1,3 @@
 @ECHO OFF
-JAVA -jar fels.jar
+JAVA -jar fels.jar %*
 @PAUSE
