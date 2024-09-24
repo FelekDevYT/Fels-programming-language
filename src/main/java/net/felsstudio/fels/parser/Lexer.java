@@ -114,6 +114,7 @@ public final class Lexer {
         keywords.put("new", TokenType.NEW);
         keywords.put("panic",TokenType.PANIC);
         keywords.put("perror",TokenType.PERROR);
+        keywords.put("loop",TokenType.LOOP);
         KEYWORDS = Map.copyOf(keywords);
     }
 

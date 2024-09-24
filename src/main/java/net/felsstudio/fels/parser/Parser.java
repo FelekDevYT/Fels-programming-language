@@ -165,10 +165,18 @@ public final class Parser {
         if(match(TokenType.GRID)){
             System.out.println("asdf");
         }
+        if(match(TokenType.LOOP)){
+            return loopStatement();
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return functionCallStatement();
         }
         return assignmentStatement();
+    }
+
+    private Statement loopStatement() {
+        final Statement statement = statementOrBlock();
+        return new LoopStatement(statement);
     }
 
     private ExprStatement functionCallStatement() {

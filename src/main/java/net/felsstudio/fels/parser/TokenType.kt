@@ -34,6 +34,7 @@ enum class TokenType {
     PERROR,
     ENUM,
     PREPROCESSOR,
+    LOOP,
 
     PLUS,  // +
     MINUS,  // -
