@@ -18,4 +18,9 @@ public class PassStatement implements Statement{
     public <R, T> R accept(@Nullable ResultVisitor<R, T> visitor, T input) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "pass statement";
+    }
 }

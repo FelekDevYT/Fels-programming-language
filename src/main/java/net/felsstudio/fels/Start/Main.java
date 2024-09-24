@@ -10,123 +10,46 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        //fels run/help
+        if(args[0].equalsIgnoreCase("run")) {
+            run(args);
+        }else if(args[0].equalsIgnoreCase("help")) {
+            help();
+        }else if(args[0].equalsIgnoreCase("version")) {
+            version();
+        };
+    }
 
-        System.out.println("=========================================================================================");
-        System.out.println("                    WELCOME IN FELS                       ");
-        System.out.println("setAS <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set auto start setting");
-        System.out.println("debugger <PROJECT_NAME> - open debug setting of <PROJECT_NAME> project");
-        System.out.println("run <NAME> - run you project");
-        System.out.println("new <NAME> <VERSION> <AUTHOR> - create new project");
-        System.out.println("setArgs <DOSHOWVARS> <DOSHOWTOKENS> <DOSHOWME> <SOSHOWAST> - set args");
-        System.out.println("help - about of FELS");
-        System.out.println("version - version of FELS");
-        System.out.println("cls - clear console");
-        System.out.println("exit - exit from program");
-        System.out.println("=========================================================================================");
-
-        var scan = new Scanner(System.in);
-
-        var v = new vals();
-
-        if(Files.exists(Paths.get("as.fsf"))){
-            try(BufferedReader br = Files.newBufferedReader(Paths.get("as.fsf"))) {
-                v.doShowVars = Boolean.parseBoolean(br.readLine().toString());
-                v.doShowTokens = Boolean.parseBoolean(br.readLine().toString());
-                v.doShowMe = Boolean.parseBoolean(br.readLine().toString());
-                v.doShowAst = Boolean.parseBoolean(br.readLine().toString());
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-            System.out.println("Settings up automatically from as.fsf file");
-        }
-
-        while (true) {
-            System.out.print("FELS v"+ Information.FELS_VERSION+">>>");
-            var line = scan.nextLine().split(" ");
-
-            switch (line[0]) {
-                case "debugger" ->{
-                    System.out.println("This feature in development");
-                    //TODO("CREATE THIS DEBUGGER!!!")
-                }
-
-                case "setAS" -> {
-                    try {
-                        new File("as.fsf");
-
-                        try(BufferedWriter bw = new BufferedWriter(new FileWriter("as.fsf"))){
-                            bw.write(line[1] + "\n");
-                            bw.write(line[2] + "\n");
-                            bw.write(line[3] + "\n");
-                            bw.write(line[4] + "\n");
-                        }catch(IOException exc){
-                            exc.printStackTrace();
-                        }
-                    } catch (Exception exc) {
-                        System.err.println("FELS [ERROR] " + exc.getMessage());
-                    }
-                    System.out.println("FELS [ SUCCESSFUL ] setting up auto setting");
-                }
-
-                case "run" ->{
-                    try {
-                        Starter.start(v.doShowVars, v.doShowTokens, v.doShowMe, v.doShowAst, line[1]+"\\src\\main.fels");
-                    } catch (Exception exc) {
-                        System.err.println("FELS [ERROR] " + exc.getMessage());
-                    }
-                }
-
-                case "setArgs" -> {
-                    if (line[1].equals(":f")) {
-                        var lines = new Saver().read();
-                        v.doShowVars = Boolean.parseBoolean(lines[0]);
-                        v.doShowTokens = Boolean.parseBoolean(lines[1]);
-                        v.doShowMe = Boolean.parseBoolean(lines[2]);
-                        v.doShowAst = Boolean.parseBoolean(lines[3]);
-                        System.out.println("FELS [ SUCCESSFUL ] setting up setting");
-                        continue;
-                    }
-                    try {
-                        var lines = new Saver().read();
-                        v.doShowVars = Boolean.parseBoolean(lines[0]);
-                        v.doShowTokens = Boolean.parseBoolean(lines[1]);
-                        v.doShowMe = Boolean.parseBoolean(lines[2]);
-                        v.doShowAst = Boolean.parseBoolean(lines[3]);
-                    } catch (Exception exc) {
-                        System.err.println("FELS [ERROR] " + exc.getMessage());
-                    }
-                    System.out.println("FELS [ SUCCESSFUL ] setting up setting");
-                }
-
-                case "help" -> {
-                    System.out.println("FELS programming language V."+Information.FELS_VERSION);
-                    System.out.println("Copyright $"+Information.FELS_AUTHOR);
-                    System.out.println("FELS console V.0.1");
-                }
-
-                case "version" -> System.out.println("FELS programming language V."+Information.FELS_VERSION);
-                case "exit" -> {
-                    System.out.println("FELS [ SUCCESSFUL ] exiting from console");
-                    System.exit(0);
-                }
-
-                case "save" -> {
-                    var s = new Saver();
-                    s.save(v);
-                    System.out.println("FELS [ SUCCESSFUL ] run setting save to saver.fsf");
-                }
-
-                case "cls" -> {
-                    System.out.println("\u001b[H\u001b[2J");
-                    System.out.flush();
-                }
-
-                case "new" ->{
-                    var p = new Project(line[1],line[2],line[3]);
-                    p.createProject();
-                    System.out.println("FELS [ SUCCESSFUL ] setting up project");
-                }
+    private static void run(String[] args) throws IOException {
+        RunData run = new RunData();
+        //fels run
+        for(int i = 1;i < args.length-1;i++){
+            switch(args[i]){
+                case "-dsv":
+                    run.doShowVars = true;
+                case "-dst":
+                    run.doShowTokens = true;
+                case "-dsmt":
+                    run.doShowMT = true;
+                case "-dsast":
+                    run.doShowAST = true;
+                case "-file":
+                    run.startFile = args[++i];
             }
         }
+
+        Starter.start(run.doShowVars,run.doShowTokens,run.doShowMT,run.doShowAST,run.startFile);
+    }
+
+    private static void help(){
+        System.out.println("====FELS PROGRAMMING LANGUAGE====\n"+
+                "FELS VERSION>>> "+ Information.FELS_VERSION+
+                "\nFELS AUTHOR>>> "+Information.FELS_AUTHOR+
+                "\nFELS LOADER VERSION>>> "+Information.LOADER_VERSION+
+                "\nDATE>>> "+Information.DATE);
+    }
+
+    private static void version(){
+        System.out.println("FELS VERSION>>> "+Information.FELS_VERSION);
     }
 }

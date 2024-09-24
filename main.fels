@@ -1,0 +1,5 @@
+using sfm
+
+range(6){
+    println("This is range loop!")
+}
