@@ -116,6 +116,7 @@ public final class Lexer {
         keywords.put("perror",TokenType.PERROR);
         keywords.put("loop",TokenType.LOOP);
         keywords.put("range",TokenType.RANGE);
+        keywords.put("pass",TokenType.PASS);
         KEYWORDS = Map.copyOf(keywords);
     }
 

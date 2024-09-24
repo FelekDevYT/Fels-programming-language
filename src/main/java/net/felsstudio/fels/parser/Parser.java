@@ -171,6 +171,9 @@ public final class Parser {
         if(match(TokenType.RANGE)){
             return rangeStatement();
         }
+        if(match(TokenType.PASS)){
+            return new PassStatement();
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return functionCallStatement();
         }
