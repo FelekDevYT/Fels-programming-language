@@ -174,10 +174,20 @@ public final class Parser {
         if(match(TokenType.PASS)){
             return new PassStatement();
         }
+        if(match(TokenType.MACRO)){
+            return macroFunctionStatement();
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return functionCallStatement();
         }
         return assignmentStatement();
+    }
+
+    private MacroFunctionStatement macroFunctionStatement() {
+        final String name = consume(TokenType.WORD).text();
+        final Arguments arguments = arguments();
+        final Statement body = statementBody();
+        return new MacroFunctionStatement(name, arguments, body);
     }
 
     private Statement rangeStatement(){

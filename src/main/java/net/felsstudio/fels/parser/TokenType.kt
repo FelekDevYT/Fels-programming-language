@@ -35,6 +35,7 @@ enum class TokenType {
     LOOP,
     RANGE,
     PASS,
+    MACRO,
 
     PLUS,  // +
     MINUS,  // -

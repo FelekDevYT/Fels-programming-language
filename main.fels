@@ -1,5 +1,9 @@
 using sfm
 
-range(6){
-    println("This is range loop!")
+macro asdf(a){
+    println(a)
+    return 0
 }
+
+a = asdf(17)
+println(a)
