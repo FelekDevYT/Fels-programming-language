@@ -20,7 +20,8 @@ public class Starter {
         try{
             final TimeMeasurement measurement = new TimeMeasurement();
             measurement.start("Tokenize time");
-            final String input = new String( Files.readAllBytes(Paths.get(file)), "UTF-8");
+            String input = new String( Files.readAllBytes(Paths.get(file)), "UTF-8");
+            input = new Preprocessor().process(input);
             final List<Token> tokens = new Lexer(input).tokenize();
             measurement.stop("Tokenize time");
             if(doShowTokens){

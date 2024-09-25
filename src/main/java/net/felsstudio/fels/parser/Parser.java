@@ -156,25 +156,25 @@ public final class Parser {
         if (match(TokenType.MATCH)) {
             return match();
         }
-        if(match(TokenType.PERROR)){
+        if (match(TokenType.PERROR)) {
             return new PerrorStatement(expression());
         }
-        if(match(TokenType.PANIC)){
+        if (match(TokenType.PANIC)) {
             return new PanicStatement(expression());
         }
-        if(match(TokenType.GRID)){
+        if (match(TokenType.GRID)) {
             System.out.println("asdf");
         }
-        if(match(TokenType.LOOP)){
+        if (match(TokenType.LOOP)) {
             return loopStatement();
         }
-        if(match(TokenType.RANGE)){
+        if (match(TokenType.RANGE)) {
             return rangeStatement();
         }
-        if(match(TokenType.PASS)){
+        if (match(TokenType.PASS)) {
             return new PassStatement();
         }
-        if(match(TokenType.MACRO)){
+        if (match(TokenType.MACRO)) {
             return macroFunctionStatement();
         }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {

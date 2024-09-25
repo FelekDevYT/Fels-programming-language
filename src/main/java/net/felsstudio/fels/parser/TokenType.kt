@@ -36,6 +36,7 @@ enum class TokenType {
     RANGE,
     PASS,
     MACRO,
+    ENUM,
 
     PLUS,  // +
     MINUS,  // -

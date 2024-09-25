@@ -1,9 +1,3 @@
 using sfm
 
-macro asdf(a){
-    println(a)
-    return 0
-}
 
-a = asdf(17)
-println(a)

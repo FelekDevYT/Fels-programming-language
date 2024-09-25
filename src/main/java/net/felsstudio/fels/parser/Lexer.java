@@ -118,6 +118,7 @@ public final class Lexer {
         keywords.put("range",TokenType.RANGE);
         keywords.put("pass",TokenType.PASS);
         keywords.put("macro",TokenType.MACRO);
+        keywords.put("enum",TokenType.ENUM);
         KEYWORDS = Map.copyOf(keywords);
     }
 
