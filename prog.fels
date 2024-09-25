@@ -1,5 +1,3 @@
-using ["sfm","ftypes"]
+using sfm
 
-const("a",2)
-
-println(a)
+func a() = 2
