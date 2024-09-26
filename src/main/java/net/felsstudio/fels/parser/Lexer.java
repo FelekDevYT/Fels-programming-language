@@ -119,6 +119,7 @@ public final class Lexer {
         keywords.put("pass",TokenType.PASS);
         keywords.put("macro",TokenType.MACRO);
         keywords.put("enum",TokenType.ENUM);
+        keywords.put("assert",TokenType.ASSERT);
         KEYWORDS = Map.copyOf(keywords);
     }
 
@@ -157,10 +158,8 @@ public final class Lexer {
             else if (current == '"') tokenizeText();
             else if (OPERATOR_CHARS.indexOf(current) != -1) tokenizeOperator();
             else if (Character.isWhitespace(current)) skip();
+            else if(current == '#') ;
             else if (current == '`') tokenizeExtendedWord();
-            else if (current == '#') {
-                tokenizeHexNumber(1);
-            }
             else if (current == ';') skip(); // ignore semicolon
             else if (current == '\0') break;
             else throw error("Unknown token " + current);
@@ -172,10 +171,6 @@ public final class Lexer {
         final var buffer = createBuffer();
         final Pos startPos = markPos();
         char current = peek(0);
-        if (current == '0' && (peek(1) == 'x' || (peek(1) == 'X'))) {
-            tokenizeHexNumber(2);
-            return;
-        }
         boolean hasDot = false;
         boolean deciminal = false;
         while (true) {
@@ -227,26 +222,6 @@ public final class Lexer {
             else throw error("Float number too small");
         }
         return sign * result;
-    }
-
-    private void tokenizeHexNumber(int skipChars) {
-        final var buffer = createBuffer();
-        final Pos startPos = markPos();
-        // Skip HEX prefix 0x or #
-        for (int i = 0; i < skipChars; i++) skip();
-
-        char current = peek(0);
-        while (isHexNumber(current) || (current == '_')) {
-            if (current != '_') {
-                // allow _ symbol
-                buffer.append(current);
-            }
-            current = next();
-        }
-
-        if (buffer.isEmpty()) throw error("Empty HEX value");
-        if (peek(-1) == '_') throw error("HEX value cannot end with _");
-        addToken(TokenType.HEX_NUMBER, buffer.toString(), startPos);
     }
 
     private static boolean isNumber(char current) {

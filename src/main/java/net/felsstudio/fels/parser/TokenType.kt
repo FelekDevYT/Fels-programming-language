@@ -37,6 +37,7 @@ enum class TokenType {
     PASS,
     MACRO,
     ENUM,
+    ASSERT,
 
     PLUS,  // +
     MINUS,  // -
@@ -44,7 +45,6 @@ enum class TokenType {
     SLASH,  // /
     PERCENT,  // %
     AT,  //@
-    DOTCOMMA,
 
     EQ,  // =
     EQEQ,  // ==

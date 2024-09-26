@@ -1,5 +1,7 @@
 package main.java.net.felsstudio.fels.parser;
 
+import jdk.jshell.spi.SPIResolutionException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,12 @@ public class Preprocessor {
             // Обработка макросов
             if (line.startsWith("#define")) {
                 handleDefine(line);
-            } else {
+            }else if (line.trim().startsWith("#include")) {
+                String[] parts = line.trim().split("\\s+", 2);
+                if (parts.length == 2) {
+                    processedCode.append("import ").append(parts[1]).append("\n");
+                }
+            }else {
                 // Замените макросы в текущей строке
                 for (Map.Entry<String, String> entry : macros.entrySet()) {
                     line = line.replace(entry.getKey(), entry.getValue());

@@ -177,6 +177,9 @@ public final class Parser {
         if (match(TokenType.MACRO)) {
             return macroFunctionStatement();
         }
+        if(match(TokenType.ASSERT)){
+            return new AssertStatement(expression());
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return functionCallStatement();
         }
