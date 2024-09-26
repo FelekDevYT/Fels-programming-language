@@ -2,52 +2,61 @@ package main.java.net.felsstudio.fels.parser.ast;
 
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.exceptions.TypeException;
-import main.java.net.felsstudio.fels.lib.*;
-import main.java.net.felsstudio.fels.parser.ast.ArrayExpression;
-import main.java.net.felsstudio.fels.parser.ast.ValueExpression;
+import main.java.net.felsstudio.fels.lib.ArrayValue;
+import main.java.net.felsstudio.fels.lib.Types;
+import main.java.net.felsstudio.fels.lib.Value;
 
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.Arrays;
 
-/**
- *
- * @author felek
- */
 public final class UsingStatement extends InterruptableNode implements Statement {
 
-    private static final String PACKAGE = "main.java.net.felsstudio.fels.Modules.%s.%s";
+    private static final String PACKAGE = "main.java.net.felsstudio.fels.Modules.%s.%s.%s.%s";
     private static final String INIT_CONSTANTS_METHOD = "initConstants";
 
-    public final Collection<String> modules;
+    public final Expression expression;
 
-    public UsingStatement(Collection<String> modules) {
-        this.modules = modules;
+    public UsingStatement(Expression expression) {
+        this.expression = expression;
     }
 
     @Override
     public void execute() {
         super.interruptionCheck();
-        for (String module : modules) {
-            loadModule(module);
-        }
+        final Value value = expression.eval();
+        final String[] parts = value.asString().split("\\.");
+
+        String page = parts[1];
+        String name = parts[2];
+
+        loadModule(page,name);
     }
 
-    private void loadModule(String name) {
+    private void loadModule(String page,String name) {
         try {
-            final Module module = (Module) Class.forName(String.format(PACKAGE, name, name)).newInstance();
+            final Module module = (Module) Class.forName(String.format(PACKAGE, "fels",page, name,name))
+                    .getDeclaredConstructor()
+                    .newInstance();
             module.init();
         } catch (Exception ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException("Unable to load module " + name, ex);
         }
     }
 
     public void loadConstants() {
-        for (String module : modules) {
-            loadConstants(module);
+        if (expression instanceof ArrayExpression ae) {
+            for (Expression expr : ae.elements) {
+                loadConstants(expr.eval().asString());
+            }
         }
+        if (expression instanceof ValueExpression ve) {
+            loadConstants(ve.value.asString());
+        }
+    }
+
+    private TypeException typeException(Value value) {
+        return new TypeException("Array or string required in 'use' statement, " +
+                "got " + Types.typeToString(value.type()) + " " + value);
     }
 
     private void loadConstants(String moduleName) {
@@ -62,16 +71,16 @@ public final class UsingStatement extends InterruptableNode implements Statement
 
     @Override
     public void accept(Visitor visitor) {
-        visitor.visit(this);
+
     }
 
     @Override
     public <R, T> R accept(ResultVisitor<R, T> visitor, T t) {
-        return visitor.visit(this, t);
+        return null;
     }
 
     @Override
     public String toString() {
-        return "using " + String.join(", ", modules);
+        return "using " + expression;
     }
 }

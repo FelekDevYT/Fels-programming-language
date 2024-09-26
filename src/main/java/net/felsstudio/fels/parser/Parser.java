@@ -142,7 +142,7 @@ public final class Parser {
             return new ReturnStatement(expression());
         }
         if (match(TokenType.USING)) {
-            return using();
+            return new UsingStatement(expression());
         }
         if (match(TokenType.IMPORT)) {
             return new ImportStatement(expression());
@@ -208,14 +208,6 @@ public final class Parser {
         return new ExprStatement(
                 functionChain(new ValueExpression(consume(TokenType.WORD).text()))
         );
-    }
-
-    private UsingStatement using() {
-        final var modules = new HashSet<String>();
-        do {
-            modules.add(consume(TokenType.WORD).text());
-        } while (match(TokenType.COMMA));
-        return new UsingStatement(modules);
     }
 
     private Statement assignmentStatement() {
