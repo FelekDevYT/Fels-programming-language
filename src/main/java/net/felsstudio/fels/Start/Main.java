@@ -1,12 +1,8 @@
 package main.java.net.felsstudio.fels.Start;
 
-import com.raylib.Jaylib;
 import main.java.net.felsstudio.fels.lib.Information;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -35,10 +31,12 @@ public class Main {
                     run.doShowAST = true;
                 case "-file":
                     run.startFile = args[++i];
+                case "-dp":
+                    run.doPreprocess = true;
             }
         }
 
-        Starter.start(run.doShowVars,run.doShowTokens,run.doShowMT,run.doShowAST,run.startFile);
+        Starter.start(run.doShowVars,run.doShowTokens,run.doShowMT,run.doShowAST,run.doPreprocess,run.startFile);
     }
 
     private static void help(){

@@ -5,5 +5,6 @@ public class RunData {
     boolean doShowTokens = false;
     boolean doShowMT = false;
     boolean doShowAST = false;
+    boolean doPreprocess = false;
     String startFile = null;
 }

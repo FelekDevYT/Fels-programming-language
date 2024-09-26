@@ -1,3 +1,11 @@
 using sfm
 
+#define BEGIN {
+#define END }
+#define OUTLN println
+#define OUT print
+#define OSCOPE (
+#define TSCOPE )
+#define STRING "
 
+OUTLN OSCOPE STRINGHello,define FelsSTRING TSCOPE

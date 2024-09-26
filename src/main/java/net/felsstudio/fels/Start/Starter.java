@@ -16,12 +16,16 @@ import java.util.concurrent.TimeUnit;
 
 public class Starter {
 
-    public static void start(boolean doShowVars,boolean doShowTokens,boolean doShowMe,boolean doShowAST,String file) throws IOException {
+    public static void start(boolean doShowVars,boolean doShowTokens,boolean doShowMe,boolean doShowAST,boolean doPreprocess,String file) throws IOException {
         try{
             final TimeMeasurement measurement = new TimeMeasurement();
             measurement.start("Tokenize time");
             String input = new String( Files.readAllBytes(Paths.get(file)), "UTF-8");
-            input = new Preprocessor().process(input);
+
+            if(doPreprocess){
+                input = new Preprocessor().process(input);
+            }
+
             final List<Token> tokens = new Lexer(input).tokenize();
             measurement.stop("Tokenize time");
             if(doShowTokens){

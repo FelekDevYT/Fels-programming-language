@@ -66,7 +66,7 @@ public class memory implements Module {
         Functions.set("runFile", new Function() {
             @Override
             public Value execute(Value... args) throws IOException {
-                Starter.start(false,false,false,false,args[0].asString());
+                Starter.start(false,false,false,false,true,args[0].asString());
                 return NumberValue.ZERO;
             }
         });
