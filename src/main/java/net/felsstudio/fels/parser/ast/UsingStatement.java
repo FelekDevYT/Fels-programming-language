@@ -7,6 +7,8 @@ import main.java.net.felsstudio.fels.lib.Types;
 import main.java.net.felsstudio.fels.lib.Value;
 
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 public final class UsingStatement extends InterruptableNode implements Statement {
@@ -25,6 +27,11 @@ public final class UsingStatement extends InterruptableNode implements Statement
         super.interruptionCheck();
         final Value value = expression.eval();
         final String[] parts = value.asString().split("\\.");
+
+        if(Files.exists(Paths.get(value.asString()))) {
+            new ImportStatement(expression).execute();
+            return;
+        }
 
         String page = parts[1];
         String name = parts[2];
