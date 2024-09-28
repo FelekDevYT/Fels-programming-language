@@ -6,6 +6,7 @@ import main.java.net.felsstudio.fels.lib.ArrayValue;
 import main.java.net.felsstudio.fels.lib.Types;
 import main.java.net.felsstudio.fels.lib.Value;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,12 +24,12 @@ public final class UsingStatement extends InterruptableNode implements Statement
     }
 
     @Override
-    public void execute() {
+    public void execute() throws RuntimeException {
         super.interruptionCheck();
         final Value value = expression.eval();
         final String[] parts = value.asString().split("\\.");
 
-        if(Files.exists(Paths.get(value.asString()))) {
+        if (Files.exists(Paths.get(value.asString()))) {
             new ImportStatement(expression).execute();
             return;
         }

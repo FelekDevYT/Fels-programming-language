@@ -1,3 +1,5 @@
 using "fels.io.scanner"
 
-println(a())
+func a() {
+    println("asdf")
+}
