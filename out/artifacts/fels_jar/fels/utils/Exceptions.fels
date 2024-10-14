@@ -1,0 +1,22 @@
+using sfm
+
+class Exceptions{
+	func ArgumentsMissmatchException(text){
+		panic("ArgumentsMissmatchException: "+text)
+	}
+	func OperationIsNotSupportedException(text){
+		panic("OperationIsNotSupportedException: "+text)
+	}
+	func PanicException(text){
+		panic("Cusom exception: "+text)
+	}
+	func TypeException(text){
+		panic("Type exception: "+text)
+	}
+	func felsAPIException(name,text){
+		panic("Exception in felsAPI module "+name+" with message: "+text)
+	}
+	func FunitException(message){
+	    panic("Funit exception: "+message)
+	}
+}

@@ -1,0 +1,36 @@
+using sfm
+
+class List{
+	arr = array(10)
+	lp = 0
+
+	func List(size){
+		arr = array(size)
+	}
+
+	func size(){
+		return length(arr)
+	}
+
+	func set(pos,str){
+		arr[pos] = str
+		lp++
+	}
+
+	func get(pos){
+		return arr[pos]
+	}
+
+	func isPosEmpty(pos){
+		if(arr[pos] == getEmpty()){
+			return true
+		}
+		return false
+	}
+
+	func add(str){
+		arr[lp] = str
+		lp++
+	}
+
+}

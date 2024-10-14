@@ -1,0 +1,21 @@
+using sfm,ftypes
+
+class Runner{
+	fun = func() = 0
+	
+	func Runner(void){
+		fun = void
+	}
+	
+	func setFunc(void){
+		fun = void
+	}
+	
+	func getFunc(void){
+		return ::fun
+	}
+	
+	func run(){
+		fun()
+	}
+}

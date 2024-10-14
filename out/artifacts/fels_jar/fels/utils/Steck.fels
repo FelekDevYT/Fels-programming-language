@@ -1,0 +1,33 @@
+using sfm
+
+class Steck{
+	arr = 0
+	mp = 0
+	
+	func Steck(size){
+		arr = array(size)
+	}
+	
+	func push(text){
+		arr[mp] = text
+		mp++
+	}
+	
+	func peek(){
+		return arr[mp]
+	}
+	
+	func pop(){
+		virtualArr = arr[mp]
+		arr[mp] = "NULL"
+		mp--
+		return virtualArr
+	}
+	
+	func emty(){
+		if(mp == 0) {
+			return true
+		}
+		return false
+	}
+}
