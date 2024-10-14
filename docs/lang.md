@@ -331,8 +331,117 @@ map1[0] = "zero"
 x = 400
 map1[x] = [1, 2, 3]
 println( map1)
-<<<<<<< HEAD
 ```
-=======
+
+## Importing information from other files
+
+You can import functions and classes from other files using 2 methods
+
+other.fels
 ```
->>>>>>> 26e120f3eaf032f5aa778b5228c8a9d352297c26
+func a() = 2
+```
+
+1.Method(using preprocessor):
+
+you_run_it_file.fels
+```
+#include "other.fels"
+
+println(a())//2
+```
+
+2.Method(using import statement)
+```
+import "other.fels"
+println(a())//2
+```
+
+
+## Preprocess you code
+
+For Fels can preprocess you code you should add "-dp" argument to run [see more about it](install.md)
+
+Let's add define to you project:
+
+```
+#define OUTLN println
+OUTLN(123)//123
+
+#define ABC func
+
+ABC a() = 2
+OUTLN(a())//2
+```
+
+Import functions and classes from other file:
+
+```
+#include "other_file.fels"
+
+/*
+YOU CAN USE FUNCTIONS AND CLASSES FROM IMPORTED FILE
+*/
+```
+
+## ECHO statement
+
+You can use echo function for println all arguments:
+
+```
+echo(1,2,3,4,5)
+/*OUTPUT:
+1
+2
+3
+4
+5
+*/
+```
+
+## Destructing assignment
+
+Use the destructing assignment:
+
+```
+using "fels.lang.sfm"//using standard library
+
+arr = ["1",2,"3"]
+extract(var1,var2,var3) = arr
+echo(var1,var2,var3)
+```
+
+Swapping:
+
+```
+using "fels.lang.sfm"//using standard library
+
+var1 = "1"
+var2 = 2
+
+echo(var1,var2)
+extract(var2,var1) = [var1,var2]
+echo(var1,var2)
+```
+
+## Operation overloading
+
+Create you first overloading:
+
+```
+func `println`(a,b) = a+b
+println(`println`(1,2))//3
+```
+
+## Pattern matching
+
+Example for you using pattern matching:
+```
+func a(a) = match(a){
+    case 1: "One"
+    case 2: "Two"
+    case 3: "Three"
+}
+
+println(a(2))//Two
+```

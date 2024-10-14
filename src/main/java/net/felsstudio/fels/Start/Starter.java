@@ -8,6 +8,7 @@ import main.java.net.felsstudio.fels.parser.visitors.VariablePrinter;
 import main.java.net.felsstudio.fels.utils.Preprocessor;
 import main.java.net.felsstudio.fels.utils.TimeMeasurement;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -20,7 +21,19 @@ public class Starter {
         try{
             final TimeMeasurement measurement = new TimeMeasurement();
             measurement.start("Tokenize time");
-            String input = new String( Files.readAllBytes(Paths.get(file)), "UTF-8");
+            StringBuffer sb = new StringBuffer();
+
+            try(BufferedReader br = Files.newBufferedReader(Paths.get(file))) {
+                int ch;
+                do{
+                    ch = br.read();
+                    sb.append((char)ch);
+                }while (ch != -1);
+            }catch (Exception exc){
+                exc.printStackTrace();
+            }
+
+            String input = sb.toString();
 
             if(doPreprocess){
                 input = new Preprocessor().process(input);
