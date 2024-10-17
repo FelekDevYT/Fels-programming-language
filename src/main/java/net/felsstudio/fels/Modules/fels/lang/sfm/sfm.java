@@ -25,6 +25,10 @@ public class sfm implements Module {
             }
             return NumberValue.ZERO;
         });
+        Functions.set("quit",args ->{
+            System.exit(args[0].asInt());
+            return NumberValue.ZERO;
+        });
         Functions.set("length",args ->{
             if (args.length == 0) throw new RuntimeException("At least one arg expected");
 
@@ -134,6 +138,7 @@ public class sfm implements Module {
 
         Functions.set("itoa", args -> new StringValue(args[0].asString()));
         Functions.set("atoi", args -> NumberValue.of(args[0].asNumber()));
+        Functions.set("itoc", args -> new StringValue(String.valueOf((char)args[0].asInt())));
         Functions.set("typeOf", args -> NumberValue.of(args[0].type()));
 
         Functions.set("default",new Function() {

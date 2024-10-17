@@ -3,6 +3,8 @@ package main.java.net.felsstudio.fels.Start;
 import main.java.net.felsstudio.fels.lib.Information;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -13,7 +15,9 @@ public class Main {
             help();
         }else if(args[0].equalsIgnoreCase("version")) {
             version();
-        };
+        }else if(args[0].equalsIgnoreCase("proj")) {
+
+        }
     }
 
     private static void run(String[] args) throws IOException {

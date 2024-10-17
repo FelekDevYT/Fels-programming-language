@@ -61,7 +61,7 @@ public class string implements Module {
             final String input = args[0].asString();
             final int index = args[1].asInt();
 
-            return NumberValue.of((short)input.charAt(index));
+            return new StringValue(String.valueOf(input.charAt(index)));
         });
 
         map.set("toChar",args ->{

@@ -1,5 +1,7 @@
 package main.java.net.felsstudio.fels.utils;
 
+import main.java.net.felsstudio.fpm.FelsPackageManager;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,10 @@ public class Preprocessor {
             // Обработка макросов
             if (line.startsWith("#define")) {
                 handleDefine(line);
+            }else if(line.trim().startsWith("#linklude")){
+                String[] parts = line.trim().split("\\s+", 2);
+                FelsPackageManager.loadExtLibrary(parts[1]);
+                processedCode.append("import ").append("\"a").append(parts[1].substring(1, parts[1].length()-1)).append("a\"\n");
             }else if (line.trim().startsWith("#include")) {
                 String[] parts = line.trim().split("\\s+", 2);
                 if (parts.length == 2) {
