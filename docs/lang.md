@@ -445,3 +445,16 @@ func a(a) = match(a){
 
 println(a(2))//Two
 ```
+
+## Using Fels package manager
+
+You can use package manager for get more libraries from repository:
+
+```
+#linklude "testLib.fels"
+
+test()//asdf
+```
+
+#linklude directive load library from https://github.com/FelekDevYT/FelsPackageManager
+and add import to library for you can speed coding
