@@ -2,6 +2,7 @@ package main.java.net.felsstudio.fels.Modules.fels.lang.system;
 
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
+import main.java.net.felsstudio.fels.utils.CmdExecuter;
 
 import java.util.Map;
 
@@ -31,6 +32,10 @@ public class system implements Module {
         });
         map.set("availableProcessors",args ->{
             return NumberValue.of(Runtime.getRuntime().availableProcessors());
+        });
+        map.set("exec",args ->{
+            CmdExecuter.execute(args[0].asString());
+            return NumberValue.ZERO;
         });
         map.set("getProperty", new Function() {
             @Override

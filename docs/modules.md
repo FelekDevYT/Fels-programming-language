@@ -105,3 +105,14 @@ typeOf(arg) - get type of arg
 
 default(type) - get default value of type
 ```
+
+<h4>string</h4>
+
+String module have basic function for working with Strings!
+
+```
+string.getBytes()//getting bytes of string
+string.sprintf()//strintf Java like method
+string.split()//split you string
+string.
+```

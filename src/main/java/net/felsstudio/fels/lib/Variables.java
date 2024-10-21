@@ -46,6 +46,7 @@ public final class Variables {
         scope.variables.clear();
         scope.variables.put("true", NumberValue.ONE);
         scope.variables.put("false", NumberValue.ZERO);
+        scope.variables.put("NULL",NumberValue.ZERO);
     }
     
     public static void push() {

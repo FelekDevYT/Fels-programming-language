@@ -1,4 +1,4 @@
-package main.java.net.felsstudio.fels.Modules.fels.utils.ftypes;
+package main.java.net.felsstudio.fels.Modules.fels.lang.ftypes;
 
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.MapValue;

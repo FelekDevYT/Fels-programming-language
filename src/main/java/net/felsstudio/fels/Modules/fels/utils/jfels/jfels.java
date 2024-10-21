@@ -1,4 +1,4 @@
-package main.java.net.felsstudio.fels.Modules.fels.lang.jfels;
+package main.java.net.felsstudio.fels.Modules.fels.utils.jfels;
 
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
