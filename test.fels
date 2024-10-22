@@ -1,3 +1,6 @@
 using "fels.lang.sfm"
 
-
+@function
+@returns 2
+@science FELS_CONDIDAT_1
+func a() = 2

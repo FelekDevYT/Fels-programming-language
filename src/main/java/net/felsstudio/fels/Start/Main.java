@@ -3,8 +3,6 @@ package main.java.net.felsstudio.fels.Start;
 import main.java.net.felsstudio.fels.lib.Information;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -43,10 +41,13 @@ public class Main {
                 case "-dp":
                     run.doPreprocess = true;
                     break;
+                case "-da":
+                    run.doEnableAnnotations = true;
+                    break;
             }
         }
 
-        Starter.start(run.doShowVars,run.doShowTokens,run.doShowMT,run.doShowAST,run.doPreprocess,run.startFile);
+        Starter.start(run.doShowVars,run.doShowTokens,run.doShowMT,run.doShowAST,run.doPreprocess,run.doEnableAnnotations,run.startFile);
     }
 
     private static void help(){

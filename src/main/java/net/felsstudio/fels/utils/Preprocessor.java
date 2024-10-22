@@ -1,5 +1,7 @@
 package main.java.net.felsstudio.fels.utils;
 
+import main.java.net.felsstudio.fels.lib.ValueUtils;
+import main.java.net.felsstudio.fels.lib.Variables;
 import main.java.net.felsstudio.fpm.FelsPackageManager;
 
 import java.util.HashMap;
@@ -8,6 +10,7 @@ import java.util.Map;
 public class Preprocessor {
     // Хранит определения макросов
     private Map<String, String> macros = new HashMap<>();
+    private boolean isRegion = false;
 
     public String process(String source) {
         // Разделите исходный код на строки для обработки
@@ -16,12 +19,40 @@ public class Preprocessor {
 
         for (String line : lines) {
             // Обработка макросов
-            if (line.startsWith("#define")) {
+            if (line.trim().startsWith("#define")) {
                 handleDefine(line);
+            }else if(line.trim().startsWith("#comment")){
+
+            }else if(line.trim().startsWith("#undef")){
+                String[] parts = line.split("\\s+", 3);
+                macros.remove(parts[1]);
+            }else if(line.trim().startsWith("#defvar")){
+                String[] parts = line.split("\\s+", 3);
+                Variables.set(parts[1], ValueUtils.toValue(parts[2]));
+            }else if(line.trim().startsWith("#cmdc")){
+                String[] parts = line.split("\\s+");
+                parts[0] = "";
+                StringBuilder sb = new StringBuilder();
+                for (String part : parts) {
+                    sb.append(part+" ");
+                }
+                CmdExecuter.execute(sb.toString());
+            }else if(line.trim().startsWith("#error")){
+                String[] parts = line.split("\\s+");
+                parts[0] = "";
+                StringBuilder sb = new StringBuilder();
+                for (String part : parts) {
+                    sb.append(part);
+                }
+                throw new RuntimeException(sb.toString().trim().substring(0, sb.toString().length()-1));
+            }else if(line.trim().startsWith("#region")){
+                isRegion = true;
+            }else if(line.trim().startsWith("#endregion")){
+                isRegion = false;
             }else if(line.trim().startsWith("#linklude")){
                 String[] parts = line.trim().split("\\s+", 2);
                 FelsPackageManager.loadExtLibrary(parts[1]);
-                processedCode.append("import ").append("\"a").append(parts[1].substring(1, parts[1].length()-1)).append("a\"\n");
+                processedCode.append("import ").append("\"a").append(parts[1].substring(1, parts[1].length()-1)).append("/index.felsa\"\n");
             }else if (line.trim().startsWith("#include")) {
                 String[] parts = line.trim().split("\\s+", 2);
                 if (parts.length == 2) {
@@ -35,6 +66,8 @@ public class Preprocessor {
                 processedCode.append(line).append("\n");
             }
         }
+
+        if(isRegion) throw new RuntimeException("region not close");
 
         return processedCode.toString();
     }

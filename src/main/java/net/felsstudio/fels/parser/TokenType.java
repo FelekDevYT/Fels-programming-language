@@ -35,6 +35,7 @@ public enum TokenType {
     LOOP,
     RANGE,
     MACRO,
+    PANIC,
     
     PLUS, // +
     MINUS, // -

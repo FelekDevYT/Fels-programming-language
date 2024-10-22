@@ -179,6 +179,9 @@ public final class Parser {
         if(match(TokenType.MACRO)){
             return functionDefine();
         }
+        if(match(TokenType.PANIC)){
+            return new PanicStatement(expression());
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return new ExprStatement(functionChain(qualifiedName()));
         }

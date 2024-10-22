@@ -5,6 +5,7 @@ import main.java.net.felsstudio.fels.parser.*;
 import main.java.net.felsstudio.fels.parser.ast.Statement;
 import main.java.net.felsstudio.fels.parser.visitors.FunctionAdder;
 import main.java.net.felsstudio.fels.parser.visitors.VariablePrinter;
+import main.java.net.felsstudio.fels.utils.Annotator;
 import main.java.net.felsstudio.fels.utils.Preprocessor;
 import main.java.net.felsstudio.fels.utils.TimeMeasurement;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Starter {
 
-    public static void start(boolean doShowVars,boolean doShowTokens,boolean doShowMe,boolean doShowAST,boolean doPreprocess,String file) throws IOException {
+    public static void start(boolean doShowVars,boolean doShowTokens,boolean doShowMe,boolean doShowAST,boolean doPreprocess,boolean doEnableAnnotations,String file) throws IOException {
         try{
             final TimeMeasurement measurement = new TimeMeasurement();
             measurement.start("Tokenize time");
@@ -37,6 +38,10 @@ public class Starter {
 
             if(doPreprocess){
                 input = new Preprocessor().process(input);
+            }
+
+            if(doEnableAnnotations){
+                Annotator.parseAnotation(input);
             }
 
             final List<Token> tokens = new Lexer(input).tokenize();

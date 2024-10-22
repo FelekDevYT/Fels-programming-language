@@ -1,30 +1,10 @@
 package main.java.net.felsstudio.fpm;
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FelsPackageManager {
-
-    public static void main(String[]args){
-        String path = "https://raw.githubusercontent.com/FelekDevYT/FelsPackageManager/refs/heads/main/lib/";
-
-        try{
-            URL url = new URL(path);
-            HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
-            httpConn.setRequestMethod("GET");
-            httpConn.connect();
-
-            if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static void loadExtLibrary(String name){
         String path = "https://raw.githubusercontent.com/FelekDevYT/FelsPackageManager/refs/heads/main/"+(name.substring(1,name.length()-1));

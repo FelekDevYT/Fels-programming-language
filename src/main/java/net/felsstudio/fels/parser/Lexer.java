@@ -113,6 +113,7 @@ public final class Lexer {
         KEYWORDS.put("loop",TokenType.LOOP);
         KEYWORDS.put("range",TokenType.RANGE);
         KEYWORDS.put("macro", TokenType.MACRO);
+        KEYWORDS.put("panic", TokenType.PANIC);
 
         //LOGICAL GATES
 

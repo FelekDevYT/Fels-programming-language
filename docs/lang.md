@@ -458,3 +458,46 @@ test()//asdf
 
 #linklude directive load library from https://github.com/FelekDevYT/FelsPackageManager
 and add import to library for you can speed coding
+
+## Regions
+
+You can create an region
+
+```
+#region test
+//You code
+#endregion test
+```
+
+## Define var using preprocessor
+
+You can define new var using preprocessor
+
+```
+#defvar var 123
+println(var)//123
+```
+
+## Run cmd command
+
+You can run cmd command
+
+```
+#cmdc echo asdf
+```
+
+## Create an error
+
+You can throw error using 2 methods
+
+First method(using keyword):
+
+```
+panic("This is error")
+```
+
+Second method(using preprocessor):
+
+```
+#error This is error
+```
