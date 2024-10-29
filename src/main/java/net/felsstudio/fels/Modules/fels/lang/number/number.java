@@ -3,6 +3,7 @@ package main.java.net.felsstudio.fels.Modules.fels.lang.number;
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.MapValue;
 import main.java.net.felsstudio.fels.lib.NumberValue;
+import main.java.net.felsstudio.fels.lib.Variables;
 
 public class number implements Module {
     @Override
@@ -20,5 +21,6 @@ public class number implements Module {
         map.set("MIN_VALUE",args -> {
             return NumberValue.of(Double.MIN_VALUE);
         });
+        Variables.set("number",map);
     }
 }

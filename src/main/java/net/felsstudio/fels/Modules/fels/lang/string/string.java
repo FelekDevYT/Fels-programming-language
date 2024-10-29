@@ -92,10 +92,6 @@ public class string implements Module {
             return new StringValue(value.replace(f[1].asString(), f[2].asString()));
         });
 
-        map.set("isDigit",args ->{
-            return Character.isDigit(args[0].asString().charAt(0))?NumberValue.ONE:NumberValue.ZERO;
-        });
-
         map.set("replaceAll",f ->{
             if (f.length != 3) throw new ArgumentsMismatchException("Three arguments expected");
 

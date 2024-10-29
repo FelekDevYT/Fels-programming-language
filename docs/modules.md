@@ -1,4 +1,4 @@
-**__# Fels modules documentation
+# Fels modules documentation
 
 ## Introduction to modules
 
@@ -114,5 +114,189 @@ String module have basic function for working with Strings!
 string.getBytes()//getting bytes of string
 string.sprintf()//strintf Java like method
 string.split()//split you string
-string.
+//Java like functions
+string.indexOf()
+string.lastIndexOf()
+string.charAt()
+string.toChar()//Gets first symbol as string
+string.substring()
+string.toLowerCase()
+string.toUpperCase()
+string.trim()
+string.replace()
+string.replaceAll()
+string.replaceFirst()
+string.parseInt()
+string.parseDouble()
+string.parseLong()
+string.stripMargin()
 ```
+
+<h4>system</h4>
+
+System module funcs:
+
+```
+system.currentTimeMillis()
+system.nanoTime()
+system.getUsedMemory()
+system.getTotalMemory()
+system.getMaxMemory()
+system.getFreeMemory()
+system.availableProcessors()
+system.exec()//execute cmd code
+system.getProperty()
+/*PROPERTIES:
+fels.vesion
+fels.creator
+fels.loader.version
+date
+*/
+system.exit()
+```
+
+<h4>number</h4>
+
+Number funcs
+
+```
+number.min()
+number.max()
+number.MAX_VALUE()
+number.MIN_VALUE()
+```
+
+<h4>ftypes</h4>
+ftypes module using for handling with types
+
+FTYPES constants:
+
+ftypes.OBJECT<br>
+ftypes.NUMBER<br>
+ftypes.STRING<br>
+ftypes.ARRAY<br>
+ftypes.FUNCTION<br>
+ftypes.MAP<br>
+ftypes.CLASS<br>
+
+FTYPES funcs:
+
+typeToString()//ftype const to text<br>
+ftypes.toByte()<br>
+ftypes.toShort()<br>
+ftypes.toInt()<br>
+ftypes.toLong()<br>
+ftypes.toFloat()<br>
+ftypes.toDouble()<br>
+
+## character
+
+Character funcs:
+character.isDigit()<br>
+character.isLetter()<br>
+character.isDigitOrLetter()<br>
+character.isAlphabetic()<br>
+
+## utils.arrays
+
+arrays.array()//creating array with first argument size<br>
+arrays.join()<br>
+arrays.sort()<br>
+arrays.arrayCombine()<br>
+arrays.arrayKeyExists()<br>
+arrays.arrayValues()<br>
+arrays.arraysSplice()<br>
+arrays.range()<br>
+arrays.stringFromBytes()<br>
+
+## utils.math
+
+Constants:
+
+math.PI<br>
+math.E<br>
+
+Standard math functions:
+
+math.abs()<br>
+math.acos()<br>
+math.asin()<br>
+math.atan()<br>
+math.atan2()<br>
+math.cbrt()<br>
+math.ceil()<br>
+math.copySign()<br>
+math.cos()<br>
+math.cosh()<br>
+math.exp()<br>
+math.expm1()<br>
+math.floor()<br>
+math.getExponent()<br>
+math.hypot()<br>
+math.IEEEremainder()<br>
+math.log()<br>
+math.log1p()<br>
+math.log10()<br>
+math.max()<br>
+math.min()<br>
+math.nextAfter()<br>
+math.nextUp()<br>
+math.nextDown()<br>
+math.pos()<br>
+math.rint()<br>
+math.round()<br>
+math.signum()<br>
+math.sin()<br>
+math.sinh()<br>
+math.sqrt()<br>
+math.tan()<br>
+math.tanh()<br>
+math.toDegrees()<br>
+math.toRadians()<br>
+math.ulp()<br>
+
+## utils.random
+
+Functions:
+
+random.random()//random num from to<br>
+random.rand()//random num from 0 to <br>
+random.rnd()//full random number<br>
+
+## utils.jfels
+
+jfels.isNull()<br>
+jfels.newClass()<br>
+jfels.toObject()<br>
+jfels.toValue()<br>
+jfels.null()<br>
+jfels.boolean.class()<br>
+jfels.boolean[].class()<br>
+jfels.boolean[][].class()<br>
+jfels.byte.class()<br>
+jfels.byte[].class()<br>
+jfels.byte[][].class()<br>
+jfels.short.class()<br>
+jfels.short[].class()<br>
+jfels.short[][].class()<br>
+jfels.char.class()<br>
+jfels.char[].class()<br>
+jfels.char[][].class()<br>
+jfels.int.class()<br>
+jfels.int[].class()<br>
+jfels.int[][].class()<br>
+jfels.long.class()<br>
+jfels.long[].class()<br>
+jfels.long[][].class()<br>
+jfels.float.class()<br>
+jfels.float[].class()<br>
+jfels.float[][].class()<br>
+jfels.double.class()<br>
+jfels.double[].class()<br>
+jfels.double[][].class()<br>
+jfels.String.class()<br>
+jfels.String[].class()<br>
+jfels.String[][].class()<br>
+jfels.Object.class()<br>
+jfels.Object[].class()<br>
+jfels.Object[][].class()<br>
