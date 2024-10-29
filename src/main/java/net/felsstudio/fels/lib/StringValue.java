@@ -46,6 +46,10 @@ public final class StringValue implements Value {
                     int offset = (args.length == 2) ? args[1].asInt() : 0;
                     return NumberValue.fromBoolean(value.startsWith(args[0].asString(), offset));
                 });
+            case "substring":
+                return new FunctionValue(args ->{
+                    return new StringValue(value.substring(args[0].asInt(),args[1].asInt()));
+                });
             case "endsWith":
                 return Converters.stringToBoolean(value::endsWith);
             case "matches":

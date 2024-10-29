@@ -1,6 +1,17 @@
+using "fels.io.scanner"
 using "fels.lang.sfm"
 
-@function
-@returns 2
-@science FELS_CONDIDAT_1
-func a() = 2
+loop {
+  print("> ") 
+  command = scanner.readLine()
+
+  if (command == "help") {
+    println("Доступные команды: help, echo, exit") 
+  } else if (command.startsWith("echo ")) { 
+    println(command.substring(5,length(command)))
+  } else if (command == "exit") {
+    break 
+  } else {
+    println("Неизвестная команда: " + command) 
+  }
+}

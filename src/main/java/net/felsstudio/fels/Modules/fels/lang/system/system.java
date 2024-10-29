@@ -10,7 +10,7 @@ public class system implements Module {
 
     @Override
     public void init() {
-        final MapValue map = new MapValue(10);
+        final MapValue map = new MapValue(12);
 
         map.set("currentTimeMillis",args ->{
             return NumberValue.of(System.currentTimeMillis());

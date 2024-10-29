@@ -2,7 +2,7 @@ package main.java.net.felsstudio.fels.utils;
 
 public class Annotator {
 
-    static String[] annotations = new String[]{"class","comment","function","doc","import","preprocess","noUse","NULL","FPM","returns","see","version","science"};
+    static String[] annotations = new String[]{"class","comment","function","doc","import","preprocess","noUse","NULL","FPM","returns","see","version","science","creator"};
     public static void parseAnotation(String source){
         String[] lines = source.split("\n");
 
