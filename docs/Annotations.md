@@ -46,7 +46,7 @@ This is simple "documentation" to you language
 
 ## import 
 
-Importing anno(NOT STATEMENT)
+Annotation for Fels know about next statement is import
 
 ```
 @import sfm

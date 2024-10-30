@@ -41,7 +41,7 @@ public class Starter {
             }
 
             if(doEnableAnnotations){
-                Annotator.parseAnotation(input);
+                input =  Annotator.parseAnotation(input);
             }
 
             final List<Token> tokens = new Lexer(input).tokenize();

@@ -26,7 +26,7 @@ public final class ImportStatement extends InterruptableNode implements Statemen
     public void execute() {
         super.interruptionCheck();
         try {
-            final Statement program = loadProgram(expression.eval().asString().substring(1,expression.eval().asString().length()-1));
+            final Statement program = loadProgram(expression.eval().asString());
             if (program != null) {
                 program.accept(new FunctionAdder());
                 program.execute();
