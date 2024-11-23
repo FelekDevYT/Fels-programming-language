@@ -7,5 +7,5 @@ import java.util.Map;
 
 public interface Module {
 
-    public void init();
+    void init();
 }

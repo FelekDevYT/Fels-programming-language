@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class LoopStatement implements Statement{
 
-    private Statement body;
+    private final Statement body;
 
     public LoopStatement(Statement body) {
         this.body = body;

@@ -4,6 +4,7 @@ import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
 import main.java.net.felsstudio.fels.utils.CmdExecuter;
 
+import java.util.Date;
 import java.util.Map;
 
 public class system implements Module {
@@ -33,7 +34,7 @@ public class system implements Module {
         map.set("availableProcessors",args ->{
             return NumberValue.of(Runtime.getRuntime().availableProcessors());
         });
-        map.set("exec",args ->{
+        map.set("execute",args ->{
             CmdExecuter.execute(args[0].asString());
             return NumberValue.ZERO;
         });

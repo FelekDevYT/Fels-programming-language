@@ -36,7 +36,7 @@ public class VariablesGrabber extends OptimizationVisitor<Map<String, VariableIn
 
     @Override
     public Node visit(AssignmentExpression s, Map<String, VariableInfo> t) throws IOException, InterruptedException {
-        if (!isVariable((Node)s.target)) {
+        if (!isVariable(s.target)) {
             return super.visit(s, t);
         }
 
@@ -90,8 +90,7 @@ public class VariablesGrabber extends OptimizationVisitor<Map<String, VariableIn
                 final String variableName = ((VariableExpression) s.expr1).name;
                 t.put(variableName, variableInfo(t, variableName));
             }
-            if (s.expr1 instanceof ContainerAccessExpression) {
-                ContainerAccessExpression conExpr = (ContainerAccessExpression) s.expr1;
+            if (s.expr1 instanceof ContainerAccessExpression conExpr) {
                 if (conExpr.rootIsVariable()) {
                     final String variableName = ((VariableExpression) conExpr.root).name;
                     t.put(variableName, variableInfo(t, variableName));
@@ -123,8 +122,7 @@ public class VariablesGrabber extends OptimizationVisitor<Map<String, VariableIn
     }
 
     private boolean canLoadConstants(Expression expression) {
-        if (expression instanceof ArrayExpression) {
-            ArrayExpression ae = (ArrayExpression) expression;
+        if (expression instanceof ArrayExpression ae) {
             for (Expression expr : ae.elements) {
                 if (!isValue(expr)) {
                     return false;

@@ -27,7 +27,7 @@ public final class UnaryExpression implements Expression, Statement {
         
         private final String name;
 
-        private Operator(String name) {
+        Operator(String name) {
             this.name = name;
         }
 

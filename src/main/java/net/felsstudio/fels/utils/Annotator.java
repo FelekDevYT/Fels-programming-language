@@ -17,6 +17,7 @@ public class Annotator {
                     if (line.trim().startsWith("@" + annotation)) {
                         lines[use] = "";
                         isEnd = true;
+                        break;
                     }
                 }
                 if (!isEnd) throw new RuntimeException("Unknown annotation: " + line);

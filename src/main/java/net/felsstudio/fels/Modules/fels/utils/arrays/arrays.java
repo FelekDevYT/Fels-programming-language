@@ -22,7 +22,7 @@ public class arrays implements Module {
             }
 
             private ArrayValue createArray(Value[] args, int index) {
-                final int size = (int) args[index].asInt();
+                final int size = args[index].asInt();
                 final int last = args.length - 1;
                 ArrayValue array = new ArrayValue(size);
                 if (index == last) {
@@ -345,8 +345,7 @@ public class arrays implements Module {
                     final RangeValue other = (RangeValue) obj;
                     if (this.from != other.from) return false;
                     if (this.to != other.to) return false;
-                    if (this.step != other.step) return false;
-                    return true;
+                    return this.step == other.step;
                 }
 
                 @Override

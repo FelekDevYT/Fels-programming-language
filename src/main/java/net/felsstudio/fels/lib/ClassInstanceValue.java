@@ -76,7 +76,7 @@ public class ClassInstanceValue implements Value {
     @Override
     public String asString() {
         if (toString != null) {
-            return toString.execute(new Value[] {}).asString();
+            return toString.execute().asString();
         }
         return className + "@" + thisMap;
     }

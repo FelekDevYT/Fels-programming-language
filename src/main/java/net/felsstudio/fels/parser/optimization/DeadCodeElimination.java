@@ -98,7 +98,7 @@ public class DeadCodeElimination extends OptimizationVisitor<Map<String, Variabl
 
     @Override
     public Node visit(AssignmentExpression s, Map<String, VariableInfo> t) throws IOException, InterruptedException {
-        if (!VisitorUtils.isVariable((Node)s.target)) return super.visit(s, t);
+        if (!VisitorUtils.isVariable(s.target)) return super.visit(s, t);
 
         final String variableName = ((VariableExpression) s.target).name;
         if (!t.containsKey(variableName)) return super.visit(s, t);

@@ -72,7 +72,7 @@ public class string implements Module {
         map.set("substring",f ->{
             Arguments.check(2, f.length);
 
-            return new StringValue(f[0].asString().substring((int)f[1].asInt(),(int)f[2].asInt()));
+            return new StringValue(f[0].asString().substring(f[1].asInt(), f[2].asInt()));
         });
 
         map.set("toLowerCase",f ->{

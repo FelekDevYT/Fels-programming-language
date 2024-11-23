@@ -16,8 +16,7 @@ public class AssertStatement extends InterruptableNode implements Statement{
         super.interruptionCheck();
         int expr = expression.eval().asInt();
         boolean boolExpr;
-        if(expr == 1)boolExpr = true;
-        else boolExpr = false;
+        boolExpr = expr == 1;
 
         if(!boolExpr){
             throw new AssertionError("Assertion failed: "+expression);

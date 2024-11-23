@@ -279,8 +279,7 @@ public abstract class OptimizationVisitor<T> implements ResultVisitor<Node, T> {
                 }
             }
             
-            if (pattern instanceof MatchExpression.TuplePattern) {
-                final MatchExpression.TuplePattern tuple = (MatchExpression.TuplePattern) pattern;
+            if (pattern instanceof MatchExpression.TuplePattern tuple) {
                 final List<Expression> newValues = new ArrayList<>(tuple.values.size());
                 boolean valuesChanged = false;
                 for (Expression value : tuple.values) {
@@ -390,8 +389,7 @@ public abstract class OptimizationVisitor<T> implements ResultVisitor<Node, T> {
 
     @Override
     public Node visit(ValueExpression s, T t) throws IOException, InterruptedException {
-        if ( (s.value.type() == Types.FUNCTION) && (s.value.raw() instanceof UserDefinedFunction) ) {
-            final UserDefinedFunction function = (UserDefinedFunction) s.value.raw();
+        if ( (s.value.type() == Types.FUNCTION) && (s.value.raw() instanceof UserDefinedFunction function) ) {
             final UserDefinedFunction accepted = visit(function, t);
             if (accepted != function) {
                 return new ValueExpression(accepted);

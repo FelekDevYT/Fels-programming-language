@@ -55,7 +55,7 @@ public class Starter {
             measurement.start("Parse time");
             final Parser parser = new Parser(tokens);
             final Statement program = new Parser(tokens).parse();
-            System.out.println(program.toString());
+            System.out.println(program);
             program.accept(new FunctionAdder());
             measurement.stop("Parse time");
             if(doShowVars){

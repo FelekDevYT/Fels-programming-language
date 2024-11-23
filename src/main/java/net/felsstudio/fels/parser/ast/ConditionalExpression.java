@@ -29,7 +29,7 @@ public final class ConditionalExpression implements Expression {
 
         private final String name;
 
-        private Operator(String name) {
+        Operator(String name) {
             this.name = name;
         }
 

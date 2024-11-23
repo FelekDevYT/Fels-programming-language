@@ -3,6 +3,7 @@ package main.java.net.felsstudio.fels.Modules.fels.io.files;
 import main.java.net.felsstudio.fels.Modules.Module;
 import main.java.net.felsstudio.fels.lib.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -18,6 +19,10 @@ public class files implements Module {
             List<String> array =  Files.readAllLines(Path.of(args[0].asString()));
             arr = new ArrayValue(ArrayValue.of(array.toArray(new String[array.size()])));
             return arr;
+        });
+        map.set("create",args ->{
+            new File(args[0].asString()).createNewFile();
+            return NumberValue.ZERO;
         });
         map.set("readAllText",args ->{
             String array = Files.readString(Path.of(args[0].asString()));

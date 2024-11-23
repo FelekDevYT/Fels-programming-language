@@ -14,42 +14,42 @@ public class rayFels implements Module {
         Functions.set("rfInitWindow", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.InitWindow(args[0].asInt(),args[1].asInt(),args[2].asString());
+                Raylib.InitWindow(args[0].asInt(),args[1].asInt(),args[2].asString());
                 return NumberValue.ZERO;
             }
         });
         Functions.set("rfIsCloseRequest", new Function() {
             @Override
             public Value execute(Value... args) {
-                if(rl.WindowShouldClose()) return NumberValue.ONE;
+                if(Raylib.WindowShouldClose()) return NumberValue.ONE;
                 else return NumberValue.ZERO;
             }
         });
         Functions.set("rfCloseWindow", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.CloseWindow();
+                Raylib.CloseWindow();
                 return NumberValue.ZERO;
             }
         });
         Functions.set("rfSetFPS", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.SetTargetFPS(args[0].asInt());
+                Raylib.SetTargetFPS(args[0].asInt());
                 return NumberValue.ZERO;
             }
         });
         Functions.set("rfBeginDrawing", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.BeginDrawing();
+                Raylib.BeginDrawing();
                 return NumberValue.ZERO;
             }
         });
         Functions.set("rfEndDrawing", new Function() {
             @Override
             public Value execute(Value... args){
-                rl.EndDrawing();
+                Raylib.EndDrawing();
                 return NumberValue.ZERO;
             }
         });
@@ -57,7 +57,7 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args){
                 ArrayValue value = (ArrayValue)args[4];
-                rl.DrawText(args[0].asString(),
+                Raylib.DrawText(args[0].asString(),
                         args[1].asInt(),
                         args[2].asInt(),
                         args[3].asInt(),
@@ -72,7 +72,7 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args) {
                 ArrayValue value = (ArrayValue)args[4];
-                rl.DrawLine(args[0].asInt(),
+                Raylib.DrawLine(args[0].asInt(),
                         args[1].asInt(),
                         args[2].asInt(),
                         args[3].asInt(),
@@ -87,7 +87,7 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args) {
                 ArrayValue value = (ArrayValue)args[4];
-                rl.DrawRectangle(args[0].asInt(),
+                Raylib.DrawRectangle(args[0].asInt(),
                         args[1].asInt(),
                         args[2].asInt(),
                         args[3].asInt(),
@@ -101,13 +101,13 @@ public class rayFels implements Module {
         Functions.set("rfGetFPS", new Function() {
             @Override
             public Value execute(Value... args) {
-                return NumberValue.of(rl.GetFPS());
+                return NumberValue.of(Raylib.GetFPS());
             }
         });
         Functions.set("rfDrawFPS", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.DrawFPS(args[0].asInt(),
+                Raylib.DrawFPS(args[0].asInt(),
                         args[1].asInt());
                 return NumberValue.ZERO;
             }
@@ -115,7 +115,7 @@ public class rayFels implements Module {
         Functions.set("rfDrawGrid", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.DrawGrid(args[0].asInt(),
+                Raylib.DrawGrid(args[0].asInt(),
                         args[1].asInt());
                 return NumberValue.ZERO;
             }
@@ -124,7 +124,7 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args) {
                 ArrayValue value = (ArrayValue)args[0];
-                rl.ClearBackground(c(value.get(0).asInt(),
+                Raylib.ClearBackground(c(value.get(0).asInt(),
                         value.get(1).asInt(),
                         value.get(2).asInt(),
                         255));
@@ -134,7 +134,7 @@ public class rayFels implements Module {
         Functions.set("rfIsKeyPressed", new Function() {
             @Override
             public Value execute(Value... args) {
-                if(rl.IsKeyPressed(getKey(args[0].asString()))){
+                if(Raylib.IsKeyPressed(getKey(args[0].asString()))){
                     return NumberValue.ONE;
                 }
                 return NumberValue.ZERO;
@@ -143,7 +143,7 @@ public class rayFels implements Module {
         Functions.set("rfIsKeyDown", new Function() {
             @Override
             public Value execute(Value... args) {
-                if(rl.IsKeyDown(getKey(args[0].asString()))){
+                if(Raylib.IsKeyDown(getKey(args[0].asString()))){
                     return NumberValue.ONE;
                 }
                 return NumberValue.ZERO;
@@ -152,7 +152,7 @@ public class rayFels implements Module {
         Functions.set("rfIsKeyReleased", new Function() {
             @Override
             public Value execute(Value... args) {
-                if(rl.IsKeyReleased(getKey(args[0].asString()))){
+                if(Raylib.IsKeyReleased(getKey(args[0].asString()))){
                     return NumberValue.ONE;
                 }
                 return NumberValue.ZERO;
@@ -161,14 +161,14 @@ public class rayFels implements Module {
         Functions.set("rfHideCursor", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.HideCursor();
+                Raylib.HideCursor();
                 return NumberValue.ZERO;
             }
         });
         Functions.set("rfShowCursor", new Function() {
             @Override
             public Value execute(Value... args) {
-                rl.ShowCursor();
+                Raylib.ShowCursor();
                 return NumberValue.ZERO;
             }
         });
@@ -176,10 +176,10 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args){
                 if(getMB(args[0].asString()) == 0){
-                    return rl.IsMouseButtonDown(Raylib.MOUSE_BUTTON_LEFT)?
+                    return Raylib.IsMouseButtonDown(Raylib.MOUSE_BUTTON_LEFT)?
                             NumberValue.ONE : NumberValue.ZERO;
                 }else if(getMB(args[0].asString()) == 1){
-                    return rl.IsMouseButtonDown(Raylib.MOUSE_BUTTON_RIGHT)?
+                    return Raylib.IsMouseButtonDown(Raylib.MOUSE_BUTTON_RIGHT)?
                             NumberValue.ONE : NumberValue.ZERO;
                 }
                 return NumberValue.ZERO;
@@ -189,10 +189,10 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args) {
                 if(getMB(args[0].asString()) == 0){
-                    return rl.IsMouseButtonUp(Raylib.MOUSE_BUTTON_LEFT)?
+                    return Raylib.IsMouseButtonUp(Raylib.MOUSE_BUTTON_LEFT)?
                             NumberValue.ONE : NumberValue.ZERO;
                 }else if(getMB(args[0].asString()) == 1){
-                    return rl.IsMouseButtonUp(Raylib.MOUSE_BUTTON_RIGHT)?
+                    return Raylib.IsMouseButtonUp(Raylib.MOUSE_BUTTON_RIGHT)?
                             NumberValue.ONE : NumberValue.ZERO;
                 }
                 return NumberValue.ZERO;
@@ -202,10 +202,10 @@ public class rayFels implements Module {
             @Override
             public Value execute(Value... args) {
                 if(getMB(args[0].asString()) == 0){
-                    return rl.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)?
+                    return Raylib.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)?
                             NumberValue.ONE : NumberValue.ZERO;
                 }else if(getMB(args[0].asString()) == 1){
-                    return rl.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_RIGHT)?
+                    return Raylib.IsMouseButtonReleased(Raylib.MOUSE_BUTTON_RIGHT)?
                             NumberValue.ONE : NumberValue.ZERO;
                 }
                 return NumberValue.ZERO;

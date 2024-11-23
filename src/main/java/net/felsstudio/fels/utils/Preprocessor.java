@@ -4,12 +4,13 @@ import main.java.net.felsstudio.fels.lib.ValueUtils;
 import main.java.net.felsstudio.fels.lib.Variables;
 import main.java.net.felsstudio.fpm.FelsPackageManager;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Preprocessor {
     // Хранит определения макросов
-    private Map<String, String> macros = new HashMap<>();
+    private final Map<String, String> macros = new HashMap<>();
     private boolean isRegion = false;
 
     public String process(String source) {
@@ -51,8 +52,10 @@ public class Preprocessor {
                 isRegion = false;
             }else if(line.trim().startsWith("#linklude")){
                 String[] parts = line.trim().split("\\s+", 2);
+                new File(parts[1]).mkdirs();
+                System.out.println(parts[0]+","+parts[1]);
                 FelsPackageManager.loadExtLibrary(parts[1]);
-                processedCode.append("import ").append("\"a").append(parts[1].substring(1, parts[1].length()-1)).append("/index.felsa\"\n");
+                processedCode.append("import ").append("\"").append(parts[1], 1, parts[1].length()-1).append("/index.fels\"\n");
             }else if (line.trim().startsWith("#include")) {
                 String[] parts = line.trim().split("\\s+", 2);
                 if (parts.length == 2) {

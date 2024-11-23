@@ -376,8 +376,7 @@ public class PrintVisitor implements ResultVisitor<StringBuilder, StringBuilder>
                 break;
             case Types.FUNCTION:  {
                 final Function function = ((FunctionValue) s.value).getValue();
-                if (function instanceof UserDefinedFunction) {
-                    UserDefinedFunction f = (UserDefinedFunction) function;
+                if (function instanceof UserDefinedFunction f) {
                     t.append("def");
                     t.append(f.arguments);
                     return visitFunctionBody(f.body, t);

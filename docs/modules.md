@@ -300,3 +300,11 @@ jfels.String[][].class()<br>
 jfels.Object.class()<br>
 jfels.Object[].class()<br>
 jfels.Object[][].class()<br>
+
+### io.files
+
+files.readAllLines()<br>
+files.readAllBytes()<br>
+files.readAllText()<br>
+files.writeAllText()<br>
+files.writeAllLines()<br>
