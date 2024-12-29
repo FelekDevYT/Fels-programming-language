@@ -1,16 +1,18 @@
 using "fels.lang.sfm"
-using "fels.utils.json"
+using "fels.utils.yaml"
 
-var = json.encode({
-    "line":"This is line!",
-    "number":52,
-    "array":[
-        1,2,3,4
+
+var = yaml.encode({
+    "name":"FelekDevYT",
+    "age":52,
+    "lovestlangs":[
+        "Java","Kotlin","C++"
     ],
-    "map":{
-        "key":"value",
-        104:"52"
+    "levels":{
+        "am":1000,
+        1000:"GG!"
     }
 })
+
 println(var)
-println(json.decode(var))
+println(yaml.decode(var))
