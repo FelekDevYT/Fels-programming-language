@@ -1,17 +1,7 @@
 package main.java.net.felsstudio.fels.parser.optimization;
 
 import main.java.net.felsstudio.fels.lib.Types;
-import main.java.net.felsstudio.fels.parser.ast.AssignmentExpression;
-import main.java.net.felsstudio.fels.parser.ast.BlockStatement;
-import main.java.net.felsstudio.fels.parser.ast.ExprStatement;
-import main.java.net.felsstudio.fels.parser.ast.Expression;
-import main.java.net.felsstudio.fels.parser.ast.IfStatement;
-import main.java.net.felsstudio.fels.parser.ast.Node;
-import main.java.net.felsstudio.fels.parser.ast.Statement;
-import main.java.net.felsstudio.fels.parser.ast.TernaryExpression;
-import main.java.net.felsstudio.fels.parser.ast.ValueExpression;
-import main.java.net.felsstudio.fels.parser.ast.VariableExpression;
-import main.java.net.felsstudio.fels.parser.ast.WhileStatement;
+import main.java.net.felsstudio.fels.parser.ast.*;
 import main.java.net.felsstudio.fels.parser.visitors.VisitorUtils;
 
 import java.io.IOException;
@@ -95,6 +85,7 @@ public class DeadCodeElimination extends OptimizationVisitor<Map<String, Variabl
         }
         return super.visit(s, t);
     }
+
 
     @Override
     public Node visit(AssignmentExpression s, Map<String, VariableInfo> t) throws IOException, InterruptedException {

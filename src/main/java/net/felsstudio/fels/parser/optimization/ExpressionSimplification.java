@@ -1,11 +1,6 @@
 package main.java.net.felsstudio.fels.parser.optimization;
 
-import main.java.net.felsstudio.fels.parser.ast.BinaryExpression;
-import main.java.net.felsstudio.fels.parser.ast.ConditionalExpression;
-import main.java.net.felsstudio.fels.parser.ast.FunctionDefineStatement;
-import main.java.net.felsstudio.fels.parser.ast.Node;
-import main.java.net.felsstudio.fels.parser.ast.UnaryExpression;
-import main.java.net.felsstudio.fels.parser.ast.ValueExpression;
+import main.java.net.felsstudio.fels.parser.ast.*;
 import main.java.net.felsstudio.fels.parser.visitors.VisitorUtils;
 import static main.java.net.felsstudio.fels.parser.visitors.VisitorUtils.isIntegerValue;
 import static main.java.net.felsstudio.fels.parser.visitors.VisitorUtils.isSameVariables;

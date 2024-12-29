@@ -13,15 +13,19 @@ import java.util.*;
 public class files implements Module {
     @Override
     public void init() {
-        final MapValue map = new MapValue(10);
+        final MapValue map = new MapValue(15);
         map.set("readAllLines",args ->{
             ArrayValue arr = null;
             List<String> array =  Files.readAllLines(Path.of(args[0].asString()));
             arr = new ArrayValue(ArrayValue.of(array.toArray(new String[array.size()])));
             return arr;
         });
-        map.set("create",args ->{
+        map.set("createFile",args ->{
             new File(args[0].asString()).createNewFile();
+            return NumberValue.ZERO;
+        });
+        map.set("createDirectory",args ->{
+            new File(args[0].asString()).mkdirs();
             return NumberValue.ZERO;
         });
         map.set("readAllText",args ->{

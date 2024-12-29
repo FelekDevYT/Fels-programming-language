@@ -1,6 +1,16 @@
 package main.java.net.felsstudio.fels.Modules.fels.grm.forms;
 
+import com.github.weisj.darklaf.LafManager;
+import com.github.weisj.darklaf.theme.DarculaTheme;
+import com.github.weisj.darklaf.theme.IntelliJTheme;
+import main.java.net.felsstudio.fels.lib.Arguments;
+import main.java.net.felsstudio.fels.lib.Function;
+import main.java.net.felsstudio.fels.lib.NumberValue;
+import main.java.net.felsstudio.fels.lib.Value;
+
 import javax.swing.JFrame;
+
+import java.io.IOException;
 
 import static main.java.net.felsstudio.fels.lib.Converters.*;
 
@@ -15,6 +25,7 @@ public class JFrameValue extends ContainerValue {
     }
 
     private void init() {
+        set("installTheme",new setTheme());
         set("dispose", voidToVoid(frame::dispose));
         set("getTitle", voidToString(frame::getTitle));
         set("getDefaultCloseOperation", voidToInt(frame::getDefaultCloseOperation));
@@ -24,5 +35,23 @@ public class JFrameValue extends ContainerValue {
         set("setLocationByPlatform", booleanOptToVoid(frame::setLocationByPlatform));
         set("setResizable", booleanOptToVoid(frame::setResizable));
         set("setTitle", stringToVoid(frame::setTitle));
+    }
+
+    private static class setTheme implements Function {
+        @Override
+        public Value execute(Value... args) throws IOException, InterruptedException {
+            Arguments.check(1, args.length);
+            switch (args[0].asString()) {
+                case "intellij": {
+                    LafManager.setTheme(new IntelliJTheme());
+                    break;
+                }
+                case "dracula": {
+                    LafManager.setTheme(new DarculaTheme());
+                    break;
+                }
+            }
+            return NumberValue.ZERO;
+        }
     }
 }

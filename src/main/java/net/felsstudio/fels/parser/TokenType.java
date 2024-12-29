@@ -36,6 +36,7 @@ public enum TokenType {
     RANGE,
     MACRO,
     PANIC,
+    ENUM,
     
     PLUS, // +
     MINUS, // -

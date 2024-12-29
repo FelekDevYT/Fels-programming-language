@@ -7,12 +7,7 @@ import main.java.net.felsstudio.fels.lib.UserDefinedFunction;
 
 import main.java.net.felsstudio.fels.parser.ast.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -182,11 +177,50 @@ public final class Parser {
         if(match(TokenType.PANIC)){
             return new PanicStatement(expression());
         }
+//        if(match(TokenType.ENUM)){
+//            return enumStatement();
+//        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return new ExprStatement(functionChain(qualifiedName()));
         }
         return assignmentStatement();
     }
+
+//    private Expression map() {
+//        // {key1 : value1, key2 : value2, ...}
+//        consume(TokenType.LBRACE);
+//        final Map<Expression, Expression> elements = new HashMap<>();
+//        while (!match(TokenType.RBRACE)) {
+//            final Expression key = primary();
+//            consume(TokenType.COLON);
+//            final Expression value = expression();
+//            elements.put(key, value);
+//            match(TokenType.COMMA);
+//        }
+//        return new MapExpression(elements);
+//    }
+
+//    private Statement enumStatement(){
+//        /*{
+//        *   CONST1,
+//        *   CONST2
+//        *}
+//        */
+//        final Expression name = expression();
+//        consume(TokenType.LBRACE);
+//        final Map<Expression,Expression> elements = new LinkedHashMap<>();
+//        while (!match(TokenType.RBRACE)) {
+//            final Expression key = expression();
+//            final Expression value = key;
+//            consume(TokenType.COMMA);
+//            elements.put(key,value);
+//        }
+//        try{
+//            return new EnumStatement(name.eval().asString(), elements);
+//        }catch(Exception e){
+//            throw new RuntimeException("Invalid enum!");
+//        }
+//    }
 
     private Statement rangeStatement(){
         final Expression condition = expression();

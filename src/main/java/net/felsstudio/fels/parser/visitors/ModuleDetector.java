@@ -1,10 +1,6 @@
 package main.java.net.felsstudio.fels.parser.visitors;
 
-import main.java.net.felsstudio.fels.parser.ast.ArrayExpression;
-import main.java.net.felsstudio.fels.parser.ast.Expression;
-import main.java.net.felsstudio.fels.parser.ast.Statement;
-import main.java.net.felsstudio.fels.parser.ast.UsingStatement;
-import main.java.net.felsstudio.fels.parser.ast.ValueExpression;
+import main.java.net.felsstudio.fels.parser.ast.*;
 
 import java.io.IOException;
 import java.util.HashSet;

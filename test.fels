@@ -1,76 +1,16 @@
 using "fels.lang.sfm"
-using "fels.utils.arrays"
-using "fels.lang.string"
-using "fels.io.scanner"
+using "fels.utils.json"
 
-func interpret(code){
-    memory = arrays.array(10000)
-    pointer = 0
-    pos = 0
-    mp = 0
-    len = length(code)
-    cmdMem = arrays.array(10000)
-    lastCmdMem = 0
-
-    while(pos < len){
-        cmd = string.charAt(code,pos)
-
-        if(cmd == "+") pointer++
-        else if(cmd == "$") pointer+=10
-        else if(cmd == "-") pointer--
-        else if(cmd == "~") pointer-=10
-        else if(cmd == ".") {
-            str = string.charAt(code,(++pos))
-            if(str == "("){
-                println(pointer)
-            }else if(str == ")"){
-                print(pointer)
-            }
-        }
-        else if(cmd == ","){
-            str = string.charAt(code,(++pos))
-            if(str == "("){
-                println(itoc(pointer))
-            }else if(str == ")"){
-                print(itoc(pointer))
-            }
-        }
-        else if(cmd == "*") {
-            memory[mp] = pointer
-        }
-        else if(cmd == "&"){
-            pointer = memory[mp]
-        }
-        else if(cmd == "{") {
-            mp++
-            pointer = 0
-        }
-        else if(cmd == "}") {
-            mp--
-            pointer = 0
-        }
-        else if(cmd == "^"){
-            interpret(cmdMem[pointer])
-        }
-        else if(cmd == "@"){
-            pos++
-            quit(pointer)
-        }else if(cmd == "["){
-            while(string.charAt(code,(++pos)) != "]"){
-                cmdMem[lastCmdMem] = string.charAt(code,(++pos))
-
-                pos++
-            }
-            lastCmdMem++
-        }
-
-        pos++
+var = json.encode({
+    "line":"This is line!",
+    "number":52,
+    "array":[
+        1,2,3,4
+    ],
+    "map":{
+        "key":"value",
+        104:"52"
     }
-}
-
-
-while(true){
-    print("Enter fain code$ ")
-    code = scanner.readLine()
-    interpret(code)
-}
+})
+println(var)
+println(json.decode(var))

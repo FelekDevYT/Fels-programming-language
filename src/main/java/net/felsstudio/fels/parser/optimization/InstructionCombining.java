@@ -1,13 +1,7 @@
 package main.java.net.felsstudio.fels.parser.optimization;
 
 import main.java.net.felsstudio.fels.Console;
-import main.java.net.felsstudio.fels.parser.ast.BlockStatement;
-import main.java.net.felsstudio.fels.parser.ast.Expression;
-import main.java.net.felsstudio.fels.parser.ast.Node;
-import main.java.net.felsstudio.fels.parser.ast.PrintStatement;
-import main.java.net.felsstudio.fels.parser.ast.PrintlnStatement;
-import main.java.net.felsstudio.fels.parser.ast.Statement;
-import main.java.net.felsstudio.fels.parser.ast.ValueExpression;
+import main.java.net.felsstudio.fels.parser.ast.*;
 
 import java.io.IOException;
 
