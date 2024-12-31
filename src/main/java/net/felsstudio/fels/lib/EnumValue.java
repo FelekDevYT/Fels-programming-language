@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 public class EnumValue implements Value {
-    private Map<String, StringValue> enums;
+    private final Map<String, StringValue> enums;
 
     public EnumValue(Map<String, StringValue> enums) {
         this.enums = enums;
