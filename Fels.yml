@@ -1,7 +1,0 @@
-name: Fels
-type: programming
-color: '#FF0000'
-extensions:
-  - fels
-interpreters:
-  - fels
