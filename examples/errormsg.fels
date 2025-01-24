@@ -1,0 +1,8 @@
+using "fels.grm.mBox"
+
+
+func errorMsg(){
+    mBox.showErrorMessage("message","title")
+}
+
+errorMsg()

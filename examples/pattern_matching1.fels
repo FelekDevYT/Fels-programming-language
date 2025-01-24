@@ -1,0 +1,7 @@
+func test(a) = match(a){
+    case 1: "One"
+    case 2: "Two"
+    case 3: "Three"
+}
+
+println(test(1))

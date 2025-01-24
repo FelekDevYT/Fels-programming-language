@@ -1,0 +1,41 @@
+using "fels.lang.sfm"
+using "fels.utils.arrays"
+using "fels.lang.string"
+
+func interpret(code){
+    memory = arrays.array(10000)
+    pointer = 0
+    pos = 0
+    mp = 0
+    len = length(code)
+
+    while(pos < len){
+        cmd = string.charAt(code,pos)
+
+        if(cmd == "+") pointer++
+        else if(cmd == "-") pointer--
+        else if(cmd == ".") println(pointer)
+        else if(cmd == "*") {
+            memory[mp] = pointer
+        }
+        else if(cmd == "&"){
+            pointer = memory[mp]
+        }
+        else if(cmd == "{") mp++
+        else if(cmd == "}") mp--
+        else if(cmd == "^"){
+            pos++
+            pos += atoi(string.charAt(code,pos))
+        }
+        else if(cmd == "@"){
+            pos++
+            quit(string.charAt(code,pos))
+        }
+
+        pos++
+    }
+}
+
+
+code = ""
+interpret(code)

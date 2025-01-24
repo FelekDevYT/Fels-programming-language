@@ -1,0 +1,9 @@
+using "fels.fgl.sfm"
+
+
+func test(){
+    color.red()
+    println("text")
+}
+
+test()
