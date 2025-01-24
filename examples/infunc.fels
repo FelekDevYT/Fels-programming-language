@@ -1,0 +1,12 @@
+func a(){
+    func b(){//function in 'a' scope
+        println(123)
+    }
+
+    b()
+    println(456)
+}
+
+a()
+
+//b() // ERROR!!! NOT FOUND FUNCTION!!!

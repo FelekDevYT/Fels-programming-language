@@ -1,0 +1,7 @@
+#define out println
+
+func preprocessor_test(){
+    out("Hello,world!")
+}
+
+preprocessor_test()

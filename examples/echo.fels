@@ -1,0 +1,8 @@
+using "fels.lang.sfm"
+
+
+func echo_test(){
+    echo(1,2,3,4,5,"HELLO!")
+}
+
+echo_test()

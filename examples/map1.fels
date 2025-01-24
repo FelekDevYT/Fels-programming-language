@@ -1,0 +1,12 @@
+using "fels.lang.sfm"
+
+
+func map_test(){
+    map = {
+        "key":"value"
+    }
+    println(map.key)
+    println(map["key"])
+}
+
+map_test()

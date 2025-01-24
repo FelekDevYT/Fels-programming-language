@@ -1,0 +1,10 @@
+using "fels.lang.sfm"
+
+
+func destr_ass_test(){
+    arr = ["1","2","3"]
+    extract(var1,var2,var3) = arr
+    echo(var1,var2,var3)
+}
+
+destr_ass_test()
