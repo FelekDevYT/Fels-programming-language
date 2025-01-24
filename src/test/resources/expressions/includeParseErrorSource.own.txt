@@ -1,4 +1,0 @@
-def test() = return println match x {
-  case case 1
-}
-value = "passed"

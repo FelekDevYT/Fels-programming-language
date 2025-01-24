@@ -1,0 +1,10 @@
+using "fels.lang.sfm"
+
+
+func ext_test(){
+    `this is variable` = "????"
+    println(`this is variable`)
+}
+
+
+ext_test()

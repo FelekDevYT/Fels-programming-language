@@ -25,7 +25,7 @@ public class files implements Module {
             return NumberValue.ZERO;
         });
         map.set("createDirectory",args ->{
-            new File(args[0].asString()).mkdirs();
+            new File(args[0].asString()).mkdir();
             return NumberValue.ZERO;
         });
         map.set("readAllText",args ->{

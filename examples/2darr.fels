@@ -1,0 +1,10 @@
+using "fels.lang.sfm"
+
+
+func arr2d_test(){
+    arr = [[1,2],[3,4]]
+
+    println(arr)
+}
+
+arr2d_test()

@@ -1,0 +1,13 @@
+using "fels.lang.sfm"
+
+
+func loop_test(){
+    a = 10
+    loop{
+        if(a == 10) break
+        println("a = "+a)
+        a++
+    }
+}
+
+loop_test()

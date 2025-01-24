@@ -55,7 +55,7 @@ public class Preprocessor {
                 new File(parts[1]).mkdirs();
                 System.out.println(parts[0]+","+parts[1]);
                 FelsPackageManager.loadExtLibrary(parts[1]);
-                processedCode.append("import ").append("\"").append(parts[1], 1, parts[1].length()-1).append("/index.fels\"\n");
+                processedCode.append("import ").append("\"").append(parts[1], 1, parts[1].length()-1).append("\"\n");
             }else if (line.trim().startsWith("#include")) {
                 String[] parts = line.trim().split("\\s+", 2);
                 if (parts.length == 2) {

@@ -1,0 +1,11 @@
+using "fels.lang.sfm"
+
+
+func arr_test(){
+    arr = [1,2,3,4,5]
+
+    arr[1] = "asdf"
+    println(arr[1])//asdf
+}
+
+arr_test()

@@ -1,0 +1,9 @@
+using "fels.lang.sfm"
+
+
+func arrayapp_test(arr1,arr2){
+    arr3 = arr1 :: arr2
+    return arr3
+}
+
+println(arrayapp_test([1,2],[3,4]))

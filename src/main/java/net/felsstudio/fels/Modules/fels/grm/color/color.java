@@ -6,6 +6,7 @@ import main.java.net.felsstudio.fels.lib.StringValue;
 import main.java.net.felsstudio.fels.lib.Variables;
 
 public class color implements Module {
+    @main.java.net.felsstudio.fels.annotations.Module
     @Override
     public void init() {
         final MapValue map = new MapValue(3);

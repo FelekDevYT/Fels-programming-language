@@ -1,0 +1,131 @@
+%YAML 1.2
+---
+name: Fels
+file_extensions:
+  - fels
+scope: source.fels
+
+contexts:
+  main:
+    - include: '#comments'
+    - include: '#strings'
+    - include: '#numbers'
+    - include: '#keywords'
+    - include: '#variables'
+    - include: '#functions'
+    - include: '#loops'
+    - include: '#classes'
+    - include: '#maps'
+    - include: '#arrays'
+    - include: '#operators'
+    - include: '#preprocessor'
+    - include: '#pattern-matching'
+    - include: '#error'
+
+  # Comments
+  comments:
+    - match: '//.*'
+      scope: comment.line.double-slash.fels
+    - match: '/\*'
+      scope: comment.block.fels
+      push: comment_block
+
+  comment_block:
+    - meta_start: true
+    - match: '\*/'
+      scope: comment.block.fels
+      pop: true
+    - match: '.'
+      scope: comment.block.fels
+
+  # Strings
+  strings:
+    - match: '"([^"\\]*(\\.[^"\\]*)*)"'
+      scope: string.quoted.double.fels
+
+  # Numbers
+  numbers:
+    - match: '\b\d+\b'
+      scope: constant.numeric.fels
+
+  # Keywords
+  keywords:
+    - match: '\b(to|using|func|if|else|while|for|class|new|return|println|print|echo|panic|import|include|define|match|case|break|this|not|and|or|true|false)\b'
+      scope: keyword.control.fels
+
+  # Variables
+  variables:
+    - match: '\b[a-zA-Z_][a-zA-Z0-9_]*\b'
+      scope: variable.other.fels
+
+  # Functions
+  functions:
+    - match: '\bfunc\s+[a-zA-Z_][a-zA-Z0-9_]*\s*\('
+      scope: entity.name.function.fels
+
+  # Loops
+  loops:
+    - match: '\b(while|for|loop)\b'
+      scope: keyword.control.loop.fels
+
+  # Classes
+  classes:
+    - match: '\bclass\s+[a-zA-Z_][a-zA-Z0-9_]*\b'
+      scope: entity.name.class.fels
+
+  # Maps
+  maps:
+    - match: '\{[^}]*\}'
+      scope: meta.map.fels
+
+  # Arrays
+  arrays:
+    - match: '\[[^\]]*\]'
+      scope: meta.array.fels
+
+  # Operators
+  operators:
+    - match: '`[^`]*`'
+      scope: meta.operator.fels
+
+  # Preprocessor
+  preprocessor:
+    - match: '#define\s+[a-zA-Z_][a-zA-Z0-9_]*'
+      scope: meta.preprocessor.fels
+
+  # Pattern matching
+  pattern-matching:
+    - match: 'match\s*\('
+           scope: keyword.control.pattern-matching.fels
+
+       # Error handling
+       error:
+         - match: 'panic\(".*?"\)'
+           scope: invalid.illegal.error.fels
+
+       # Extended operators
+       extended_operators:
+         - match: '`[^`]*`'
+           scope: meta.operator.extended.fels
+
+       # Destructuring assignment
+       destructuring:
+         - match: 'extract\s*\(.*?\)\s*='
+           scope: keyword.control.destructuring.fels
+
+       # I/O functions
+       io_functions:
+         - match: '\b(scanner\.readNum|println|print|echo)\b'
+           scope: keyword.control.io.fels
+
+       # Logical operators
+       logical_operators:
+         - match: '\b(and|or|not|true|false)\b'
+           scope: keyword.control.logical.fels
+
+       # Array and map access
+       access:
+         - match: '\[.*?\]'
+           scope: meta.access.array.fels
+         - match: '\..*?'
+           scope: meta.access.map.fels

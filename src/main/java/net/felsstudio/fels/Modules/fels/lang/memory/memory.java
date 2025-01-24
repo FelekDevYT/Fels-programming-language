@@ -66,7 +66,13 @@ public class memory implements Module {
         Functions.set("runFile", new Function() {
             @Override
             public Value execute(Value... args) throws IOException {
-                Starter.start(false,false,false,false,true,true,args[0].asString());
+                boolean b1 = Boolean.parseBoolean(args[0].asString());
+                boolean b2 = Boolean.parseBoolean(args[1].asString());
+                boolean b3 = Boolean.parseBoolean(args[2].asString());
+                boolean b4 = Boolean.parseBoolean(args[3].asString());
+                boolean b5 = Boolean.parseBoolean(args[4].asString());
+                boolean b6 = Boolean.parseBoolean(args[5].asString());
+                Starter.start(b1,b2,b3,b4,b5,b6,args[0].asString());
                 return NumberValue.ZERO;
             }
         });

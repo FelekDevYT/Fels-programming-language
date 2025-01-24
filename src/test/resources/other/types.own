@@ -1,3 +1,0 @@
-def testTypes() {
-  assertSameType(0, 0.0)
-}

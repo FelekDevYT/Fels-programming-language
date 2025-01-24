@@ -1,0 +1,25 @@
+func simpleAssigment(){
+    a = 8
+    b = "line"
+    println(a+","+b)
+}
+
+func prefixIncrement(){
+    a = 8
+    println(++a)
+}
+
+func postfixIncrement(){
+    a = 10
+    println(a++)
+}
+
+func prefixDecrement(){
+    a = 2
+    println(--a)
+}
+
+func postfixDecrement(){
+    a = 2
+    println(a--)
+}
