@@ -1,0 +1,10 @@
+class Car {
+    func Car(speed) {
+        this.speed = speed
+    }
+
+    func getSpeed() = this.speed
+}
+
+car = new Car(100)
+println(car.getSpeed()) // 100

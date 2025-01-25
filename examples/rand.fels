@@ -1,0 +1,4 @@
+using "fels.utils.random"
+
+randNum = random.random(1, 100)
+println(randNum)

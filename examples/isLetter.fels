@@ -1,0 +1,8 @@
+using "fels.lang.character"
+
+
+func isLetter(a){
+    return character.isLetter(a)
+}
+
+println(isLetter("a"))

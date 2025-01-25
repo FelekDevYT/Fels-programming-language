@@ -1,0 +1,8 @@
+using "fels.lang.character"
+
+
+func isLetterOrDigit_test(a){
+    return character.isLetterOrDigit(a)
+}
+
+println(isLetterOrDigit("a"))

@@ -1,0 +1,8 @@
+using "fels.io.scanner"
+
+
+func scanBool(){
+    return scanner.readBool()
+}
+
+scanBool()

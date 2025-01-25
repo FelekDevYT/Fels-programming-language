@@ -1,0 +1,8 @@
+using "fels.io.files"
+
+
+func createFile(a){
+    files.createFile(a)
+}
+
+createFile("test.gg")

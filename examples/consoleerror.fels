@@ -1,0 +1,8 @@
+using "fels.lang.console"
+
+
+func CONSOLEERROR_test(a){
+    console.writeError(a)
+}
+
+CONSOLEERROR_test("53!")

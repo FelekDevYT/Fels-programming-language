@@ -1,0 +1,8 @@
+using "fels.io.scanner"
+
+
+func scanLine(){
+    return scanner.readLine()
+}
+
+scanLine()

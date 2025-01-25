@@ -1,5 +1,6 @@
-using "fels.lang.sfm"
+using "fels.grm.fgl"
 
-
-func a() = 2
-println(::a)//link to function
+fgl.window("My Window", 800, 600)
+fgl.line(10, 10, 100, 100)
+fgl.drawstring("Hello, FGL!", 50, 50)
+fgl.repaint()

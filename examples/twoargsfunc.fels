@@ -1,0 +1,2 @@
+func sum(a, b, c) = a + b + c
+println(sum(1, 2, 3)) // 6

@@ -1,0 +1,8 @@
+using "fels.lang.console"
+
+
+func WRITELN_test(a){
+    console.writeLine(a)
+}
+
+WRITELN_test("FELS??!")

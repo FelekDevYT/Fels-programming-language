@@ -1,0 +1,8 @@
+using "fels.io.scanner"
+
+
+func readchar(){
+    return scanner.readChar()
+}
+
+readChar()

@@ -1,0 +1,8 @@
+using "fels.lang.console"
+
+
+func WRITE_test(a){
+    console.write(a)
+}
+
+WRITE_test("asdf")

@@ -1,0 +1,8 @@
+using "fels.utils.json"
+
+
+func testJSONENCODE(a){
+    return json.encode(a)
+}
+
+println(testJSONENCODE({age = 6,name = "Felek"}))

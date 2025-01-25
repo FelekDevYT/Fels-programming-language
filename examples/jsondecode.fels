@@ -1,0 +1,8 @@
+using "fels.utils.json"
+
+
+func testJSONDECODE(a){
+    return json.decode(a)
+}
+
+println(testJSONDECODE("{var: 6,age = 10}"))
