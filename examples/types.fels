@@ -1,0 +1,11 @@
+using "fels.lang.sfm"
+
+
+println(typeOf(1))
+println(typeOf("1"))
+println(typeOf([]))
+println(typeOf({}))
+println(typeOf(func() = 2))
+
+println(itoa(6))
+println(atoi("6"))

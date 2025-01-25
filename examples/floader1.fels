@@ -1,0 +1,14 @@
+using "fels.net.floader"
+using "fels.lang.string"
+
+
+func download(url,file){
+    MBYTES = 1048576.0 // 1024*1024
+
+    floader.download(url, file, func(progress, bytesDownloaded, bytesMax) {
+      bar = "#" * (progress / 2)
+      print string.sprintf("%-50s %d%% %.2f / %.2f MiB\\r", bar, progress, bytesDownloaded / MBYTES, bytesMax / MBYTES)
+    })
+}
+
+download("http://info.cern.ch/hypertext/WWW/TheProject.html","file.html")
