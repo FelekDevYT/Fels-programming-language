@@ -1,0 +1,28 @@
+using "fels.lang.sfm"
+
+class DoubleValue{
+    func DoubleValue(val1,val2){
+        this.val1 = val1
+        this.val2 = val2
+    }
+
+    func getFirstValue() = this.val1
+
+    func getSecondValue() = this.val2
+
+    func setFirstValue(v) = this.val1 = v
+
+    func setSecondValue(v) = this.val2 = v
+
+    func getArrayedValue() {
+        arr = [0,0]
+        arr[0] = this.val1
+        arr[1] = this.val2
+        return arr
+    }
+
+    func setArrayedValue(arr){
+        this.val1 = arr[0]
+        this.val2 = arr[1]
+    }
+}

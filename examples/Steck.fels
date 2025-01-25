@@ -1,0 +1,33 @@
+using "fels.lang.sfm"
+
+class Steck {
+    arr = 0
+    mp = 0
+
+    func Steck(size) {
+        arr = array(size)
+    }
+
+    func push(text) {
+        arr[mp] = text
+        mp++
+    }
+
+    func peek() {
+        return arr[mp - 1]
+    }
+
+    func pop() {
+        if (mp == 0) {
+            return "NULL"
+        }
+        virtualArr = arr[mp - 1]
+        arr[mp - 1] = "NULL"
+        mp--
+        return virtualArr
+    }
+
+    func empty() {
+        return (mp == 0)
+    }
+}

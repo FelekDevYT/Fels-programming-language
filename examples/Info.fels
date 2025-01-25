@@ -1,0 +1,45 @@
+import "fels.lang.sfm"
+import "fels.utils.jfels"
+
+class Info {
+
+    sys = newClass("java.lang.System")
+
+    func Info() {}
+
+    func getOSName() {
+        return sys.getProperty("os.name")
+    }
+
+    func getOSVersion() {
+        return sys.getProperty("os.version")
+    }
+
+    func getUser Home() {
+        return sys.getProperty("user.home")
+    }
+
+    func getJavaHome() {
+        return sys.getProperty("java.home")
+    }
+
+    func getJavaVersion() {
+        return sys.getProperty("java.version")
+    }
+
+    func getOSArch() {
+        return sys.getProperty("os.arch")
+    }
+
+    func getPathSeparator() {
+        return sys.getProperty("path.separator")
+    }
+
+    func getUser Dir() {
+        return sys.getProperty("user.dir")
+    }
+
+    func getUser Name() {
+        return sys.getProperty("user.name")
+    }
+}
