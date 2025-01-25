@@ -1,0 +1,40 @@
+using "fels.lang.sfm"
+
+class Node {
+    func Node(value, next = NULL) {
+        this.value = value
+        this.next = next
+    }
+}
+
+class LinkedList {
+    func LinkedList() {
+        this.head = NULL
+    }
+
+    func append(value) {
+        if(this.head == NULL) {
+            this.head = new Node(value)
+        } else {
+            current = this.head
+            while(current.next != NULL) {
+                current = current.next
+            }
+            current.next = new Node(value)
+        }
+    }
+
+    func printList() {
+        current = this.head
+        while(current != NULL) {
+            println(current.value)
+            current = current.next
+        }
+    }
+}
+
+list = new LinkedList()
+list.append(1)
+list.append(2)
+list.append(3)
+list.printList()

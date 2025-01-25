@@ -1,0 +1,12 @@
+using "fels.lang.sfm"
+
+func celsiusToFahrenheit(celsius) {
+    return celsius * 9 / 5 + 32
+}
+
+func fahrenheitToCelsius(fahrenheit) {
+    return (fahrenheit - 32) * 5 / 9
+}
+
+println(celsiusToFahrenheit(25)) // 77
+println(fahrenheitToCelsius(77)) // 25

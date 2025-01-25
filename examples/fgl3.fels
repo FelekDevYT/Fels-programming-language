@@ -1,0 +1,18 @@
+using "fels.lang.sfm"
+using "fels.grm.fgl"
+
+func gui(){
+    fgl.window("Color and Text Example", 640, 480)
+
+    fgl.color(255, 0, 0)
+
+    fgl.drawstring("Hello, Fels!", 50, 50)
+
+    fgl.color(0, 255, 0)
+
+    fgl.frect(200, 100, 200, 100)
+
+    fgl.repaint()
+}
+
+gui()
