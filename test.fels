@@ -1,6 +1,11 @@
-using "fels.grm.fgl"
+using "fels.net.floader"
+using "fels.lang.string"
 
-fgl.window("My Window", 800, 600)
-fgl.line(10, 10, 100, 100)
-fgl.drawstring("Hello, FGL!", 50, 50)
-fgl.repaint()
+MBYTES = 1048576.0 // 1024*1024
+url = "http://www.socialstudieshelp.com/"
+file = "test.html"
+
+floader.download(url, file, func(progress, bytesDownloaded, bytesMax) {
+  bar = "#" * (progress / 2)
+  print string.sprintf("%-50s %d%% %.2f / %.2f MiB\\r", bar, progress, bytesDownloaded / MBYTES, bytesMax / MBYTES)
+})

@@ -20,12 +20,14 @@ public class string implements Module {
         });
 
         map.set("sprintf",args ->{
-            if (args.length < 1) throw new ArgumentsMismatchException("At least one argument expected");
+            Arguments.checkAtLeast(1, args.length);
 
             final String format = args[0].asString();
             final Object[] values = new Object[args.length - 1];
             for (int i = 1; i < args.length; i++) {
-                values[i - 1] = (args[i].type() == Types.NUMBER) ? args[i].asInt() : args[i].asString();
+                values[i - 1] = (args[i].type() == Types.NUMBER)
+                        ? args[i].raw()
+                        : args[i].asString();
             }
             return new StringValue(String.format(format, values));
         });
