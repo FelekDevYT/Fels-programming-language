@@ -1,6 +1,6 @@
 using "fels.lang.sfm"
 
-
+func mapping(){
 map = {}
 
 map["a"] = 5
@@ -9,3 +9,6 @@ map["c"] = 10
 
 
 print(map.el)
+}
+
+maping()
