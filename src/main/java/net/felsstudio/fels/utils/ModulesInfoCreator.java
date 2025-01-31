@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 public final class ModulesInfoCreator {
 
-    private static final String MODULES_PATH = "src/main/java/com/annimon/ownlang/modules";
+    private static final String MODULES_PATH = "src/main/java/net/felsstudio/fels/Modules";
 
     public static void main(String[] args)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
@@ -31,7 +31,7 @@ public final class ModulesInfoCreator {
                 .map(File::getName)
                 .toArray(String[]::new);
         for (String moduleName : moduleNames) {
-            final String moduleClassPath = String.format("com.annimon.ownlang.modules.%s.%s", moduleName, moduleName);
+            final String moduleClassPath = String.format("main.java.net.felsstudio.fels.Modules.%s.%s", moduleName, moduleName);
             Class<?> moduleClass = Class.forName(moduleClassPath);
             Functions.getFunctions().clear();
             Variables.variables().clear();
