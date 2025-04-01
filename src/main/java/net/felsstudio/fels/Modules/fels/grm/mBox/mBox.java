@@ -1,4 +1,4 @@
-package main.java.net.felsstudio.fels.Modules.fels.grm.mBox;
+package net.felsstudio.fels.Modules.fels.grm.mBox;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
