@@ -5,7 +5,7 @@ import main.java.net.felsstudio.fels.exceptions.TypeException;
 import java.util.Objects;
 
 public class ClassInstanceValue implements Value {
-    
+
     private final String className;
     private final MapValue thisMap;
     private ClassMethod constructor;

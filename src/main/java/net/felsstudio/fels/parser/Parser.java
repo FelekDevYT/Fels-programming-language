@@ -1,11 +1,10 @@
 package main.java.net.felsstudio.fels.parser;
 
 import main.java.net.felsstudio.fels.exceptions.ParseException;
-import main.java.net.felsstudio.fels.lib.NumberValue;
-import main.java.net.felsstudio.fels.lib.StringValue;
-import main.java.net.felsstudio.fels.lib.UserDefinedFunction;
+import main.java.net.felsstudio.fels.lib.*;
 
 import main.java.net.felsstudio.fels.parser.ast.*;
+import main.java.net.felsstudio.fels.parser.ast.Arguments;
 
 import javax.swing.plaf.nimbus.State;
 import java.io.IOException;
@@ -179,13 +178,43 @@ public final class Parser {
         if(match(TokenType.PANIC)){
             return new PanicStatement(expression());
         }
-//        if(match(TokenType.ENUM)){
-//            return enumStatement();
-//        }
+        if(match(TokenType.TRY)){
+            return tryStatement();
+        }
+        if(match(TokenType.ENUM)){
+            return enumStatement();
+        }
         if (lookMatch(0, TokenType.WORD) && lookMatch(1, TokenType.LPAREN)) {
             return new ExprStatement(functionChain(qualifiedName()));
         }
         return assignmentStatement();
+    }
+
+    private Statement enumStatement() {
+        String enumName = consume(TokenType.WORD).getText();
+        consume(TokenType.LBRACE);
+
+        Map<String, Value> constants = new LinkedHashMap<>();
+        while (!match(TokenType.RBRACE)) {
+            String constantName = consume(TokenType.WORD).getText();
+            // Сохраняем полное имя константы как строку: "EnumName.ConstantName"
+            constants.put(constantName, new StringValue(enumName + "." + constantName));
+            match(TokenType.COMMA);
+        }
+
+        EnumDeclarations.set(enumName, new EnumDeclaration(enumName, constants));
+        return new EnumDeclarationStatement(enumName, constants);
+    }
+
+    private Statement tryStatement(){
+        final Statement st = statementOrBlock();
+        return new TryStatement(st);
+    }
+
+    private Statement rangeStatement(){
+        final Expression condition = expression();
+        final Statement statement = statementOrBlock();
+        return new RangeLoopStatement(statement,condition);
     }
 
 //    private Expression map() {
@@ -223,12 +252,6 @@ public final class Parser {
 //            throw new RuntimeException("Invalid enum!");
 //        }
 //    }
-
-    private Statement rangeStatement(){
-        final Expression condition = expression();
-        final Statement statement = statementOrBlock();
-        return new RangeLoopStatement(statement,condition);
-    }
 
     private Statement loopStatement() {
         final Statement statement = statementOrBlock();
@@ -879,9 +902,19 @@ public final class Parser {
     }
 
     private Expression qualifiedName() {
-        // var || var.key[index].key2
         final Token current = get(0);
         if (!match(TokenType.WORD)) return null;
+
+        String enumName = current.getText();
+        EnumDeclaration enumDecl = EnumDeclarations.get(enumName);
+        if (enumDecl != null && match(TokenType.DOT)) {
+            String constantName = consume(TokenType.WORD).getText();
+            Value constValue = enumDecl.getConstant(constantName);
+            if (constValue == null) {
+                throw new ParseException("Unknown enum constant: " + constantName);
+            }
+            return new ValueExpression(constValue);
+        }
 
         final List<Expression> indices = variableSuffix();
         if (indices == null || indices.isEmpty()) {

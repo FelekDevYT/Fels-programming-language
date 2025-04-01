@@ -115,6 +115,9 @@ public final class Lexer {
         KEYWORDS.put("macro", TokenType.MACRO);
         KEYWORDS.put("panic", TokenType.PANIC);
         KEYWORDS.put("enum",TokenType.ENUM);
+        KEYWORDS.put("try",TokenType.TRY);
+        KEYWORDS.put("catch",TokenType.CATCH);
+        KEYWORDS.put("immut",TokenType.IMMUT);
 
         //LOGICAL GATES
 

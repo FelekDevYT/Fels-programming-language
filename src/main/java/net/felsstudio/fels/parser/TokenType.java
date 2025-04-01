@@ -37,6 +37,9 @@ public enum TokenType {
     MACRO,
     PANIC,
     ENUM,
+    TRY,
+    CATCH,
+    IMMUT,
     
     PLUS, // +
     MINUS, // -

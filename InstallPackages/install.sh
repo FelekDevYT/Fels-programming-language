@@ -12,3 +12,4 @@ echo "Java Temurin 21 has been installed and environment variables set."
 echo "Writing up Fels package"
 echo "export PATH=\$PATH:\$PWD" >> ~/.bashrc
 echo "Successfully written up fels package"
+echo "Fels successfully installed on your PC"

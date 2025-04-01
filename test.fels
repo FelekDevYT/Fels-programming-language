@@ -1,4 +1,7 @@
-using "fels.lang.sfm"
-using "fels.utils.random"
-using "fels.grm.rayFels"
+enum NUMS {
+    ONE,
+    TWO,
+    THREE
+}
 
+print(NUMS.THREE)
