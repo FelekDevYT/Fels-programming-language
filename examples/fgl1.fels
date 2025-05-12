@@ -1,0 +1,19 @@
+using "fels.lang.sfm"
+using "fels.grm.fgl"
+
+
+wid = 800
+hei = 600
+
+func window(title,w,h){
+    fgl.window(title,w,h)
+    fgl.color(255,255,255)
+    fgl.frect(0,0,w,h)
+
+    fgl.color(0,0,0)
+    fgl.line(0,0,w,h)
+    fgl.line(w,0,0,h)
+    fgl.repaint()
+}
+
+window("WINDOW!!!",wid,hei)

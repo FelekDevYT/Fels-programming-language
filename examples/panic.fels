@@ -1,0 +1,5 @@
+func throw(a){
+    panic(a)
+}
+
+throw("text?!")

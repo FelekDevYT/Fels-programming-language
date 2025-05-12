@@ -1,0 +1,10 @@
+using "fels.grm.fgl"
+
+func test(){
+    fgl.window("My Window", 800, 600)
+    fgl.line(10, 10, 100, 100)
+    fgl.drawstring("Hello, FGL!", 50, 50)
+    fgl.repaint()
+}
+
+test()

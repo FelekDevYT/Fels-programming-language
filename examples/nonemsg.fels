@@ -1,0 +1,8 @@
+using "fels.grm.mBox"
+
+
+func noneMsg(){
+    mBox.showNoneMessage("message","title")
+}
+
+noneMsg()

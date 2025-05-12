@@ -1,0 +1,12 @@
+func calculate(a, b, operation) {
+    return match(operation) {
+        case "+": a + b
+        case "-": a - b
+        case "*": a * b
+        case "/": a / b
+        case _: "Неизвестная операция"
+    }
+}
+
+println(calculate(10, 5, "+")) // 15
+println(calculate(10, 5, "*")) // 50

@@ -1,0 +1,10 @@
+using "fels.lang.sfm"
+
+
+func map_test(arr){
+    println(arr)
+    arr["newkey"] = "newvalue"
+    println(arr)
+}
+
+map_test()

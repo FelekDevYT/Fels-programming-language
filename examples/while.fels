@@ -1,0 +1,12 @@
+using "fels.lang.sfm"
+
+
+func while_test(){
+    a = 0
+    while(a < 10){
+        println("a = "+a)
+        a++
+    }
+}
+
+while_test()

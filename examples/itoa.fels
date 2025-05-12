@@ -1,0 +1,8 @@
+using "fels.lang.sfm"
+
+
+func ITOA(anum){
+    return itoa(anum)
+}
+
+println(typeOf(ITOA(5)))

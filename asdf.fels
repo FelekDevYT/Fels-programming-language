@@ -1,0 +1,137 @@
+using "fels.lang.sfm"
+using "fels.utils.arrays"
+using "fels.lang.string"
+using "fels.io.scanner"
+
+func interpret(code){
+    memory = arrays.array(10000)
+    cg = arrays.array(10000)
+    cgp = 0
+    pointer = 0
+    pos = 0
+    mp = 0
+    len = length(code)
+
+    while(pos < len){
+        cmd = string.charAt(code,pos)
+
+        if(cmd == "+") pointer++
+        else if(cmd == "-") pointer--
+        else if(cmd == ".") print(pointer)
+        else if(cmd == ",") print(itoc(pointer))
+        else if(cmd == "*") {
+            memory[mp] = pointer
+        }
+        else if(cmd == "&"){
+            pointer = memory[mp]
+        }
+        else if(cmd == "{") {
+            mp++
+            pointer = 0
+        }
+        else if(cmd == "}") mp--
+        else if(cmd == "^"){
+            pos++
+            pos += atoi(string.charAt(code,pos))
+        }
+        else if(cmd == "@"){
+            pos++
+            quit(string.charAt(code,pos))
+        }
+        else if(cmd == "~"){
+            pos++
+            p = string.charAt(code,pos)
+
+            if(p == "("){
+                pos++
+                r = string.charAt(code,pos)
+
+                if(r == "+"){
+                    println(memory[mp]+memory[++mp])
+                }else if(r == "-"){
+                    println(memory[mp]-memory[++mp])
+                }else if(r == "*"){
+                    println(memory[mp]*memory[++mp])
+                }else if(r == "/"){
+                     println(memory[mp]/memory[++mp])
+                 }
+            }else if(p == ")"){
+              pos++
+              r = string.charAt(code,pos)
+
+              if(r == "+"){
+                  print(memory[mp]+memory[++mp])
+              }else if(r == "-"){
+                  print(memory[mp]-memory[++mp])
+              }else if(r == "*"){
+                  print(memory[mp]*memory[++mp])
+              }else if(r == "/"){
+                  print(memory[mp]/memory[++mp])
+              }
+            }
+        }
+        else if(cmd == "$")pointer+=10
+        else if(cmd == "!"){
+            pos++
+            p = string.charAt(code,pos)
+
+            pointer+=atoi(p)*10
+        }
+        else if(cmd == ";"){//;[123]<>=[123]
+            pos++
+            a1 = string.charAt(code,pos)
+
+            pos++
+            a2 = string.charAt(code,pos)
+
+            if(a1 == "("){
+                if(a2 == ">"){
+                    if(memory[mp] > memory[++mp]){
+                       println(memory[mp+=2])
+                    }
+                }else if(a2 == "<"){
+                    if(memory[mp] < memory[++mp]){
+                        println(memory[mp+=2])
+                    }
+                }else if(a2 == "="){
+                    if(memory[mp] == memory[++mp]){
+                        println(memory[mp+=2])
+                    }
+                }
+            }
+        }
+        else if(cmd == ":"){//:3
+            cd = ""
+
+            pos++
+            a1 = atoi(string.charAt(code,pos))
+
+            for(i = 0,i < a1,i++){
+                pos++
+                cd+= string.charAt(code,pos)
+            }
+
+            cg[cgp] = cd
+            cgp++
+        }
+        else if(cmd == "[") cgp++
+        else if(cmd == "]") cgp--
+        else if(cmd == "#"){
+            interpret(cg[cgp])
+        }
+
+        pos++
+    }
+}
+
+while(true){
+    print("Debugger Fant>>> ")
+    code = scanner.readLine()
+
+    interpret(code)
+    print("\n")
+}
+
+//code = "!7++*,{!9$+*,{!9!2--*,{!9!2--*,{!9!2+*,{!3++*,{!9---*,{!9!2+*,{!9!2++++*,{!9!2--*,{!9!1*,{!3+++*,"
+//
+//interpret(code)

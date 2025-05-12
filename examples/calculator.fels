@@ -1,0 +1,44 @@
+using "fels.lang.sfm"
+using "fels.utils.ftypes"
+using "fels.lang.string"
+using "fels.utils.arrays"
+
+operations = {
+    "+":func(a,b)=a+b,
+    "-":func(a,b)=a-b,
+    "*":func(a,b)=a*b,
+    "/":func(a,b)=a/b,
+    ">":func(a,b)=a>b,
+	"<":func(a,b)=a<b
+}
+
+func calc(expr){
+    pos = 0
+    len = length(expr)
+
+    func isDigit(c)=48<=c&&c <= 57
+
+    func parseNumber(){
+        buffer = ""
+        while (pos < len && isDigit(string.charAt(expr, pos))) {
+            buffer+=string.toChar(string.charAt(expr,pos))
+            pos++
+        }
+        return atoi(buffer)
+    }
+
+    func parseOperation(){
+        while (pos < len && !arrays.arrayKeyExists(string.toChar(string.charAt(expr, pos)), operations)) {
+            pos++
+        }
+        return operations[string.toChar(string.charAt(expr,pos++))]
+    }
+
+    num1 = parseNumber()
+    op = parseOperation()
+	println(op)
+    num2 = parseNumber()
+    return op(num1,num2)
+}
+
+println(calc("2+2"))

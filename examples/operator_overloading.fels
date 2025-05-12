@@ -1,0 +1,9 @@
+using "fels.lang.sfm"
+
+
+func overloading_test(){
+    func `println`(a,b) = a+b
+    println(`println`(1,2))
+}
+
+overloading_test()

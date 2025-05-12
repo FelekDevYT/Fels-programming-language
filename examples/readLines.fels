@@ -1,0 +1,8 @@
+using "fels.io.files"
+
+
+func readLines(a){
+    return files.readAllLines(a)
+}
+
+println(readLines("test.fels"))

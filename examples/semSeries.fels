@@ -1,0 +1,8 @@
+using "fels.lang.sfm"
+using "fels.utils.random"
+
+func sumSeries(n) {
+    return n * (n + 1) / 2
+}
+
+println(sumSeries(10)) // 55

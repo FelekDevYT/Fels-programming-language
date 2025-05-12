@@ -1,0 +1,9 @@
+using "fels.lang.sfm"
+using "fels.utils.arrays"
+
+func arr2d_test(){
+    empty_array = arrays.array(5,5)
+    println(empty_array)
+}
+
+arr2d_test()

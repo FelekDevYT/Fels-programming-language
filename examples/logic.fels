@@ -1,0 +1,15 @@
+using "fels.lang.sfm"
+
+
+func test_logic(){
+    println(true or false)
+    println(true || false)
+
+    println(true and false)
+    println(true && false)
+
+    println(not true)
+    println(!true)
+}
+
+test_logic()

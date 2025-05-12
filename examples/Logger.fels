@@ -1,0 +1,31 @@
+import "fels.lang.memory"
+import "fels.io.files"
+import "fels.lang.string"
+
+class Logger {
+    logFilePath = "test.log"
+
+    func Logger() {
+        @preprocess create
+        files.create(logFilePath)
+    }
+
+    func log(level, message) {
+        logEntry = string.sprintf("[%s] %s\n", level, message)
+        at = files.readAllText(logFilePath)
+        files.writeAllText(logFilePath, at + logEntry)
+        println(logEntry)
+    }
+
+    func info(msg) {
+        this.log("INFO", msg)
+    }
+
+    func warn(msg) {
+        this.log("WARNING", msg)
+    }
+
+    func error(msg) {
+        this.log("ERROR", msg)
+    }
+}

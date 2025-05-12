@@ -1,0 +1,7 @@
+#error some error(
+
+func some_code_region_test(){
+    println("Some code...")
+}
+
+some_code_region_test()

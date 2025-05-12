@@ -1,0 +1,5 @@
+using "fels.lang.sfm"
+
+
+func a() = 2
+println(::a)//link to function

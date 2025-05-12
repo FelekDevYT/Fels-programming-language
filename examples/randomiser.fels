@@ -1,0 +1,15 @@
+using "fels.lang.sfm"
+using "fels.utils.random"
+using "fels.utils.arrays"
+
+func generateRandomNumbers(count, min, max) {
+    result = arrays.array(count)
+    for(i = 0, i < count, i++) {
+        result[i] = (random.random(min, max))
+    }
+    return result
+}
+
+println(generateRandomNumbers(5, 1, 100))
+
+

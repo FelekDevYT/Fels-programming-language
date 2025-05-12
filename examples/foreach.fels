@@ -1,0 +1,10 @@
+using "fels.lang.sfm"
+
+
+func foreach_test(arr){
+    for(el : arr){
+        println(el)
+    }
+}
+
+foreach_test([1,2,3,4,5])

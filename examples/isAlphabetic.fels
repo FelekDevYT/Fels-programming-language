@@ -1,0 +1,8 @@
+using "fels.lang.character"
+
+
+func isAlpha_test(a){
+    return character.isAlphabetic(a)
+}
+
+println(isAlpha_test("asdf"))

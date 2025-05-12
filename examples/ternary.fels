@@ -1,0 +1,12 @@
+using "fels.lang.sfm"
+
+
+a = 1
+b = 0
+
+func testTERNARY(a,b){
+    println(a ? "text1" : "text2")
+    println(b ? "text1" : "text2")
+}
+
+testTERNARY(a,b)

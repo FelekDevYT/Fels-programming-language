@@ -1,0 +1,45 @@
+using "fels.lang.sfm"
+using "fels.utils.arrays"
+
+class Map {
+    MapNames = arrays.array(1000)
+    MapValues = arrays.array(1000)
+    pos = 0
+
+    func Map(size) {
+        MapNames = arrays.array(size)
+        MapValues = arrays.array(size)
+    }
+
+    func set(name, value) {
+        MapNames[pos] = name
+        MapValues[pos] = value
+        pos++
+    }
+
+    func get(name) {
+        for (i = 0, i < MapNames.length(), i++) {
+            if (name == MapNames[i]) {
+                return MapValues[i]
+            }
+        }
+        return 0
+    }
+
+    func size() {
+        return length(MapNames)
+    }
+
+    func isEmpty(name) {
+        for (i = 0, i < length(MapNames), i++) {
+            if (MapNames[i] == name) {
+                if (MapValues[i] == getEmpty()) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
+        return false
+    }
+}

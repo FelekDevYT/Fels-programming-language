@@ -1,0 +1,45 @@
+using "fels.lang.sfm"
+using "fels.lang.ftypes"
+
+class ArrayDeque {
+    arr = 0
+    cmp = 0
+    cmnp = 0
+    ads = 0
+
+    func ArrayDeque(size) {
+        arr = array(size)
+        ads = size
+    }
+
+    func add(text) {
+        arr[cmp] = text
+        cmp++
+    }
+
+    func addLast(text) {
+        arr[cmp] = text
+        cmp++
+    }
+
+    func push(text) {
+        arr[cmnp] = text
+        cmnp++
+    }
+
+    func size() {
+        return ads
+    }
+
+    func clear() {
+        arr = array(ads)
+    }
+
+    func getFirst() {
+        return arr[(cmnp--)]
+    }
+
+    func getLast() {
+        return arr[cmp]
+    }
+}

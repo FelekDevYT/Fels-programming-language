@@ -1,0 +1,6 @@
+func functions_test(){
+    //some func
+    println("FUNC")
+}
+
+functions_test()

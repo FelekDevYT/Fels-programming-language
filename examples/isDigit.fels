@@ -1,0 +1,8 @@
+using "fels.lang.character"
+
+
+func isDigit_test(a){
+    return character.isDigit(a)
+}
+
+println(isDigit("555"))

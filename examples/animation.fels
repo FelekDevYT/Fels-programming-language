@@ -1,0 +1,31 @@
+using "fels.lang.sfm"
+using "fels.grm.fgl"
+
+func gui(){
+    fgl.window("Moving Circle Example", 640, 480)
+
+    x = 50
+    y = 50
+    speedX = 5
+    speedY = 5
+
+    while(true) {
+        fgl.color(255, 255, 255)
+        fgl.frect(0, 0, 640, 480)
+
+        fgl.color(255, 0, 0)
+        fgl.foval(x, y, 50, 50)
+
+        x += speedX
+        y += speedY
+
+        if(x < 0 || x > 590) speedX = -speedX
+        if(y < 0 || y > 430) speedY = -speedY
+
+        fgl.repaint()
+
+        sleep(30)
+    }
+}
+
+gui()

@@ -1,0 +1,8 @@
+using "fels.io.files"
+
+
+func writetext_test(a,b){
+    files.readAllText(a,b)
+}
+
+writetext_test("test.fels",'FILES!')

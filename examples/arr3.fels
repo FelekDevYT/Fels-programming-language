@@ -1,0 +1,9 @@
+using "fels.utils.arrays"
+
+func arr_test(){
+    arr = arrays.array(5)
+    arr[0] = 1
+    println(arr[0])
+}
+
+arr_test()

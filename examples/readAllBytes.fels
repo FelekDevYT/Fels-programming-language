@@ -1,0 +1,8 @@
+using "fels.io.files"
+
+
+func readBytes(a){
+    return files.readAllBytes(a)
+}
+
+println(readBytes("test.fels"))

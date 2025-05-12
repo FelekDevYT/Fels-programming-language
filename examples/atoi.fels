@@ -1,0 +1,8 @@
+using "fels.lang.sfm"
+
+
+func ATOI(aword){
+    return atoi(aword)
+}
+
+println(typeOf(ATOI(6)))

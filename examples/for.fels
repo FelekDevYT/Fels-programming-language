@@ -1,0 +1,10 @@
+using "fels.lang.sfm"
+
+
+func for_test(){
+    for(i = 0,i < 10,i++){
+        println("i = "+i)
+    }
+}
+
+for_test()

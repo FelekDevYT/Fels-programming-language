@@ -1,0 +1,20 @@
+using "fels.lang.sfm"
+
+
+func thread1(){
+    i = 0
+    while(i < 100){
+        println("i = "+i)
+        i++
+        sleep(100)
+    }
+}
+
+thread(::thread1)
+
+k = 0
+while(k < 10){
+    println("k = "+ k)
+    k++
+    sleep(1000)
+}

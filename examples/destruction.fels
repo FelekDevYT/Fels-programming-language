@@ -1,0 +1,5 @@
+using "fels.lang.sfm"
+
+arr = ["A", "B", "C"]
+extract(x, y, z) = arr
+echo(x, y, z) // A B C

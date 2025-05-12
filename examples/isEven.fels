@@ -1,0 +1,8 @@
+using "fels.lang.sfm"
+
+func isEven(n) {
+    return n % 2 == 0
+}
+
+println(isEven(10)) // true
+println(isEven(7)) // false

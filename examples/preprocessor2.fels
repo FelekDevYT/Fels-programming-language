@@ -1,0 +1,11 @@
+#linklude "Buffer.fels"
+
+//YOU SHOULD HAVE INTERNET CONNECTION!!!
+
+func fpm_test(){
+    Buffer b = new Buffer("some")
+    println(b.get())
+}
+
+
+fpm_test()

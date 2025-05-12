@@ -1,0 +1,11 @@
+using "fels.lang.sfm"
+
+func findMax(arr) {
+    max = arr[0]
+    for(el : arr) {
+        if(el > max) max = el
+    }
+    return max
+}
+
+println(findMax([10, 20, 5, 30, 15]))

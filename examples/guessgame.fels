@@ -1,0 +1,25 @@
+using "fels.utils.random"
+using "fels.io.scanner"
+
+func guessNumber() {
+    secretNumber = random.random(1, 100)
+    attempts = 0
+
+    while(true) {
+        print("Введите ваше число: ")
+        guess = scanner.readNumber()
+
+        attempts++
+
+        if(guess == secretNumber) {
+            println("Поздравляем! Вы угадали число за " + attempts + " попыток.")
+            break
+        } else if(guess < secretNumber) {
+            println("Загаданное число больше.")
+        } else {
+            println("Загаданное число меньше.")
+        }
+    }
+}
+
+guessNumber()

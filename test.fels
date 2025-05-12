@@ -1,0 +1,14 @@
+class abc{
+    func init(a, b, c){
+        this.a = a
+        this.b = b
+        this.c = c
+    }
+
+    func count(){
+        return this.a + this.b + this.c
+    }
+}
+
+instance = new abc(5,5,5)
+println(instance.count())

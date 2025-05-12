@@ -1,0 +1,15 @@
+using "fels.lang.sfm"
+
+class Rectangle {
+    func Rectangle(width, height) {
+        this.width = width
+        this.height = height
+    }
+
+    func area() = this.width * this.height
+    func perimeter() = 2 * (this.width + this.height)
+}
+
+rect = new Rectangle(10, 5)
+println("Площадь: " + rect.area()) // 50
+println("Периметр: " + rect.perimeter()) // 30
