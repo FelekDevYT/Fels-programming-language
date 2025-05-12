@@ -26,7 +26,7 @@ hello("FelekDevYT")
 Example 3: Working with Classes and Objects
 ```
 class Person{
-    func Person(name,age){
+    func init(name,age){
         this.name = name
         this.age = age
     }
@@ -54,6 +54,10 @@ for (num : numbers) {
     println(num)
 }
 ```
+
+## ChangeLog
+
+[Read Fels change log](docs/ChangeLog.md)
 
 ## Installation
 

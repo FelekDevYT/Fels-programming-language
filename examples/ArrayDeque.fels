@@ -7,7 +7,7 @@ class ArrayDeque {
     cmnp = 0
     ads = 0
 
-    func ArrayDeque(size) {
+    func init(size) {
         arr = array(size)
         ads = size
     }

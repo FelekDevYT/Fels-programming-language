@@ -5,7 +5,7 @@ import "fels.lang.string"
 class Logger {
     logFilePath = "test.log"
 
-    func Logger() {
+    func init() {
         @preprocess create
         files.create(logFilePath)
     }

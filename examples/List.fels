@@ -5,7 +5,7 @@ class List {
     arr = NULL
     lp = 0
 
-    func List(size) {
+    func init(size) {
         arr = arrays.array(size)
     }
 

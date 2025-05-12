@@ -1,5 +1,5 @@
 class Car {
-    func Car(speed) {
+    func init(speed) {
         this.speed = speed
     }
 

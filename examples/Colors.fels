@@ -1,7 +1,7 @@
 using "fels.lang.sfm"
 
 class Colors {
-    func Colors() {}
+    func init() {}
 
     func reset() = "\u001b[10m"
 

@@ -2,7 +2,7 @@ using "fels.lang.sfm"
 
 
 class Vehicle{
-    func Vehicle(){}
+    func init(){}
 
     func getSpeed(){
         return this.speed

@@ -5,7 +5,7 @@ class Info {
 
     sys = newClass("java.lang.System")
 
-    func Info() {}
+    func init() {}
 
     func getOSName() {
         return sys.getProperty("os.name")

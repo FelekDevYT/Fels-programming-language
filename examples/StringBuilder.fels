@@ -3,7 +3,7 @@ using "fels.lang.sfm"
 class StringBuilder {
     val = NULL
 
-    func StringBuilder() {
+    func init() {
     }
 
     func append(value) {

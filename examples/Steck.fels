@@ -4,7 +4,7 @@ class Steck {
     arr = 0
     mp = 0
 
-    func Steck(size) {
+    func init(size) {
         arr = array(size)
     }
 

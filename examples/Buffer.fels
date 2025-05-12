@@ -3,7 +3,7 @@ using "fels.lang.sfm"
 class Buffer {
     buffer = ""
 
-    func Buffer(b) {
+    func init(b) {
         buffer = b
     }
 
