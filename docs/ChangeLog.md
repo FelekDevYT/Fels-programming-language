@@ -16,3 +16,4 @@
 ## Versions
 - 0.7Aa - changes in constructor structure(constructor name is ```init```)
 - 0.7Ab - Change every(maybe) old constructor names to new(```init```), and added changelog
+- 0.7Ac - Deleted unused files
