@@ -1,5 +1,9 @@
 # The Fels programming language
 
+# WARNING!
+## This project is dead.
+## Don't use it as a programming language for your project
+
 ## Language concept
 Fels is a modern programming language designed with a focus on simplicity, flexibility, and powerful capabilities. It combines elements of object-oriented and functional programming, allowing develoeprs to create clean and maintainable code.
 
